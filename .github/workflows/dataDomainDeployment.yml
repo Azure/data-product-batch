@@ -105,6 +105,7 @@ jobs:
             --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
             --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
             --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
+      continue-on-error: true
     
     # # Deploy data factory 001 - validation
     # - name: Deploy data factory 001 - validation
