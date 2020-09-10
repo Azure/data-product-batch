@@ -131,6 +131,9 @@
             "type": "Microsoft.Synapse/workspaces/bigDataPools",
             "apiVersion": "2019-06-01-preview",
             "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "dependsOn": [
+                "[concat('Microsoft.Synapse/workspaces/', variables('synapseWorkspaceName'))]"
+            ],
             "location": "[variables('location')]",
             "properties": {
                 "autoPause": {
@@ -159,6 +162,9 @@
             "type": "Microsoft.Synapse/workspaces/sqlPools",
             "apiVersion": "2019-06-01-preview",
             "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "dependsOn": [
+                "[concat('Microsoft.Synapse/workspaces/', variables('synapseWorkspaceName'))]"
+            ],
             "location": "[variables('location')]",
             "sku": {
                 "name": "DW100c"
