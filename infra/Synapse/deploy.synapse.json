@@ -159,6 +159,7 @@
             "type": "Microsoft.Synapse/workspaces/sqlPools",
             "apiVersion": "2019-06-01-preview",
             "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "location": "[variables('location')]",
             "sku": {
                 "name": "DW100c"
             },
