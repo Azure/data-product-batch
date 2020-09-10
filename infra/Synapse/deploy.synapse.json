@@ -1,0 +1,131 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "synapseWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the synapse workspace."
+            }
+        },
+        "storageContainerId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource Id of the default storage account container for synapse."
+            }
+        },
+        "sqlAdministratorLogin": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the login account name for the SQL DW of the synapse workspace."
+            }
+        },
+        "sqlAdministratorPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Specifies the password for the SQL DW of the synapse workspace."
+            }
+        },
+        "datalakeAnalyticsResourceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the resource ID of data lake analytics for the synapse workspace."
+            }
+        },
+        "computeSubnetResourceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the resource ID of data lake analytics for the synapse workspace."
+            }
+        },
+        "sqlAdminGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the Azure Active Directory group of the SQL admin group."
+            }
+        },
+        "sqlAdminGroupObjectID": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the Azure Active Directory objectID of the SQL admin group."
+            }
+        }
+    },
+    "variables": {
+        "location": "[parameters('location')]",
+        "synapseWorkspaceName": "[parameters('synapseWorkspaceName')]",
+        "storageContainerId": "[parameters('storageContainerId')]",
+        "storageAccountName": "[split(variables('storageContainerId'), '/')[8]]",
+        "storageContainerName": "[last(split(variables('storageContainerId'), '/'))]",
+        "sqlAdministratorLogin": "[parameters('sqlAdministratorLogin')]",
+        "sqlAdministratorPassword": "[parameters('sqlAdministratorPassword')]",
+        "datalakeAnalyticsResourceId": "[parameters('datalakeAnalyticsResourceId')]",
+        "computeSubnetResourceId": "[parameters('computeSubnetResourceId')]",
+        "sqlAdminGroupName": "[parameters('sqlAdminGroupName')]",
+        "sqlAdminGroupObjectID": "[parameters('sqlAdminGroupObjectID')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Synapse/workspaces",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[variables('synapseWorkspaceName')]",
+            "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "defaultDataLakeStorage": {
+                    "accountUrl": "[concat('https://', variables('storageAccountName'), '.dfs.core.windows.net')]",
+                    "filesystem": "[variables('storageContainerName')]"
+                },
+                "sqlAdministratorLogin": "[variables('sqlAdministratorLogin')]",
+                "sqlAdministratorLoginPassword": "[variables('sqlAdministratorPassword')]",
+                "adlaResourceId": "[variables('datalakeAnalyticsResourceId')]",
+                "managedVirtualNetwork": "default",
+                "virtualNetworkProfile": {
+                    "computeSubnetId": "[variables('computeSubnetResourceId')]"
+                },
+                "connectivityEndpoints": {}
+            },
+            "resources": [
+                {
+                    "type": "managedIdentitySqlControlSettings",
+                    "apiVersion": "2019-06-01-preview",
+                    "name": "default",
+                    "dependsOn": [
+                        "[concat('Microsoft.Synapse/workspaces/', variables('synapseWorkspaceName'))]"
+                    ],
+                    "properties": {
+                        "grantSqlControlToManagedIdentity": {
+                            "desiredState": "Enabled"
+                        }
+                    }
+                },
+                {
+                    "condition": "[and(not(empty(variables('sqlAdminGroupName'))), not(empty(variables('sqlAdminGroupObjectID'))))]",
+                    "type": "administrators",
+                    "apiVersion": "2019-06-01-preview",
+                    "name": "ActiveDirectory",
+                    "dependsOn": [
+                        "[concat('Microsoft.Synapse/workspaces/', variables('synapseWorkspaceName'))]"
+                    ],
+                    "properties": {
+                        "administratorType": "ActiveDirectory",
+                        "login": "[variables('sqlAdminGroupName')]",
+                        "sid": "[variables('sqlAdminGroupObjectID')]",
+                        "tenantId": "[subscription().tenantId]"
+                    }
+                }
+            ]
+        }
+    ]
+}

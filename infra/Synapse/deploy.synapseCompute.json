@@ -1,0 +1,168 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "synapseWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the synapse workspace."
+            }
+        }
+    },
+    "variables": {
+        "location": "[parameters('location')]",
+        "synapseWorkspaceName": "[parameters('synapseWorkspaceName')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Synapse/workspaces/bigDataPools",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "autoPause": {
+                    "enabled": true,
+                    "delayInMinutes": 15
+                },
+                "autoScale": {
+                    "enabled": true,
+                    "minNodeCount": 1,
+                    "maxNodeCount": 4
+                },
+                "defaultSparkLogFolder": "logs/",
+                "libraryRequirements": {
+                    "content": "",
+                    "filename": "requirements.txt"
+                },
+                "nodeCount": 4,
+                "nodeSize": "Medium",
+                "nodeSizeFamily": "MemoryOptimized",
+                "provisioningState": "Succeeded",
+                "sparkEventsFolder": "events/",
+                "sparkVersion": "2.4"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/defaultIntegrationRuntime')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "type": "Managed",
+                "typeProperties": {
+                    "computeProperties": {
+                        "additionalProperties": {
+                        },
+                        "dataFlowProperties": {
+                            "additionalProperties": {
+                            },
+                            "computeType": "General",
+                            "coreCount": 2,
+                            "timeToLive": 15
+                        },
+                        "maxParallelExecutionsPerNode": 1,
+                        "nodeSize": "",
+                        "numberOfNodes": 2,
+                        "vNetProperties": {
+                            "additionalProperties": {
+                            },
+                            "publicIPs": [
+                            ],
+                            "subnet": "",
+                            "vNetId": ""
+                        }
+                    },
+                    "linkedInfo": {
+                        "authorizationType": "RBAC"
+                    },
+                    "ssisProperties": {
+                        "additionalProperties": {
+                        },
+                        "catalogInfo": {
+                            "additionalProperties": {
+                            },
+                            "catalogAdminPassword": {
+                                "type": "SecureString",
+                                "value": ""
+                            },
+                            "catalogAdminUserName": "",
+                            "catalogPricingTier": "Standard",
+                            "catalogServerEndpoint": ""
+                        },
+                        "customSetupScriptProperties": {
+                            "blobContainerUri": "",
+                            "sasToken": {
+                                "type": "SecureString",
+                                "value": ""
+                            }
+                        },
+                        "dataProxyProperties": {
+                            "connectVia": {
+                                "referenceName": "",
+                                "type": "IntegrationRuntimeReference"
+                            },
+                            "path": "",
+                            "stagingLinkedService": {
+                                "referenceName": "",
+                                "type": "IntegrationRuntimeReference"
+                            }
+                        },
+                        "edition": "Enterprise",
+                        "expressCustomSetupProperties": [
+                            {
+                                "type": "EnvironmentVariableSetup",
+                                "typeProperties": {
+                                    "componentName": "",
+                                    "licenseKey": {
+                                        "type": "SecureString",
+                                        "value": ""
+                                    },
+                                    "password": {
+                                        "type": "SecureString",
+                                        "value": ""
+                                    },
+                                    "targetName": {
+                                    },
+                                    "userName": {
+                                    },
+                                    "variableName": "",
+                                    "variableValue": ""
+                                }
+                            }
+                        ],
+                        "licenseType": "LicenseIncluded"
+                    }
+                },
+                "additionalProperties": {
+                },
+                "description": ""
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "sku": {
+                "name": "DW100c"
+            },
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "createMode": "Default",
+                "maxSizeBytes": 263882790666240,
+                "provisioningState": "Succeeded",
+                // "recoverableDatabaseId": "",
+                // "restorePointInTime": "",
+                // "sourceDatabaseId": "",
+                // "creationDate": "",
+                "status": "Online"
+            }
+        }
+    ]
+}

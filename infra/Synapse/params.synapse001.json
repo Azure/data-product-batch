@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "northeurope"
+        },
+        "synapseWorkspaceName": {
+            "value": "dn001-dd001-synapse001"
+        },
+        "storageContainerId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-storage/providers/Microsoft.Storage/storageAccounts/dn001workspacesa/blobServices/default/containers/datadomain001"
+        },
+        "sqlAdministratorLogin": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
+                },
+                "secretName": "sqlServerAdminUser"
+            }
+        },
+        "sqlAdministratorPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
+                },
+                "secretName": "sqlServerAdminPassword"
+            }
+        },
+        "datalakeAnalyticsResourceId": {
+            "value": ""
+        },
+        "computeSubnetResourceId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dd001-subnet"
+        },
+        "sqlAdminGroupName": {
+            "value": ""
+        },
+        "sqlAdminGroupObjectID": {
+            "value": ""
+        }
+    }
+}
