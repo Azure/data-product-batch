@@ -92,20 +92,20 @@ jobs:
             --template-file $GITHUB_WORKSPACE/infra/Databricks/deploy.databricks.json \
             --parameters $GITHUB_WORKSPACE/infra/Databricks/params.databricks001.json
     
-    # Deploy synapse workspace 001 - validation
-    - name: Deploy synapse workspace 001 - validation
-      id: synapse_001_validation
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
-            --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
-      continue-on-error: true
+    # # Deploy synapse workspace 001 - validation
+    # - name: Deploy synapse workspace 001 - validation
+    #   id: synapse_001_validation
+    #   uses: azure/cli@v1
+    #   with:
+    #     azcliversion: latest
+    #     inlineScript: |
+    #       echo "Creating deployment in resource group"
+    #       az deployment group validate \
+    #         --mode Incremental \
+    #         --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
+    #         --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
+    #         --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
+    #   continue-on-error: true
     
     # # Deploy data factory 001 - validation
     # - name: Deploy data factory 001 - validation
@@ -176,19 +176,19 @@ jobs:
             --template-file $GITHUB_WORKSPACE/infra/Databricks/deploy.databricks.json \
             --parameters $GITHUB_WORKSPACE/infra/Databricks/params.databricks001.json
     
-    # Deploy synapse workspace 001
-    - name: Deploy synapse workspace 001
-      id: synapse_001_deployment
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
-            --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
+    # # Deploy synapse workspace 001
+    # - name: Deploy synapse workspace 001
+    #   id: synapse_001_deployment
+    #   uses: azure/cli@v1
+    #   with:
+    #     azcliversion: latest
+    #     inlineScript: |
+    #       echo "Creating deployment in resource group"
+    #       az deployment group create \
+    #         --mode Incremental \
+    #         --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
+    #         --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
+    #         --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
     
     # # Deploy data factory 001
     # - name: Deploy data factory 001
