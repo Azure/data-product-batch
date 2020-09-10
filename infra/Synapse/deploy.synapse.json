@@ -174,5 +174,101 @@
                 "status": "Online"
             }
         }
+        // {
+        //     "type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+        //     "apiVersion": "2019-06-01-preview",
+        //     "name": "[concat(variables('synapseWorkspaceName'), '/defaultIntegrationRuntime')]",
+        //     "location": "[variables('location')]",
+        //     "properties": {
+        //         "type": "Managed",
+        //         "typeProperties": {
+        //             "computeProperties": {
+        //                 "additionalProperties": {
+        //                 },
+        //                 "dataFlowProperties": {
+        //                     "additionalProperties": {
+        //                     },
+        //                     "computeType": "General",
+        //                     "coreCount": 2,
+        //                     "timeToLive": 15
+        //                 },
+        //                 "maxParallelExecutionsPerNode": 1,
+        //                 "nodeSize": "",
+        //                 "numberOfNodes": 2,
+        //                 "vNetProperties": {
+        //                     "additionalProperties": {
+        //                     },
+        //                     "publicIPs": [
+        //                     ],
+        //                     "subnet": "",
+        //                     "vNetId": ""
+        //                 }
+        //             },
+        //             "linkedInfo": {
+        //                 "authorizationType": "RBAC"
+        //             },
+        //             "ssisProperties": {
+        //                 "additionalProperties": {
+        //                 },
+        //                 "catalogInfo": {
+        //                     "additionalProperties": {
+        //                     },
+        //                     "catalogAdminPassword": {
+        //                         "type": "SecureString",
+        //                         "value": ""
+        //                     },
+        //                     "catalogAdminUserName": "",
+        //                     "catalogPricingTier": "Standard",
+        //                     "catalogServerEndpoint": ""
+        //                 },
+        //                 "customSetupScriptProperties": {
+        //                     "blobContainerUri": "",
+        //                     "sasToken": {
+        //                         "type": "SecureString",
+        //                         "value": ""
+        //                     }
+        //                 },
+        //                 "dataProxyProperties": {
+        //                     "connectVia": {
+        //                         "referenceName": "",
+        //                         "type": "IntegrationRuntimeReference"
+        //                     },
+        //                     "path": "",
+        //                     "stagingLinkedService": {
+        //                         "referenceName": "",
+        //                         "type": "IntegrationRuntimeReference"
+        //                     }
+        //                 },
+        //                 "edition": "Enterprise",
+        //                 "expressCustomSetupProperties": [
+        //                     {
+        //                         "type": "EnvironmentVariableSetup",
+        //                         "typeProperties": {
+        //                             "componentName": "",
+        //                             "licenseKey": {
+        //                                 "type": "SecureString",
+        //                                 "value": ""
+        //                             },
+        //                             "password": {
+        //                                 "type": "SecureString",
+        //                                 "value": ""
+        //                             },
+        //                             "targetName": {
+        //                             },
+        //                             "userName": {
+        //                             },
+        //                             "variableName": "",
+        //                             "variableValue": ""
+        //                         }
+        //                     }
+        //                 ],
+        //                 "licenseType": "LicenseIncluded"
+        //             }
+        //         },
+        //         "additionalProperties": {
+        //         },
+        //         "description": ""
+        //     }
+        // }
     ]
 }
