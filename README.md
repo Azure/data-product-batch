@@ -1,3 +1,9 @@
+# Notes on Service Principal
+
+**Access required:**
+* Access to resource group
+
+
 
 # Contributing
 
