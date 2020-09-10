@@ -1,8 +1,9 @@
 # Notes on Service Principal
 
 **Access required:**
-* Access to resource group
-
+* Access to resource group - Contributor
+* Access to global DNS - Private DNS Zone Contributor
+* Access to vnet - Network Contributor
 
 
 # Contributing

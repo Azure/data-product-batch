@@ -126,6 +126,53 @@
                     }
                 }
             ]
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/bigDataPools",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "autoPause": {
+                    "enabled": true,
+                    "delayInMinutes": 15
+                },
+                "autoScale": {
+                    "enabled": true,
+                    "minNodeCount": 1,
+                    "maxNodeCount": 4
+                },
+                "defaultSparkLogFolder": "logs/",
+                "libraryRequirements": {
+                    "content": "",
+                    "filename": "requirements.txt"
+                },
+                "nodeCount": 4,
+                "nodeSize": "Medium",
+                "nodeSizeFamily": "MemoryOptimized",
+                "provisioningState": "Succeeded",
+                "sparkEventsFolder": "events/",
+                "sparkVersion": "2.4"
+            }
+        },
+        {
+            "type": "Microsoft.Synapse/workspaces/sqlPools",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('synapseWorkspaceName'), '/defaultSqlPool')]",
+            "sku": {
+                "name": "DW100c"
+            },
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "createMode": "Default",
+                "maxSizeBytes": 263882790666240,
+                "provisioningState": "Succeeded",
+                // "recoverableDatabaseId": "",
+                // "restorePointInTime": "",
+                // "sourceDatabaseId": "",
+                // "creationDate": "",
+                "status": "Online"
+            }
         }
     ]
 }
