@@ -102,7 +102,7 @@ jobs:
           echo "Creating deployment in resource group"
           az deployment group validate \
             --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
             --template-file $GITHUB_WORKSPACE/infra/SqlServer/deploy.sqlServer.json \
             --parameters $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json
       continue-on-error: true
@@ -117,7 +117,7 @@ jobs:
           echo "Creating deployment in resource group"
           az deployment group validate \
             --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
             --template-file $GITHUB_WORKSPACE/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json \
             --parameters $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json
     
@@ -215,7 +215,7 @@ jobs:
           echo "Creating deployment in resource group"
           az deployment group create \
             --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
             --template-file $GITHUB_WORKSPACE/infra/SqlServer/deploy.sqlServer.json \
             --parameters $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json
     
@@ -229,7 +229,7 @@ jobs:
           echo "Creating deployment in resource group"
           az deployment group create \
             --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
             --template-file $GITHUB_WORKSPACE/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json \
             --parameters $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json
     
