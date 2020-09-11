@@ -23,6 +23,8 @@
         },
         "sqlDataWarehouseCapacity": {
             "type": "int",
+            "minValue": 900,
+            "defaultValue": 900,
             "metadata": {
                 "description": "Specifies the capacity in DWs of the SQL data warehouse."
             }
