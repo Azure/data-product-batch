@@ -8,6 +8,8 @@ on:
       - 'infra/Databricks/**'
       - 'infra/DataFactory/**'
       - 'infra/Synapse/**'
+      - 'infra/SqlDataWarehouse/**'
+      - 'infra/SqlServer/**'
       - 'infra/PrivateEndpoint/**'
       - '.github/workflows/dataDomainDeployment.yml'
 

@@ -10,6 +10,8 @@ trigger:
       - infra/Databricks/*
       - infra/DataFactory/*
       - infra/Synapse/*
+      - infra/SqlDataWarehouse/*
+      - infra/SqlServer/*
       - infra/PrivateEndpoint/*
       - .ado/workflows/dataDomainDeployment.yml
 
