@@ -92,6 +92,35 @@ jobs:
             --template-file $GITHUB_WORKSPACE/infra/Databricks/deploy.databricks.json \
             --parameters $GITHUB_WORKSPACE/infra/Databricks/params.databricks001.json
     
+    # Deploy sql server 001 - validation
+    - name: Deploy sql server 001 - validation
+      id: sql_server_001_validation
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group validate \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --template-file $GITHUB_WORKSPACE/infra/SqlServer/deploy.sqlServer.json \
+            --parameters $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json
+      continue-on-error: true
+    
+    # Deploy sql data warehouse 001 - validation
+    - name: Deploy sql data warehouse 001 - validation
+      id: sql_data_warehouse_001_validation
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group validate \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --template-file $GITHUB_WORKSPACE/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json \
+            --parameters $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json
+    
     # # Deploy synapse workspace 001 - validation
     # - name: Deploy synapse workspace 001 - validation
     #   id: synapse_001_validation
@@ -107,19 +136,19 @@ jobs:
     #         --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
     #   continue-on-error: true
     
-    # # Deploy data factory 001 - validation
-    # - name: Deploy data factory 001 - validation
-    #   id: data_factory_001_validation
-    #   uses: azure/cli@v1
-    #   with:
-    #     azcliversion: latest
-    #     inlineScript: |
-    #       echo "Creating deployment in resource group"
-    #       az deployment group validate \
-    #         --mode Incremental \
-    #         --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-    #         --template-file $GITHUB_WORKSPACE/infra/DataFactory/deploy.dataFactory.json \
-    #         --parameters $GITHUB_WORKSPACE/infra/DataFactory/params.dataFactory001.json
+    # Deploy data factory 001 - validation
+    - name: Deploy data factory 001 - validation
+      id: data_factory_001_validation
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group validate \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
+            --template-file $GITHUB_WORKSPACE/infra/DataFactory/deploy.dataFactory.json \
+            --parameters $GITHUB_WORKSPACE/infra/DataFactory/params.dataFactory001.json
     
     # Log out from Azure
     - name: Log out from Azure
@@ -176,6 +205,34 @@ jobs:
             --template-file $GITHUB_WORKSPACE/infra/Databricks/deploy.databricks.json \
             --parameters $GITHUB_WORKSPACE/infra/Databricks/params.databricks001.json
     
+    # Deploy sql server 001
+    - name: Deploy sql server 001
+      id: sql_server_001_deployment
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group create \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --template-file $GITHUB_WORKSPACE/infra/SqlServer/deploy.sqlServer.json \
+            --parameters $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json
+    
+    # Deploy sql data warehouse 001
+    - name: Deploy sql data warehouse 001
+      id: sql_data_warehouse_001_deployment
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group create \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME_MANAGEMENT }} \
+            --template-file $GITHUB_WORKSPACE/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json \
+            --parameters $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json
+    
     # # Deploy synapse workspace 001
     # - name: Deploy synapse workspace 001
     #   id: synapse_001_deployment
@@ -190,19 +247,19 @@ jobs:
     #         --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
     #         --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
     
-    # # Deploy data factory 001
-    # - name: Deploy data factory 001
-    #   id: data_factory_001_deployment
-    #   uses: azure/cli@v1
-    #   with:
-    #     azcliversion: latest
-    #     inlineScript: |
-    #       echo "Creating deployment in resource group"
-    #       az deployment group create \
-    #         --mode Incremental \
-    #         --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-    #         --template-file $GITHUB_WORKSPACE/infra/DataFactory/deploy.dataFactory.json \
-    #         --parameters $GITHUB_WORKSPACE/infra/DataFactory/params.dataFactory001.json
+    # Deploy data factory 001
+    - name: Deploy data factory 001
+      id: data_factory_001_deployment
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          echo "Creating deployment in resource group"
+          az deployment group create \
+            --mode Incremental \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
+            --template-file $GITHUB_WORKSPACE/infra/DataFactory/deploy.dataFactory.json \
+            --parameters $GITHUB_WORKSPACE/infra/DataFactory/params.dataFactory001.json
     
     # Log out from Azure
     - name: Log out from Azure

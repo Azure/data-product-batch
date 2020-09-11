@@ -76,11 +76,47 @@ stages:
             csmParametersFile: 'infra/Databricks/params.databricks001.json'
             deploymentMode: 'Validation'
         
+        # Deploy sql server 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: sql_server_001_validation
+          displayName: Deploy sql server 001 - validation
+          enabled: true
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME_MANAGEMENT)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/SqlServer/deploy.sqlServer.json'
+            csmParametersFile: 'infra/SqlServer/params.sqlServer001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy data warehouse 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: sql_data_warehouse_001_validation
+          displayName: Deploy data warehouse 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME_MANAGEMENT)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json'
+            csmParametersFile: 'infra/SqlDataWarehouse/params.sqlDataWarehouse001.json'
+            deploymentMode: 'Validation'
+        
         # Deploy synapse 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: synapse_001_validation
           displayName: Deploy synapse 001 - validation
-          enabled: true
+          enabled: false
           continueOnError: true
           inputs:
             deploymentScope: 'Resource Group'
@@ -98,7 +134,7 @@ stages:
         - task: AzureResourceManagerTemplateDeployment@3
           name: data_factory_001_validation
           displayName: Deploy data factory 001 - validation
-          enabled: false
+          enabled: true
           continueOnError: false
           inputs:
             deploymentScope: 'Resource Group'
@@ -152,11 +188,47 @@ stages:
             csmParametersFile: 'infra/KeyVault/params.keyVault001.json'
             deploymentMode: 'Incremental'
         
+        # Deploy sql server 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: sql_server_001_deployment
+          displayName: Deploy sql server 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME_MANAGEMENT)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/SqlServer/deploy.sqlServer.json'
+            csmParametersFile: 'infra/SqlServer/params.sqlServer001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy data warehouse 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: sql_data_warehouse_001_deployment
+          displayName: Deploy data warehouse 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME_MANAGEMENT)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json'
+            csmParametersFile: 'infra/SqlDataWarehouse/params.sqlDataWarehouse001.json'
+            deploymentMode: 'Incremental'
+        
         # Deploy synapse 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: synapse_001_deployment
           displayName: Deploy synapse 001
-          enabled: true
+          enabled: false
           continueOnError: false
           inputs:
             deploymentScope: 'Resource Group'
@@ -174,7 +246,7 @@ stages:
         - task: AzureResourceManagerTemplateDeployment@3
           name: data_factory_001_deployment
           displayName: Deploy data factory 001
-          enabled: false
+          enabled: true
           continueOnError: false
           inputs:
             deploymentScope: 'Resource Group'

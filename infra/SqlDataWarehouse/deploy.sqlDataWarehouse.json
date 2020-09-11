@@ -1,0 +1,114 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "sqlServerId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the SQL server to which the data warehouse will be deployed."
+            }
+        },
+        "sqlDataWarehouseName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the SQL data warehouse."
+            }
+        },
+        "sqlDataWarehouseCapacity": {
+            "type": "int",
+            "metadata": {
+                "description": "Specifies the capacity in DWs of the SQL data warehouse."
+            }
+        },
+        "sqlDataWarehouseMaxSizeInBytes": {
+            "type": "int",
+            "defaultValue": 263882790666240,
+            "metadata": {
+                "description": "Specifies the maximum size of the data warehouse expressed in bytes."
+            }
+        },
+        "sqlDataWarehouseZoneRedundant": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Specifies whether the data warehouse should be zone redundant which means the replicas of this database will be spread across multiple availability zones."
+            }
+        },
+        "sqlDataWarehouseLicenseType": {
+            "type": "string",
+            "defaultValue": "LicenseIncluded",
+            "allowedValues": [
+                "LicenseIncluded",
+                "BasePrice"
+            ],
+            "metadata": {
+                "description": "Specifies the license type to apply for this database (if you bring your own license, then select 'BasePrice')."
+            }
+        },
+        "sqlDataWarehouseReadReplicaCount": {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "metadata": {
+                "description": "Specifies the number of readonly secondary replicas associated with the data warehouse."
+            }
+        },
+        "sqlDataWarehouseStorageAccountType": {
+            "type": "string",
+            "defaultValue": "GRS",
+            "allowedValues": [
+                "GRS",
+                "LRS",
+                "ZRS"
+            ],
+            "metadata": {
+                "description": "Specifies the storage account type used to store backups for this data warehouse."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "sqlServerId": "[parameters('sqlServerId')]",
+        "sqlServerName": "[last(split(variables('sqlServerId'), '/'))]",
+        "sqlDataWarehouseName": "[parameters('sqlDataWarehouseName')]",
+        "sqlDataWarehouseMaxSizeInBytes": "[parameters('sqlDataWarehouseMaxSizeInBytes')]",
+        "sqlDataWarehouseZoneRedundant": "[parameters('sqlDataWarehouseZoneRedundant')]",
+        "sqlDataWarehouseLicenseType": "[parameters('sqlDataWarehouseLicenseType')]",
+        "sqlDataWarehouseReadReplicaCount": "[parameters('sqlDataWarehouseReadReplicaCount')]",
+        "sqlDataWarehouseCapacity": "[parameters('sqlDataWarehouseCapacity')]",
+        "sqlDataWarehouseStorageAccountType": "[parameters('sqlDataWarehouseStorageAccountType')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-06-01-preview",
+            "type": "Microsoft.Sql/servers/databases",
+            "name": "[concat(variables('sqlServerName'), '/', variables('sqlDataWarehouseName'))]",
+            "location": "[variables('location')]",
+            "kind": "v12.0,user,datawarehouse,gen2",
+            "sku": {
+                "name": "DataWarehouse",
+                "tier": "DataWarehouse",
+                "capacity": "[variables('sqlDataWarehouseCapacity')]"
+            },
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "[variables('sqlDataWarehouseMaxSizeInBytes')]",
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": "[variables('sqlDataWarehouseZoneRedundant')]",
+                "licenseType": "[variables('sqlDataWarehouseLicenseType')]",
+                "readScale": "[if(greater(variables('sqlDataWarehouseReadReplicaCount'), 0), 'Enabled', 'Disabled')]",
+                "readReplicaCount": "[variables('sqlDataWarehouseReadReplicaCount')]",
+                "storageAccountType": "[variables('sqlDataWarehouseStorageAccountType')]"
+            }
+        }
+    ],
+    "outputs": {}
+}

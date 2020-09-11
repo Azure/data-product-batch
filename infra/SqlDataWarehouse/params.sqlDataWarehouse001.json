@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": ""
+        },
+        "sqlServerId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.Sql/servers/dn001-dd001-sqlserver001"
+        },
+        "sqlDataWarehouseName": {
+            "value": "dn001-dd001-sqldw"
+        },
+        "sqlDataWarehouseCapacity": {
+            "value": 100
+        },
+        "sqlDataWarehouseMaxSizeInBytes": {
+            "value": 263882790666240
+        },
+        "sqlDataWarehouseZoneRedundant": {
+            "value": false
+        },
+        "sqlDataWarehouseLicenseType": {
+            "value": "LicenseIncluded"
+        },
+        "sqlDataWarehouseReadReplicaCount": {
+            "value": 0
+        },
+        "sqlDataWarehouseStorageAccountType": {
+            "value": "GRS"
+        }
+    }
+}
