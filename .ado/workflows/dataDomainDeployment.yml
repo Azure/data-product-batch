@@ -190,6 +190,24 @@ stages:
             csmParametersFile: 'infra/KeyVault/params.keyVault001.json'
             deploymentMode: 'Incremental'
         
+        # Deploy databricks 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: databricks_001_deployment
+          displayName: Deploy databricks 001
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: 'infra/Databricks/deploy.databricks.json'
+            csmParametersFile: 'infra/Databricks/params.databricks001.json'
+            deploymentMode: 'Incremental'
+        
         # Deploy sql server 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: sql_server_001_deployment
