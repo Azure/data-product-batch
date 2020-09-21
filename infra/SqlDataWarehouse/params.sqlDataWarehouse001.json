@@ -8,6 +8,14 @@
         "sqlServerId": {
             "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.Sql/servers/dn001-dd001-sqlserver001"
         },
+        "sqlServerAdministratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
+                },
+                "secretName": "sqlServerAdminPassword"
+            }
+        },
         "sqlDataWarehouseName": {
             "value": "dn001-dd001-sqldw"
         },
@@ -28,6 +36,9 @@
         },
         "sqlDataWarehouseStorageAccountType": {
             "value": "GRS"
+        },
+        "keyVaultId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
         }
     }
 }
