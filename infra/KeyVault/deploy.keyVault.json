@@ -35,7 +35,7 @@
         "subnetId": "[parameters('subnetId')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "privateDnsZoneResourceGroupName": "[last(split(variables('privateDnsZoneResourceGroupId'), '/'))]",
-        "templateUri": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PrivateEndpoint/deploy.privateEndpoint.json?token=AIHRGTWMHEW4TL3FYGK63327OOLLY"
+        "templateUri": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PrivateEndpoint/deploy.privateEndpoint.json?token=AIHRGTVCTX5WNPKCIL54SUK7OOUWG"
     },
     "resources": [
         {
