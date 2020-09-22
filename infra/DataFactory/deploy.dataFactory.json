@@ -82,7 +82,7 @@
         "subnetId": "[parameters('subnetId')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "privateDnsZoneResourceGroupName": "[last(split(variables('privateDnsZoneResourceGroupId'), '/'))]",
-        "templateUri": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PrivateEndpoint/deploy.privateEndpoint.json?token=AIHRGTQNHSLTQS5NLM7UY5C7NHK32"
+        "templateUri": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PrivateEndpoint/deploy.privateEndpoint.json?token=AIHRGTWMHEW4TL3FYGK63327OOLLY"
     },
     "resources": [
         {
@@ -182,42 +182,42 @@
                     }
                 }
             ]
-        },
-        {
-            "name": "PrivateEndpointDeployment",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-10-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[variables('templateUri')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "privateEndpointName": {
-                        "value": "[concat(variables('dataFactoryName'), '-private-endpoint')]"
-                    },
-                    "privateEndpointLocation": {
-                        "value": "[variables('location')]"
-                    },
-                    "privateLinkServiceResourceId": {
-                        "value": "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]"
-                    },
-                    "privateLinkServiceGroupId": {
-                        "value": "dataFactory"
-                    },
-                    "subnetResourceId": {
-                        "value": "[variables('subnetId')]"
-                    },
-                    "privateDnsZoneId": {
-                        "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.datafactory.azure.net')]"
-                    }
-                }
-            }
         }
+        // {
+        //     "name": "PrivateEndpointDeployment",
+        //     "type": "Microsoft.Resources/deployments",
+        //     "apiVersion": "2019-10-01",
+        //     "dependsOn": [
+        //         "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]"
+        //     ],
+        //     "properties": {
+        //         "mode": "Incremental",
+        //         "templateLink": {
+        //             "uri": "[variables('templateUri')]",
+        //             "contentVersion": "1.0.0.0"
+        //         },
+        //         "parameters": {
+        //             "privateEndpointName": {
+        //                 "value": "[concat(variables('dataFactoryName'), '-private-endpoint')]"
+        //             },
+        //             "privateEndpointLocation": {
+        //                 "value": "[variables('location')]"
+        //             },
+        //             "privateLinkServiceResourceId": {
+        //                 "value": "[resourceId('Microsoft.DataFactory/factories', variables('dataFactoryName'))]"
+        //             },
+        //             "privateLinkServiceGroupId": {
+        //                 "value": "dataFactory"
+        //             },
+        //             "subnetResourceId": {
+        //                 "value": "[variables('subnetId')]"
+        //             },
+        //             "privateDnsZoneId": {
+        //                 "value": "[resourceId(reference(variables('privateDnsZoneResourceGroupId'), '2020-06-01', 'Full').subscriptionId, variables('privateDnsZoneResourceGroupName'), 'Microsoft.Network/privateDnsZones', 'privatelink.datafactory.azure.net')]"
+        //             }
+        //         }
+        //     }
+        // }
     ],
     "outputs": {}
 }
