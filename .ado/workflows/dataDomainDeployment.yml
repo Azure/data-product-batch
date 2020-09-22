@@ -147,7 +147,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: 'infra/DataFactory/deploy.dataFactory.json'
-            csmParametersFile: 'infra/DataFactory/deploy.dataFactory001.json'
+            csmParametersFile: 'infra/DataFactory/params.dataFactory001.json'
             deploymentMode: 'Validation'
 
   - stage: Deployment
@@ -277,5 +277,5 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: 'infra/DataFactory/deploy.dataFactory.json'
-            csmParametersFile: 'infra/DataFactory/deploy.dataFactory001.json'
+            csmParametersFile: 'infra/DataFactory/params.dataFactory001.json'
             deploymentMode: 'Incremental'
