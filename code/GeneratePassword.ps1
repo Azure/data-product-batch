@@ -191,7 +191,7 @@ $Password = New-Password | ConvertFrom-SecureString -AsPlainText
 if ($GitHub) {
     # Mask password
     Write-Output "Masking password"
-    Write-Output "::add-mask::$Password"
+    # Write-Output "::add-mask::$Password"
 
     # Set output
     Write-Output "Setting output"
