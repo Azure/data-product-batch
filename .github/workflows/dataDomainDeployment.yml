@@ -74,14 +74,21 @@ jobs:
     - name: Check Out Repository
       id: checkout_repository
       uses: actions/checkout@v2
+
+    # Generate Password
+    - name: Generate Password
+      id: generate_password
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
     
     # Update parameter files
     - name: Update Parameter files
       id: update_parameter_files
       run: |
         echo "Updating value in parameter file"
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -ParameterName administratorLoginPassword -ParameterValue ${{ needs.prerequisite.outputs.password }}
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -ParameterName sqlServerAdministratorLoginPassword -ParameterValue ${{ needs.prerequisite.outputs.password }}
+        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -ParameterName administratorLoginPassword -ParameterValue ${{ steps.generate_password.outputs.password }}
+        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -ParameterName sqlServerAdministratorLoginPassword -ParameterValue ${{ steps.generate_password.outputs.password }}
     
     # Login to Azure
     - name: Azure Login
@@ -202,13 +209,20 @@ jobs:
       id: checkout_repository
       uses: actions/checkout@v2
     
+    # Generate Password
+    - name: Generate Password
+      id: generate_password
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
     # Update parameter files
     - name: Update Parameter files
       id: update_parameter_files
       run: |
         echo "Updating value in parameter file"
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -ParameterName administratorLoginPassword -ParameterValue ${{ needs.prerequisite.outputs.password }}
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -ParameterName sqlServerAdministratorLoginPassword -ParameterValue ${{ needs.prerequisite.outputs.password }}
+        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -ParameterName administratorLoginPassword -ParameterValue ${{ steps.generate_password.outputs.password }}
+        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -ParameterName sqlServerAdministratorLoginPassword -ParameterValue ${{ steps.generate_password.outputs.password }}
     
     # Login to Azure
     - name: Azure Login
