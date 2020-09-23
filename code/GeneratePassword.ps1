@@ -117,7 +117,7 @@ function New-Password {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true, Position = 0)]
-        [string]$Template = "S16",
+        [string]$Template = "A16",
     
         [hashtable]$CustomCharacterSet = @{}
     )
