@@ -186,16 +186,19 @@ function New-Password {
 
 # Generate password
 Write-Output "Generating password"
-$Password = New-Password
+$Password = New-Password | ConvertFrom-SecureString
 
 if ($GitHub) {
-    # Masking value
+    # Mask password
+    Write-Output "Masking password"
     Write-Output "::add-mask::$Password"
 
-    # Write secret to outputs
+    # Set output
+    Write-Output "Setting output"
     Write-Output "::set-output name=password::$Password"
 }
 else {
-    # Write secret to outputs
-    Write-Output "##vso[task.setvariable variable=password;issecret=true;isoutput=true]$Password"
+    # Set output
+    Write-Output "Setting output"
+    Write-Output "##vso[task.setvariable variable=password;issecret=true;isoutput=true;]$Password"
 }
