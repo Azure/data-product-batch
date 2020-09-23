@@ -96,13 +96,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    # Generate Password
-    - name: Generate Password
-      id: generate_password
-      run: |
-        echo "Generating Password"
-        pwsh ./code/GeneratePassword.ps1 -GitHub
 
     # Deploy key vault 001 - validation
     - name: Deploy key vault 001 - validation
