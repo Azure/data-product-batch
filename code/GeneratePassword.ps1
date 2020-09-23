@@ -202,5 +202,3 @@ else {
     Write-Output "Setting output"
     Write-Output "##vso[task.setvariable variable=password;issecret=true;isoutput=true;]$Password"
 }
-
-$env:Password = $Password
