@@ -186,7 +186,7 @@ function New-Password {
 
 # Generate password
 Write-Output "Generating password"
-$Password = New-Password | ConvertFrom-SecureString
+$Password = New-Password | ConvertFrom-SecureString -AsPlainText
 
 if ($GitHub) {
     # Mask password
@@ -202,3 +202,5 @@ else {
     Write-Output "Setting output"
     Write-Output "##vso[task.setvariable variable=password;issecret=true;isoutput=true;]$Password"
 }
+
+$env:Password = $Password
