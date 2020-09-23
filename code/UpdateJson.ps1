@@ -9,7 +9,7 @@ param (
     $ParameterName,
 
     [Parameter(Mandatory = $true)]
-    [String]
+    [SecureString]
     $ParameterValue
 )
 
