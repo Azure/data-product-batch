@@ -10,7 +10,6 @@
         },
         "sqlServerAdministratorLoginPassword": {
             "value": "<your-secure-password>"
-
         },
         "sqlDataWarehouseName": {
             "value": "dn001-dd001-sqldw"
