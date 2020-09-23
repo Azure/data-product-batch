@@ -52,11 +52,6 @@ jobs:
         inlineScript: |
           az logout
     
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: Check Out Repository
-      id: checkout_repository
-      uses: actions/checkout@v2
-    
     # Generate Password
     - name: Generate Password
       id: generate_password
