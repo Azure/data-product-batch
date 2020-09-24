@@ -6,6 +6,7 @@ trigger:
       - main
   paths:
     include:
+      - code/*
       - infra/KeyVault/*
       - infra/Databricks/*
       - infra/DataFactory/*
