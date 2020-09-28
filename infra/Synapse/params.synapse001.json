@@ -12,20 +12,10 @@
             "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-storage/providers/Microsoft.Storage/storageAccounts/dn001workspacesa/blobServices/default/containers/datadomain001"
         },
         "sqlAdministratorLogin": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
-                },
-                "secretName": "sqlServerAdminUser"
-            }
+            "value": "sqlServerMainUser"
         },
         "sqlAdministratorPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
-                },
-                "secretName": "sqlServerAdminPassword"
-            }
+            "value": "<your-secure-password>"
         },
         "datalakeAnalyticsResourceId": {
             "value": ""

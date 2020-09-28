@@ -1,0 +1,208 @@
+name: Create New Data Node
+
+trigger: none
+
+parameters:
+- name: location
+  displayName: Location
+  type: string
+  default: 'North Europe'
+- name: locationId
+  displayName: Location Id
+  type: string
+  default: 'northeurope'
+- name: subscriptionId
+  displayName: Subscription ID
+  type: string
+  default: 'c86f57f6-34ad-43e6-981e-85ad264d876b'
+- name: resourceGroupName
+  displayName: Resource Group Name
+  type: string
+  default: '<your-data-domain-resource-group-name>'
+- name: vnetResourceGroupName
+  displayName: VNet Resource Group name
+  type: string
+  default: '<your-vnet-resource-group-name>'
+- name: vnetName
+  displayName: VNet Name
+  type: string
+  default: '<your-vnet-name>'
+- name: privateLinkSubnetName
+  displayName: Private Link Subnet Name
+  type: string
+  default: '<your-private-link-subnet-name>'
+- name: databricksName
+  displayName: Databricks Name
+  type: string
+  default: '<your-databricks-name>'
+- name: databricksResourceGroupName
+  displayName: Databricks Resource Group Name
+  type: string
+  default: '<your-databricks-resource-group-name>'
+- name: databricksPrivateSubnetName
+  displayName: Databricks Private Subnet Name
+  type: string
+  default: '<your-databricks-private-subnet>'
+- name: databricksPublicSubnetName
+  displayName: Databricks Public Subnet Name
+  type: string
+  default: '<your-databricks-public-subnet>'
+- name: dataFactoryName
+  displayName: DataFactoryName
+  type: string
+  default: '<your-data-factory-name>'
+- name: keyVaultName
+  displayName: Key Vault Name
+  type: string
+  default: '<your-key-vault-name>'
+- name: sqlServerName
+  displayName: Sql Server Name
+  type: string
+  default: '<your-sql-server-name>'
+- name: sqlDataWarehouseName
+  displayName: Sql Data Warehouse Name
+  type: string
+  default: '<your-sql-dw-name>'
+
+stages:
+  - stage: ReplaceValues
+    displayName: 'Replace Values in ARM parameters files'
+    jobs:
+      - job: ReplaceValues
+        displayName: 'Replace Values in ARM parameters files'
+        continueOnError: false
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+        # Checkout code
+        - checkout: self
+          name: checkout_repository
+          displayName: 'Checkout repository'
+          submodules: true
+          lfs: false
+          clean: true
+          continueOnError: false
+          enabled: true
+        
+        # Replace values in key vault 001
+        - task: PowerShell@2
+          name: key_vault_001_parameter_replacement
+          displayName: Key vault parameter replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault001.json"
+              -location "${{ parameters.locationId }}"
+              -keyVaultName "${{ parameters.keyVaultName }}"
+              -subnetId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.vnetResourceGroupName }}/providers/Microsoft.Network/virtualNetworks/${{ parameters.vnetName }}/subnets/${{ parameters.privateLinkSubnetName }}"
+        
+        # Replace values in databricks 001
+        - task: PowerShell@2
+          name: databricks_001_parameter_replacement
+          displayName: Databricks parameter replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/infra/Databricks/params.databricks001.json"
+              -location "${{ parameters.locationId }}"
+              -databricksName "${{ parameters.databricksName }}"
+              -databricksVnetId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.vnetResourceGroupName }}/providers/Microsoft.Network/virtualNetworks/${{ parameters.vnetName }}"
+              -databricksManagedResourceGroupId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.databricksResourceGroupName }}"
+              -databricksPrivateSubnetName "${{ parameters.databricksPrivateSubnetName }}"
+              -databricksPublicSubnetName "${{ parameters.databricksPublicSubnetName }}"
+        
+        # Replace values in sql server 001
+        - task: PowerShell@2
+          name: sql_server_001_parameter_replacement
+          displayName: Sql server parameter replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/infra/SqlServer/params.sqlServer001.json"
+              -location "${{ parameters.locationId }}"
+              -sqlServerName "${{ parameters.sqlServerName }}"
+              -subnetId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.vnetResourceGroupName }}/providers/Microsoft.Network/virtualNetworks/${{ parameters.vnetName }}/subnets/${{ parameters.privateLinkSubnetName }}"
+        
+        # Replace values in data warehouse 001
+        - task: PowerShell@2
+          name: data_warehouse_001_parameter_replacement
+          displayName: Data warehouse parameter replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json"
+              -location "${{ parameters.locationId }}"
+              -sqlServerId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.resourceGroupName }}/providers/Microsoft.Sql/servers/${{ parameters.sqlServerName }}"
+              -sqlServerAdministratorLoginPassword "$(password)"
+              -sqlDataWarehouseName "${{ parameters.sqlDataWarehouseName }}"
+              -keyVaultId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.resourceGroupName }}/providers/Microsoft.KeyVault/vaults/${{ parameters.keyVaultName }}"
+        
+        # Replace values in data factory 001
+        - task: PowerShell@2
+          name: data_factory_001_parameter_replacement
+          displayName: Data factory parameter replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json"
+              -location "${{ parameters.locationId }}"
+              -sqlServerId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.resourceGroupName }}/providers/Microsoft.Sql/servers/${{ parameters.sqlServerName }}"
+              -sqlDataWarehouseName "${{ parameters.sqlDataWarehouseName }}"
+              -keyVaultId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.resourceGroupName }}/providers/Microsoft.KeyVault/vaults/${{ parameters.keyVaultName }}"
+        
+        # Replace values in data factory 001
+        - task: PowerShell@2
+          name: data_factory_001_parameter_replacement
+          displayName: Data factory parameter replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json"
+              -location "${{ parameters.locationId }}"
+              -synapseWorkspaceName ""
+              -storageContainerId ""
+              -datalakeAnalyticsResourceId ""
+              -computeSubnetResourceId ""

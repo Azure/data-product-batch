@@ -45,9 +45,13 @@ stages:
         
         # Generate Password
         - task: PowerShell@2
+          name: generate_password
+          displayName: Generate Password
+          enabled: true
+          continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/GeneratePassword.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -106,7 +110,8 @@ stages:
             csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlServer/deploy.sqlServer.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlServer/params.sqlServer001.json'
             deploymentMode: 'Validation'
-            overrideParameters: '-administratorLoginPassword $(password)'
+            overrideParameters: >
+              -administratorLoginPassword "$(password)"
         
         # Deploy data warehouse 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
@@ -125,7 +130,8 @@ stages:
             csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json'
             deploymentMode: 'Validation'
-            overrideParameters: '-sqlServerAdministratorLoginPassword $(password)'
+            overrideParameters: >
+              -sqlServerAdministratorLoginPassword "$(password)"
         
         # Deploy synapse 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
@@ -187,9 +193,13 @@ stages:
         
         # Generate Password
         - task: PowerShell@2
+          name: generate_password
+          displayName: Generate Password
+          enabled: true
+          continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/GeneratePassword.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -248,7 +258,8 @@ stages:
             csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlServer/deploy.sqlServer.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlServer/params.sqlServer001.json'
             deploymentMode: 'Incremental'
-            overrideParameters: '-administratorLoginPassword $(password)'
+            overrideParameters: >
+              -administratorLoginPassword "$(password)"
         
         # Deploy data warehouse 001
         - task: AzureResourceManagerTemplateDeployment@3
@@ -267,7 +278,8 @@ stages:
             csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json'
             deploymentMode: 'Incremental'
-            overrideParameters: '-sqlServerAdministratorLoginPassword $(password)'
+            overrideParameters: >
+              -sqlServerAdministratorLoginPassword "$(password)"
         
         # Deploy synapse 001
         - task: AzureResourceManagerTemplateDeployment@3

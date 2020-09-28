@@ -77,8 +77,8 @@ jobs:
       id: update_parameter_files
       run: |
         echo "Updating value in parameter file"
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -ParameterName administratorLoginPassword -ParameterValue "${{ steps.generate_password.outputs.password }}"
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -ParameterName sqlServerAdministratorLoginPassword -ParameterValue "${{ steps.generate_password.outputs.password }}"
+        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -administratorLoginPassword "${{ steps.generate_password.outputs.password }}"
+        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -sqlServerAdministratorLoginPassword "${{ steps.generate_password.outputs.password }}"
     
     # Login to Azure
     - name: Azure Login
@@ -204,8 +204,8 @@ jobs:
       id: update_parameter_files
       run: |
         echo "Updating value in parameter file"
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -ParameterName administratorLoginPassword -ParameterValue "${{ steps.generate_password.outputs.password }}"
-        pwsh $GITHUB_WORKSPACE/code/UpdateJson.ps1 -FilePaths $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -ParameterName sqlServerAdministratorLoginPassword -ParameterValue "${{ steps.generate_password.outputs.password }}"
+        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -administratorLoginPassword "${{ steps.generate_password.outputs.password }}"
+        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -sqlServerAdministratorLoginPassword "${{ steps.generate_password.outputs.password }}"
     
     # Login to Azure
     - name: Azure Login
