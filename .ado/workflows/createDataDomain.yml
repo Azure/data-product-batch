@@ -3,6 +3,14 @@ name: Create New Data Node
 trigger: none
 
 parameters:
+- name: projectName
+  displayName: Project Name
+  type: string
+  default: '<your-project-name>'
+- name: repositoryForkName
+  displayName: Repository Fork Name
+  type: string
+  default: '<your-repository-fork-name>'
 - name: location
   displayName: Location
   type: string
@@ -14,7 +22,7 @@ parameters:
 - name: subscriptionId
   displayName: Subscription ID
   type: string
-  default: 'c86f57f6-34ad-43e6-981e-85ad264d876b'
+  default: '<your-subscription-id>'
 - name: resourceGroupName
   displayName: Resource Group Name
   type: string
@@ -63,6 +71,10 @@ parameters:
   displayName: Sql Data Warehouse Name
   type: string
   default: '<your-sql-dw-name>'
+- name: azureResourceManagerConnectionName
+  displayName: Azure Resource Manager Connection Name
+  type: string
+  default: '<your-azure-resource-manager-connection-name>'
 
 stages:
   - stage: ReplaceValues
@@ -75,8 +87,27 @@ stages:
           vmImage: 'ubuntu-latest'
         
         steps:
+        # Create repository fork
+        - task: PowerShell@2
+          name: create_repository_fork
+          displayName: Create repository fork
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/ForkDevOps.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -SourceProjectName ""
+              -SourceRepositoryName ""
+              -DestinationProjectName "${{ parameters.projectName }}"
+              -DestinationRepositoryName "${{ parameters.repositoryForkName }}"
+
         # Checkout code
-        - checkout: self
+        - checkout: 'git://${{ parameters.projectName }}/${{ parameters.repositoryForkName }}'
           name: checkout_repository
           displayName: 'Checkout repository'
           submodules: true
@@ -93,7 +124,7 @@ stages:
           continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -112,7 +143,7 @@ stages:
           continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -134,7 +165,7 @@ stages:
           continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -153,7 +184,7 @@ stages:
           continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -174,7 +205,7 @@ stages:
           continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -182,9 +213,9 @@ stages:
             arguments: >
               -FilePath "$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json"
               -location "${{ parameters.locationId }}"
-              -sqlServerId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.resourceGroupName }}/providers/Microsoft.Sql/servers/${{ parameters.sqlServerName }}"
-              -sqlDataWarehouseName "${{ parameters.sqlDataWarehouseName }}"
+              -dataFactoryName "${{ parameters.dataFactoryName }}"
               -keyVaultId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.resourceGroupName }}/providers/Microsoft.KeyVault/vaults/${{ parameters.keyVaultName }}"
+              -subnetId "/subscriptions/${{ parameters.subscriptionId }}/resourceGroups/${{ parameters.vnetResourceGroupName }}/providers/Microsoft.Network/virtualNetworks/${{ parameters.vnetName }}/subnets/${{ parameters.privateLinkSubnetName }}"
         
         # Replace values in data factory 001
         - task: PowerShell@2
@@ -194,7 +225,7 @@ stages:
           continueOnError: false
           inputs:
             targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/UpdateWorkflowFile.ps1'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
             errorActionPreference: 'stop'
             failOnStderr: false
             ignoreLASTEXITCODE: false
@@ -206,3 +237,46 @@ stages:
               -storageContainerId ""
               -datalakeAnalyticsResourceId ""
               -computeSubnetResourceId ""
+        
+        # Replace values in data deployment yml
+        - task: PowerShell@2
+          name: data_domain_variable_replacement
+          displayName: Data Domain Deployment variable replacement
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+            arguments: >
+              -FilePath "$(System.DefaultWorkingDirectory)/.ado/workflows/dataDomainDeployment.yml"
+              -AZURE_RESOURCE_MANAGER_CONNECTION_NAME "${{ parameters.azureResourceManagerConnectionName }}"
+              -AZURE_SUBSCRIPTION_ID "${{ parameters.subscriptionId }}"
+              -AZURE_RESOURCE_GROUP_NAME "${{ parameters.resourceGroupName }}"
+              -AZURE_LOCATION "${{ parameters.location }}"
+        
+        # Push changes to new node
+        - bash: |
+            echo "Removing unnecessary files"
+            rm -f "$(System.DefaultWorkingDirectory)/code/ForkDevOps.ps1"
+            rm -f "$(System.DefaultWorkingDirectory)/code/UpdateParameterFile.ps1"
+            rm -f "$(System.DefaultWorkingDirectory)/code/UpdateWorkflowFile.ps1"
+            
+            echo "Configure git"
+            git config --local user.email "mabuss@microsoft.com"
+            git config --local user.name "GitHub Data Node Template"
+
+            echo "Push changes to remote repository"
+            git add .
+            git commit -m "Updated parameters" -a
+            MY_PAT=$PAT_TOKEN
+            B64_PAT=$(echo ":$MY_PAT" | base64)
+            git -c http.extraHeader="Authorization: Basic ${B64_PAT}" clone https://dev.azure.com/yourOrgName/yourProjectName/_git/yourRepoName
+            git push "https://${{ secrets.GH_TOKEN }}@github.com/machine-learning-apps/MLOps.git" HEAD:master --force
+          name: push_changes
+          displayName: Push changes
+          enabled: true
+          continueOnError: false
