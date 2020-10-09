@@ -3,14 +3,29 @@ name: Create New Data Node
 trigger: none
 
 parameters:
-- name: projectName
-  displayName: Project Name
+- name: devOpsOrgName
+  displayName: DevOps Org Name
   type: string
-  default: '<your-project-name>'
-- name: repositoryForkName
-  displayName: Repository Fork Name
+  default: '<your-devops-org-name>'
+- name: devOpsPatToken
+  displayName: DevOps PAT Token
   type: string
-  default: '<your-repository-fork-name>'
+- name: sourceProjectName
+  displayName: Source Project Name
+  type: string
+  default: '<your-source-project-name>'
+- name: sourceRepositoryName
+  displayName: Source Repository Name
+  type: string
+  default: '<your-source-repository-name>'
+- name: destinationProjectName
+  displayName: Destination Project Name
+  type: string
+  default: '<your-destination-project-name>'
+- name: destinationRepositoryName
+  displayName: Destination Repository Name
+  type: string
+  default: '<your-destination-repository-name>'
 - name: location
   displayName: Location
   type: string
@@ -101,13 +116,15 @@ stages:
             ignoreLASTEXITCODE: false
             pwsh: true
             arguments: >
-              -SourceProjectName ""
-              -SourceRepositoryName ""
-              -DestinationProjectName "${{ parameters.projectName }}"
-              -DestinationRepositoryName "${{ parameters.repositoryForkName }}"
+              -OrgName "${{ parameters.devOpsOrgName }}"
+              -SourceProjectName "${{ parameters.sourceProjectName }}"
+              -SourceRepositoryName "${{ parameters.sourceRepositoryName }}"
+              -DestinationProjectName "${{ parameters.destinationProjectName }}"
+              -DestinationRepositoryName "${{ parameters.destinationRepositoryName }}"
+              -PatToken "${{ parameters.devOpsPatToken }}"
 
         # Checkout code
-        - checkout: 'git://${{ parameters.projectName }}/${{ parameters.repositoryForkName }}'
+        - checkout: 'git://${{ parameters.destinationProjectName }}/${{ parameters.destinationRepositoryName }}'
           name: checkout_repository
           displayName: 'Checkout repository'
           submodules: true
@@ -258,6 +275,9 @@ stages:
               -AZURE_RESOURCE_GROUP_NAME "${{ parameters.resourceGroupName }}"
               -AZURE_LOCATION "${{ parameters.location }}"
         
+        - publish: '$(System.DefaultWorkingDirectory)'
+          artifact: 'output'
+        
         # Push changes to new node
         - bash: |
             echo "Removing unnecessary files"
@@ -272,10 +292,9 @@ stages:
             echo "Push changes to remote repository"
             git add .
             git commit -m "Updated parameters" -a
-            MY_PAT=$PAT_TOKEN
+            MY_PAT=${{ parameters.devOpsPatToken }}
             B64_PAT=$(echo ":$MY_PAT" | base64)
-            git -c http.extraHeader="Authorization: Basic ${B64_PAT}" clone https://dev.azure.com/yourOrgName/yourProjectName/_git/yourRepoName
-            git push "https://${{ secrets.GH_TOKEN }}@github.com/machine-learning-apps/MLOps.git" HEAD:master --force
+            git -c http.extraHeader="Authorization: Basic ${B64_PAT}" push https://dev.azure.com/${{ parameters.devOpsOrgName }}/${{ parameters.destinationProjectName }}/_git/${{ parameters.destinationRepositoryName }}
           name: push_changes
           displayName: Push changes
           enabled: true
