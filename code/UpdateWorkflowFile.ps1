@@ -9,8 +9,8 @@ param (
 )
 
 # Install YAML pwsh module
-Install-Module -Name powershell-yaml -AcceptLicense
-Import-Module powershell-yaml
+Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+Install-Module -Name powershell-yaml
 
 # Load json file
 Write-Host "Loading YAML file"
