@@ -8,26 +8,38 @@
         "synapseWorkspaceName": {
             "value": "dn001dd001synapse001"
         },
-        "storageContainerId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-storage/providers/Microsoft.Storage/storageAccounts/dn001workspacesa/blobServices/default/containers/datadomain001"
+        "synapseDefaultStorageAccountName": {
+            "value": "dn001workspacesa"
         },
-        "sqlAdministratorLogin": {
-            "value": "sqlServerMainUser"
+        "synapseDefaultStorageAccountFileSystem": {
+            "value": "data"
         },
-        "sqlAdministratorPassword": {
+        "synapseSqlAdministratorLogin": {
+            "value": "SqlServerMainUser"
+        },
+        "synapseSqlAdministratorPassword": {
             "value": "<your-secure-password>"
         },
-        "datalakeAnalyticsResourceId": {
+        "synapseDatalakeAnalyticsResourceId": {
             "value": ""
         },
-        "computeSubnetResourceId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dd001-subnet"
-        },
-        "sqlAdminGroupName": {
+        "synapseComputeSubnetResourceId": {
             "value": ""
         },
-        "sqlAdminGroupObjectID": {
+        "synapseSqlAdminGroupName": {
             "value": ""
+        },
+        "synapseSqlAdminGroupObjectID": {
+            "value": ""
+        },
+        "subnetId": {
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-privatelink-subnet"
+        },
+        "privateDnsZoneIdSql": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+        },
+        "privateDnsZoneIdDev": {
+            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
         }
     }
 }
