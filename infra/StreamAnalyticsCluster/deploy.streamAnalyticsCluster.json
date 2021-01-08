@@ -1,0 +1,179 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "streamAnalyticsClusterName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the stream analytics service."
+            }
+        },
+        "streamAnalyticsClusterCapacity": {
+            "type": "int",
+            "minValue": 36,
+            "maxValue": 216,
+            "defaultValue": 36,
+            "metadata": {
+                "description": "Specifies the capacity of the stream analytics service."
+            }
+        },
+        "storageAccountId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the resource id of the storage account for which a private endpoint should be created."
+            }
+        },
+        "eventHubId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the resource id of the event hub for which a private endpoint should be created."
+            }
+        },
+        "sqlServerId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the resource id of the sql server for which a private endpoint should be created."
+            }
+        },
+        "cosmosDbId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the resource id of the cosmos db for which a private endpoint should be created."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "streamAnalyticsClusterName": "[parameters('streamAnalyticsClusterName')]",
+        "streamAnalyticsClusterCapacity": "[parameters('streamAnalyticsClusterCapacity')]",
+        "storageAccountId": "[parameters('storageAccountId')]",
+        "storageAccountName": "[last(split(variables('storageAccountId'), '/'))]",
+        "eventHubId": "[parameters('eventHubId')]",
+        "eventHubName": "[last(split(variables('eventHubId'), '/'))]",
+        "sqlServerId": "[parameters('sqlServerId')]",
+        "sqlServerName": "[last(split(variables('sqlServerId'), '/'))]",
+        "cosmosDbId": "[parameters('cosmosDbId')]",
+        "cosmosDbName": "[last(split(variables('cosmosDbId'), '/'))]",
+        "privateEndpointRequestMessage": "Please approve the private endpoint."
+    },
+    "resources": [
+        {
+            "type": "Microsoft.StreamAnalytics/clusters",
+            "apiVersion": "2020-03-01-preview",
+            "name": "[variables('streamAnalyticsClusterName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Default",
+                "capacity": "[variables('streamAnalyticsClusterCapacity')]"
+            },
+            "properties": {},
+            "resources": [
+                {
+                    "condition": "[not(empty(variables('storageAccountId')))]",
+                    "type": "privateEndpoints",
+                    "apiVersion": "2020-03-01-preview",
+                    "name": "[concat(variables('storageAccountName'), '-storage-pe')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.StreamAnalytics/clusters', variables('streamAnalyticsClusterName'))]"
+                    ],
+                    "properties": {
+                        "manualPrivateLinkServiceConnections": [
+                            {
+                                "properties": {
+                                    "privateLinkServiceId": "[variables('storageAccountId')]",
+                                    "groupIds": [
+                                        "blob"
+                                    ],
+                                    "requestMessage": "[variables('privateEndpointRequestMessage')]",
+                                    "privateLinkServiceConnectionState": {}
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "condition": "[not(empty(variables('sqlServerId')))]",
+                    "type": "privateEndpoints",
+                    "apiVersion": "2020-03-01-preview",
+                    "name": "[concat(variables('sqlServerName'), '-sqlserver-pe')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.StreamAnalytics/clusters', variables('streamAnalyticsClusterName'))]"
+                    ],
+                    "properties": {
+                        "manualPrivateLinkServiceConnections": [
+                            {
+                                "properties": {
+                                    "privateLinkServiceId": "[variables('sqlServerId')]",
+                                    "groupIds": [
+                                        "sqlServer"
+                                    ],
+                                    "requestMessage": "[variables('privateEndpointRequestMessage')]",
+                                    "privateLinkServiceConnectionState": {}
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "condition": "[not(empty(variables('eventHubId')))]",
+                    "type": "privateEndpoints",
+                    "apiVersion": "2020-03-01-preview",
+                    "name": "[concat(variables('eventHubName'), '-eventhub-pe')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.StreamAnalytics/clusters', variables('streamAnalyticsClusterName'))]"
+                    ],
+                    "properties": {
+                        "manualPrivateLinkServiceConnections": [
+                            {
+                                "properties": {
+                                    "privateLinkServiceId": "[variables('eventHubId')]",
+                                    "groupIds": [
+                                        "namespace"
+                                    ],
+                                    "requestMessage": "[variables('privateEndpointRequestMessage')]",
+                                    "privateLinkServiceConnectionState": {}
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "condition": "[not(empty(variables('cosmosDbId')))]",
+                    "type": "privateEndpoints",
+                    "apiVersion": "2020-03-01-preview",
+                    "name": "[concat(variables('cosmosDbName'), '-comosSql-pe')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.StreamAnalytics/clusters', variables('streamAnalyticsClusterName'))]"
+                    ],
+                    "properties": {
+                        "manualPrivateLinkServiceConnections": [
+                            {
+                                "properties": {
+                                    "privateLinkServiceId": "[variables('cosmosDbId')]",
+                                    "groupIds": [
+                                        "Sql"
+                                    ],
+                                    "requestMessage": "[variables('privateEndpointRequestMessage')]",
+                                    "privateLinkServiceConnectionState": {}
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {}
+}
