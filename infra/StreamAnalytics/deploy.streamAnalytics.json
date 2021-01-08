@@ -1,0 +1,103 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "streamAnalyticsName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the stream analytics service."
+            }
+        },
+        "streamAnalyticsCapacity": {
+            "type": "int",
+            "minValue": 1,
+            "maxValue": 48,
+            "allowedValues": [
+                1,
+                3,
+                6,
+                12,
+                18,
+                24,
+                30,
+                36,
+                42,
+                48
+            ],
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Specifies the capacity of the stream analytics service."
+            }
+        },
+        "streamAnalyticsJobStorageAccountId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the storage account used for stream analytics."
+            }
+        },
+        "streamAnalyticsClusterId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the stream analytics cluster."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "streamAnalyticsName": "[parameters('streamAnalyticsName')]",
+        "streamAnalyticsCapacity": "[parameters('streamAnalyticsCapacity')]",
+        "streamAnalyticsJobStorageAccountId": "[parameters('streamAnalyticsJobStorageAccountId')]",
+        "streamAnalyticsJobStorageAccountName": "[last(split(variables('streamAnalyticsJobStorageAccountId'), '/'))]",
+        "streamAnalyticsClusterId": "[parameters('streamAnalyticsClusterId')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs",
+            "apiVersion": "2017-04-01-preview",
+            "name": "[variables('streamAnalyticsName')]",
+            "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "sku": {
+                    "name": "Standard"
+                },
+                "jobType": "Cloud",
+                "eventsOutOfOrderPolicy": "Adjust",
+                "outputErrorPolicy": "Stop",
+                "eventsOutOfOrderMaxDelayInSeconds": 0,
+                "eventsLateArrivalMaxDelayInSeconds": 5,
+                "dataLocale": "en-US",
+                "compatibilityLevel": "1.2",
+                "inputs": [],
+                "transformation": {
+                    "name": "Transformation",
+                    "properties": {
+                        "streamingUnits": "[variables('streamAnalyticsCapacity')]",
+                        "query": "SELECT\r\n    *\r\nINTO\r\n    [YourOutputAlias]\r\nFROM\r\n    [YourInputAlias]"
+                    }
+                },
+                "outputs": [],
+                "functions": [],
+                // "contentStoragePolicy": "JobStorageAccount",     // Can be used to store all connection details in storage account
+                // "jobStorageAccount": {
+                //     "accountName": "[variables('streamAnalyticsJobStorageAccountName')]",
+                //     "authenticationMode": "Msi"
+                // },
+                "cluster": {
+                    "id": "[variables('streamAnalyticsClusterId')]"
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
