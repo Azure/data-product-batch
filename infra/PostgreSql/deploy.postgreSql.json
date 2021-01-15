@@ -1,0 +1,307 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "postgreSqlServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the PostgreSQL server."
+            }
+        },
+        "postgreSqlDatabaseName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the PostgreSQL database."
+            }
+        },
+        "postgreSqlSkuName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the sku of the PostgreSQL server."
+            }
+        },
+        "postgreSqlSkuTier": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the tier of the sku of the PostgreSQL server."
+            }
+        },
+        "postgreSqlSkuCapacity": {
+            "type": "int",
+            "metadata": {
+                "description": "Specifies the capacity of the sku of the PostgreSQL server."
+            }
+        },
+        "postgreSqlSkuSize": {
+            "type": "int",
+            "metadata": {
+                "description": "Specifies the size in MB of the PostgreSQL server."
+            }
+        },
+        "postgreSqlSkuFamily": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the sku of the PostgreSQL server."
+            }
+        },
+        "postgreSqlServerAdministratorLogin": {
+            "type": "string",
+            "defaultValue": "sqladminuser",
+            "metadata": {
+                "description": "Specifies the login account name for the PostgreSQL server."
+            }
+        },
+        "postgreSqlServerAdministratorLoginPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Specifies the password for the PostgreSQL server."
+            }
+        },
+        "postgreSqlAdminGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the Azure Active Directory group of the PostgreSQL admin group."
+            }
+        },
+        "postgreSqlAdminGroupObjectID": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the Azure Active Directory objectID of the PostgreSQL admin group."
+            }
+        },
+        "keyVaultId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the key vault to store the storage access key."
+            }
+        },
+        "subnetId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the id of the subnet which the private endpoint uses."
+            }
+        },
+        "privateDnsZoneId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the ID of the private dns zone."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "postgreSqlServerName": "[parameters('postgreSqlServerName')]",
+        "postgreSqlDatabaseName": "[parameters('postgreSqlDatabaseName')]",
+        "postgreSqlSkuName": "[parameters('postgreSqlSkuName')]",
+        "postgreSqlSkuTier": "[parameters('postgreSqlSkuTier')]",
+        "postgreSqlSkuCapacity": "[parameters('postgreSqlSkuCapacity')]",
+        "postgreSqlSkuSize": "[parameters('postgreSqlSkuSize')]",
+        "postgreSqlSkuFamily": "[parameters('postgreSqlSkuFamily')]",
+        "postgreSqlServerAdministratorLogin": "[parameters('postgreSqlServerAdministratorLogin')]",
+        "postgreSqlServerAdministratorLoginPassword": "[parameters('postgreSqlServerAdministratorLoginPassword')]",
+        "postgreSqlAdminGroupName": "[parameters('postgreSqlAdminGroupName')]",
+        "postgreSqlAdminGroupObjectID": "[parameters('postgreSqlAdminGroupObjectID')]",
+        "keyVaultId": "[parameters('keyVaultId')]",
+        "keyVaultName": "[last(split(variables('keyVaultId'), '/'))]",
+        "connectionStringSecretName": "[concat(variables('postgreSqlServerName'), 'ConnectionString')]",
+        "usernameSecretName": "[concat(variables('postgreSqlServerName'), 'Username')]",
+        "passwordSecretName": "[concat(variables('postgreSqlServerName'), 'Password')]",
+        "subnetId": "[parameters('subnetId')]",
+        "privateDnsZoneId": "[parameters('privateDnsZoneId')]",
+        "privateEndpointName": "[concat(variables('postgreSqlServerName'), '-private-endpoint')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.DBForPostgreSQL/servers",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[variables('postgreSqlServerName')]",
+            "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "sku": {
+                "name": "[variables('postgreSqlSkuName')]",
+                "tier": "[variables('postgreSqlSkuTier')]",
+                "capacity": "[variables('postgreSqlSkuCapacity')]",
+                "size": "[variables('postgreSqlSkuSize')]",
+                "family": "[variables('postgreSqlSkuFamily')]"
+            },
+            "properties": {
+                "createMode": "Default",
+                "version": "11",
+                "sslEnforcement": "Enabled",
+                "minimalTlsVersion": "TLS1_2",
+                "infrastructureEncryption": "Enabled",
+                "publicNetworkAccess": "Disabled",
+                "storageProfile": {
+                    "backupRetentionDays": 7,
+                    "geoRedundantBackup": "Disabled",
+                    "storageMB": 102400,
+                    "storageAutogrow": "Enabled"
+                },
+                "administratorLogin": "[variables('postgreSqlServerAdministratorLogin')]",
+                "administratorLoginPassword": "[variables('postgreSqlServerAdministratorLoginPassword')]"
+            }
+        },
+        {
+            "type": "Microsoft.DBForPostgreSQL/servers/databases",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(variables('postgreSqlServerName'), '/', variables('postgreSqlDatabaseName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName'))]"
+            ],
+            "properties": {
+                "charset": "utf8",
+                "collation": "utf8_general_ci"
+            }
+        },
+        {
+            "condition": "[and(not(empty(variables('postgreSqlAdminGroupName'))), not(empty(variables('postgreSqlAdminGroupObjectID'))))]",
+            "type": "Microsoft.DBForPostgreSQL/servers/Administrators",
+            "apiVersion": "2017-12-01-preview",
+            "name": "[concat(variables('postgreSqlServerName'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "[variables('postgreSqlAdminGroupName')]",
+                "sid": "[variables('postgreSqlAdminGroupObjectID')]",
+                "tenantId": "[subscription().tenantId]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2020-05-01",
+            "name": "[variables('privateEndpointName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName'))]"
+            ],
+            "location": "[variables('location')]",
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "[variables('privateEndpointName')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName'))]",
+                            "groupIds": [
+                                "postgresqlServer"
+                            ]
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [
+                ],
+                "subnet": {
+                    "id": "[variables('subnetId')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2020-05-01",
+            "name": "[concat(variables('privateEndpointName'), '/aRecord')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('privateEndpointName'))]"
+            ],
+            "location": "[variables('location')]",
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "[concat(variables('privateEndpointName'), '-aRecord')]",
+                        "properties": {
+                            "privateDnsZoneId": "[variables('privateDnsZoneId')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "SecretDeployment",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName'))]"
+            ],
+            "properties": {
+                "expressionEvaluationOptions": {
+                    "scope": "outer"
+                },
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.KeyVault/vaults/secrets",
+                            "name": "[concat(variables('keyVaultName'), '/', variables('connectionStringSecretName'))]",
+                            "apiVersion": "2019-09-01",
+                            "properties": {
+                                "contentType": "text/plain",
+                                "value": "[concat('String url =\"jdbc:postgresql://', variables('postgreSqlServerName'), '.postgresql.database.azure.com:5432/', variables('postgreSqlDatabaseName'), '?user=', reference(resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName')), '2017-12-01-preview').administratorLogin, '@', variables('postgreSqlServerName'), '&password=', variables('postgreSqlServerAdministratorLoginPassword'), '&sslmode=require')]",
+                                "attributes": {
+                                    "enabled": true
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.KeyVault/vaults/secrets",
+                            "name": "[concat(variables('keyVaultName'), '/', variables('usernameSecretName'))]",
+                            "apiVersion": "2019-09-01",
+                            "properties": {
+                                "contentType": "text/plain",
+                                "value": "[reference(resourceId('Microsoft.DBForPostgreSQL/servers', variables('postgreSqlServerName')), '2017-12-01-preview').administratorLogin]",
+                                "attributes": {
+                                    "enabled": true
+                                }
+                            }
+                        },
+                        {
+                            "type": "Microsoft.KeyVault/vaults/secrets",
+                            "name": "[concat(variables('keyVaultName'), '/', variables('passwordSecretName'))]",
+                            "apiVersion": "2019-09-01",
+                            "properties": {
+                                "contentType": "text/plain",
+                                "value": "[variables('postgreSqlServerAdministratorLoginPassword')]",
+                                "attributes": {
+                                    "enabled": true
+                                }
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
+            },
+            "subscriptionId": "[split(variables('keyVaultId'), '/')[2]]",
+            "resourceGroup": "[split(variables('keyVaultId'), '/')[4]]"
+        }
+    ],
+    "outputs": {
+        "postgreSqlDatabaseId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.DBforMySQL/servers/databases', variables('postgreSqlServerName'), variables('postgreSqlDatabaseName'))]"
+        },
+        "connectionStringSecretName": {
+            "type": "string",
+            "value": "[variables('connectionStringSecretName')]"
+        },
+        "usernameSecretName": {
+            "type": "string",
+            "value": "[variables('usernameSecretName')]"
+        },
+        "passwordSecretName": {
+            "type": "string",
+            "value": "[variables('passwordSecretName')]"
+        }
+    }
+}
