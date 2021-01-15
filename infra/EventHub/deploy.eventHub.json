@@ -95,9 +95,9 @@
             },
             "resources": [
                 // {
-                //     "name": "default",
                 //     "type": "eventhubs",
                 //     "apiVersion": "2017-04-01",
+                //     "name": "default",
                 //     "properties": {
                 //         "messageRetentionInDays": 3,
                 //         "partitionCount": 1,
