@@ -6,7 +6,7 @@
             "value": "northeurope"
         },
         "mariaDbServerName": {
-            "value": "dn001-dd001-mysqlserver001"
+            "value": "dn001-dd001-mariadbserver001"
         },
         "mariaDbDatabaseName": {
             "value": "DataDomain001"
@@ -27,7 +27,7 @@
             "value": "Gen5"
         },
         "mariaDbServerAdministratorLogin": {
-            "value": "sqladminuser"
+            "value": "ServerMainUser"
         },
         "mariaDbServerAdministratorLoginPassword": {
             "value": "<your-secure-password>"

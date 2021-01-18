@@ -124,6 +124,8 @@
                 "createMode": "Default",
                 "version": "10.3",
                 "sslEnforcement": "Enabled",
+                "minimalTlsVersion": "TLS1_2",
+                "infrastructureEncryption": "Disabled",
                 "publicNetworkAccess": "Disabled",
                 "storageProfile": {
                     "backupRetentionDays": 7,
@@ -131,10 +133,9 @@
                     "storageAutogrow": "Enabled",
                     "storageMB": "[variables('mariaDbSkuSize')]"
                 },
-                "previewFeature": "",
-                "infrastructureEncryption": "Enabled",
                 "administratorLogin": "[variables('mariaDbServerAdministratorLogin')]",
-                "administratorLoginPassword": "[variables('mariaDbServerAdministratorLoginPassword')]"
+                "administratorLoginPassword": "[variables('mariaDbServerAdministratorLoginPassword')]",
+                "previewFeature": ""
             }
         },
         {
@@ -219,7 +220,7 @@
                             "apiVersion": "2019-09-01",
                             "properties": {
                                 "contentType": "text/plain",
-                                "value": "[concat('String url =\"jdbc:mariadb://', variables('mariaDbServerName'), '.mysql.database.azure.com:3306/', variables('mariaDbDatabaseName'), '?useSSL=true\"; myDbConn = DriverManager.getConnection(url, \"', reference(resourceId('Microsoft.DBforMariaDB/servers', variables('mariaDbServerName')), '2017-12-01-preview').administratorLogin, '@', variables('mariaDbServerName'), '\", ', variables('mariaDbServerAdministratorLoginPassword'), ');')]",
+                                "value": "[concat('String url =\"jdbc:mariadb://', variables('mariaDbServerName'), '.mysql.database.azure.com:3306/', variables('mariaDbDatabaseName'), '?useSSL=true\"; myDbConn = DriverManager.getConnection(url, \"', reference(resourceId('Microsoft.DBforMariaDB/servers', variables('mariaDbServerName')), '2018-06-01-preview').administratorLogin, '@', variables('mariaDbServerName'), '\", ', variables('mariaDbServerAdministratorLoginPassword'), ');')]",
                                 "attributes": {
                                     "enabled": true
                                 }
@@ -231,7 +232,7 @@
                             "apiVersion": "2019-09-01",
                             "properties": {
                                 "contentType": "text/plain",
-                                "value": "[reference(resourceId('Microsoft.DBforMariaDB/servers', variables('mariaDbServerName')), '2017-12-01-preview').administratorLogin]",
+                                "value": "[reference(resourceId('Microsoft.DBforMariaDB/servers', variables('mariaDbServerName')), '2018-06-01-preview').administratorLogin]",
                                 "attributes": {
                                     "enabled": true
                                 }
