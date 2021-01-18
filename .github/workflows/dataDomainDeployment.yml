@@ -6,7 +6,7 @@ on:
     paths:
       - 'code/**'
       - 'infra/BigDataPool/**'
-      - 'infra/Cosmos/**'
+      - 'infra/CosmosDb/**'
       - 'infra/DataFactory/**'
       - 'infra/KeyVault/**'
       - 'infra/MariaDb/**'

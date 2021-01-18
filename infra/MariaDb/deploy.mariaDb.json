@@ -127,7 +127,7 @@
                 "publicNetworkAccess": "Disabled",
                 "storageProfile": {
                     "backupRetentionDays": 7,
-                    "geoRedundantBackup": "Enabled",
+                    "geoRedundantBackup": "Disabled",
                     "storageAutogrow": "Enabled",
                     "storageMB": "[variables('mariaDbSkuSize')]"
                 },
