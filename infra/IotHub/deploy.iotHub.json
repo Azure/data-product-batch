@@ -21,10 +21,16 @@
                 "description": "Specifies the id of the subnet which the private endpoint uses."
             }
         },
-        "privateDnsZoneId": {
+        "privateDnsZoneIdIotHub": {
             "type": "string",
             "metadata": {
-                "description": "Specifies the ID of the private dns zone."
+                "description": "Specifies the ID of the private dns zone of iot hub."
+            }
+        },
+        "privateDnsZoneIdEventHub": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the ID of the private dns zoneof event hub."
             }
         }
     },
@@ -33,7 +39,8 @@
         "location": "[parameters('location')]",
         "iotHubName": "[parameters('iotHubName')]",
         "subnetId": "[parameters('subnetId')]",
-        "privateDnsZoneId": "[parameters('privateDnsZoneId')]",
+        "privateDnsZoneIdIotHub": "[parameters('privateDnsZoneIdIotHub')]",
+        "privateDnsZoneIdEventHub": "[parameters('privateDnsZoneIdEventHub')]",
         "privateEndpointName": "[concat(variables('iotHubName'), '-private-endpoint')]"
     },
     "resources": [
@@ -99,9 +106,15 @@
             "properties": {
                 "privateDnsZoneConfigs": [
                     {
-                        "name": "[concat(variables('privateEndpointName'), '-aRecord')]",
+                        "name": "[concat(variables('privateEndpointName'), '-aRecord-iothub')]",
                         "properties": {
-                            "privateDnsZoneId": "[variables('privateDnsZoneId')]"
+                            "privateDnsZoneId": "[variables('privateDnsZoneIdIotHub')]"
+                        }
+                    },
+                    {
+                        "name": "[concat(variables('privateEndpointName'), '-aRecord-eventhub')]",
+                        "properties": {
+                            "privateDnsZoneId": "[variables('privateDnsZoneIdEventHub')]"
                         }
                     }
                 ]
