@@ -9,7 +9,7 @@
             "value": "dn001-dd001-sqlserver001"
         },
         "administratorLogin": {
-            "value": "SqlServerMainUser"
+            "value": "ServerMainUser"
         },
         "administratorLoginPassword": {
             "value": "<your-secure-password>"

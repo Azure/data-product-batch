@@ -15,7 +15,7 @@
             "value": "dd001"
         },
         "synapseSqlAdministratorLogin": {
-            "value": "SqlServerMainUser"
+            "value": "ServerMainUser"
         },
         "synapseSqlAdministratorPassword": {
             "value": "<your-secure-password>"
