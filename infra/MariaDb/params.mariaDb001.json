@@ -12,7 +12,7 @@
             "value": "DataDomain001"
         },
         "mariaDbSkuName": {
-            "value": "B_Gen5_2"
+            "value": "GP_Gen5_2"
         },
         "mariaDbSkuTier": {
             "value": "GeneralPurpose"
