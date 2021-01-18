@@ -6,7 +6,7 @@
             "value": "northeurope"
         },
         "bigDataPoolName": {
-            "value": "dn001dd001bigdatapool001"
+            "value": "bigdatapool001"
         },
         "bigDataPoolNodeSize": {
             "value": "Medium"

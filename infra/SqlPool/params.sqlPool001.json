@@ -6,7 +6,7 @@
             "value": "northeurope"
         },
         "sqlPoolName": {
-            "value": "dn001dd001sqlpool001"
+            "value": "sqlpool001"
         },
         "sqlPoolCapacity": {
             "value": 900
