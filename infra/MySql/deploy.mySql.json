@@ -121,7 +121,7 @@
     "resources": [
         {
             "type": "Microsoft.DBForMySQL/servers",
-            "apiVersion": "2017-12-01",
+            "apiVersion": "2017-12-01-preview",
             "name": "[variables('mySqlServerName')]",
             "location": "[variables('location')]",
             "identity": {
@@ -135,10 +135,12 @@
                 "family": "[variables('mySqlSkuFamily')]"
             },
             "properties": {
-                "version": "5.7",
                 "createMode": "Default",
-                "minimalTlsVersion": "TLS1_2",
+                "version": "5.7",
                 "sslEnforcement": "Enabled",
+                "minimalTlsVersion": "TLS1_2",
+                "infrastructureEncryption": "Disabled",
+                "publicNetworkAccess": "Disabled",
                 "storageProfile": {
                     "backupRetentionDays": 7,
                     "geoRedundantBackup": "Enabled",
@@ -147,13 +149,12 @@
                 },
                 "administratorLogin": "[variables('mySqlServerAdministratorLogin')]",
                 "administratorLoginPassword": "[variables('mySqlServerAdministratorLoginPassword')]",
-                "infrastructureEncryption": "Disabled",
                 "previewFeature": ""
             }
         },
         {
             "type": "Microsoft.DBforMySQL/servers/databases",
-            "apiVersion": "2017-12-01",
+            "apiVersion": "2017-12-01-preview",
             "name": "[concat(variables('mySqlServerName'), '/', variables('mySqlDatabaseName'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.DBforMySQL/servers', variables('mySqlServerName'))]"
@@ -166,7 +167,7 @@
         {
             "condition": "[and(not(empty(variables('mySqlAdminGroupName'))), not(empty(variables('mySqlAdminGroupObjectID'))))]",
             "type": "Microsoft.DBForMySQL/servers/Administrators",
-            "apiVersion": "2017-12-01",
+            "apiVersion": "2017-12-01-preview",
             "name": "[concat(variables('mySqlServerName'), '/ActiveDirectory')]",
             "dependsOn": [
                 "[resourceId('Microsoft.DBforMySQL/servers', variables('mySqlServerName'))]"
