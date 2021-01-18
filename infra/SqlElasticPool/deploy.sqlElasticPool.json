@@ -1,0 +1,185 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "sqlServerId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource id of the SQL server to which the database will be deployed."
+            }
+        },
+        "sqlElasticPoolName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the SQL elastic pool to which the database will be deployed."
+            }
+        },
+        "sqlElasticPoolSku": {
+            "type": "string",
+            "defaultValue": "BasicPool",
+            "metadata": {
+                "description": "Specifies the SKU of the SQL elastic pool which is typically a letter + number code (e.g. 'GP_S_Gen5_1')."
+            }
+        },
+        "sqlElasticPoolTier": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "metadata": {
+                "description": "Specifies the or edition of the elastic pool SKU (e.g. 'GeneralPurpose', etc.)."
+            }
+        },
+        "sqlElasticPoolCapacity": {
+            "type": "int",
+            "metadata": {
+                "description": "Specifies the capacity in eDTUs or vCores of the SQL elastic pool."
+            }
+        },
+        "sqlElasticPoolMinCapacity": {
+            "type": "int",
+            "metadata": {
+                "description": "Specifies the minimum capacity for each database in the elastic pool."
+            }
+        },
+        "sqlElasticPoolMaxCapacity": {
+            "type": "int",
+            "metadata": {
+                "description": "Specifies the maximum capacity for each database in the elastic pool."
+            }
+        },
+        "sqlElasticPoolMaxSizeInBytes": {
+            "type": "int",
+            "defaultValue": 34359738368,
+            "metadata": {
+                "description": "Specifies the maximum size of the elastic pool expressed in bytes."
+            }
+        },
+        "sqlElasticPoolZoneRedundant": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Specifies whether the elastic pool should be zone redundant which means the replicas of this database will be spread across multiple availability zones."
+            }
+        },
+        "sqlElasticPoolLicenseType": {
+            "type": "string",
+            "defaultValue": "LicenseIncluded",
+            "allowedValues": [
+                "LicenseIncluded",
+                "BasePrice"
+            ],
+            "metadata": {
+                "description": "Specifies the license type to apply for the elastic pool (if you bring your own license, then select 'BasePrice')."
+            }
+        },
+        "sqlDatabaseName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the SQL database."
+            }
+        },
+        "sqlDatabaseReadReplicaCount": {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "metadata": {
+                "description": "Specifies the number of readonly secondary replicas associated with the database."
+            }
+        },
+        "sqlDatabaseMinCapacity": {
+            "type": "string",
+            "defaultValue": "0.5",
+            "metadata": {
+                "description": "Specifies the minimal capacity that database will always have allocated, if not paused (only applies to serverless tier)."
+            }
+        },
+        "sqlDatabaseStorageAccountType": {
+            "type": "string",
+            "defaultValue": "GRS",
+            "allowedValues": [
+                "GRS",
+                "LRS",
+                "ZRS"
+            ],
+            "metadata": {
+                "description": "Specifies the storage account type used to store backups for this database."
+            }
+        },
+        "sqlDatabaseAutoPauseDelay": {
+            "type": "int",
+            "defaultValue": -1,
+            "minValue": -1,
+            "metadata": {
+                "description": "Specifies the time in minutes after which database is automatically paused (only applies to serverless tier)."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[parameters('location')]",
+        "sqlServerId": "[parameters('sqlServerId')]",
+        "sqlServerName": "[last(split(variables('sqlServerId'), '/'))]",
+        "sqlElasticPoolName": "[parameters('sqlElasticPoolName')]",
+        "sqlElasticPoolSku": "[parameters('sqlElasticPoolSku')]",
+        "sqlElasticPoolTier": "[parameters('sqlElasticPoolTier')]",
+        "sqlElasticPoolCapacity": "[parameters('sqlElasticPoolCapacity')]",
+        "sqlElasticPoolMaxSizeInBytes": "[parameters('sqlElasticPoolMaxSizeInBytes')]",
+        "sqlElasticPoolZoneRedundant": "[parameters('sqlElasticPoolZoneRedundant')]",
+        "sqlElasticPoolLicenseType": "[parameters('sqlElasticPoolLicenseType')]",
+        "sqlDatabaseName": "[parameters('sqlDatabaseName')]",
+        "sqlDatabaseReadReplicaCount": "[parameters('sqlDatabaseReadReplicaCount')]",
+        "sqlDatabaseMinCapacity": "[parameters('sqlDatabaseMinCapacity')]",
+        "sqlDatabaseStorageAccountType": "[parameters('sqlDatabaseStorageAccountType')]",
+        "sqlDatabaseAutoPauseDelay": "[parameters('sqlDatabaseAutoPauseDelay')]",
+        "sqlElasticPoolMinCapacity": "[parameters('sqlElasticPoolMinCapacity')]",
+        "sqlElasticPoolMaxCapacity": "[parameters('sqlElasticPoolMaxCapacity')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers/elasticpools",
+            "apiVersion": "2017-10-01-preview",
+            "name": "[concat(variables('sqlServerName'), '/', variables('sqlElasticPoolName'))]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "[variables('sqlElasticPoolSku')]",
+                "tier": "[variables('sqlElasticPoolTier')]",
+                "capacity": "[variables('sqlElasticPoolCapacity')]"
+            },
+            "properties": {
+                "perDatabaseSettings": {
+                    "minCapacity": "[variables('sqlElasticPoolMinCapacity')]",
+                    "maxCapacity": "[variables('sqlElasticPoolMaxCapacity')]"
+                },
+                "maxSizeBytes": "[variables('sqlElasticPoolMaxSizeInBytes')]",
+                "zoneRedundant": "[variables('sqlElasticPoolZoneRedundant')]",
+                "licenseType": "[variables('sqlElasticPoolLicenseType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('sqlServerName'), '/', variables('sqlDatabaseName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/elasticpools', variables('sqlServerName') , variables('sqlElasticPoolName'))]"
+            ],
+            "location": "[variables('location')]",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "catalogCollation": "DATABASE_DEFAULT",
+                "readScale": "[if(greater(variables('sqlDatabaseReadReplicaCount'), 0), 'Enabled', 'Disabled')]",
+                "readReplicaCount": "[variables('sqlDatabaseReadReplicaCount')]",
+                "autoPauseDelay": "[variables('sqlDatabaseAutoPauseDelay')]",
+                "storageAccountType": "[variables('sqlDatabaseStorageAccountType')]",
+                "minCapacity": "[variables('sqlDatabaseMinCapacity')]",
+                "elasticPoolId": "[resourceId('Microsoft.Sql/servers/elasticpools', variables('sqlServerName') , variables('sqlElasticPoolName'))]"
+            }
+        }
+    ],
+    "outputs": {}
+}
