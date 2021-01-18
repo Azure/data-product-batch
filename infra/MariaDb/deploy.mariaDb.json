@@ -127,10 +127,12 @@
                 "publicNetworkAccess": "Disabled",
                 "storageProfile": {
                     "backupRetentionDays": 7,
-                    "geoRedundantBackup": "Disabled",
+                    "geoRedundantBackup": "Enabled",
                     "storageAutogrow": "Enabled",
                     "storageMB": "[variables('mariaDbSkuSize')]"
                 },
+                "previewFeature": "",
+                "infrastructureEncryption": "Enabled",
                 "administratorLogin": "[variables('mariaDbServerAdministratorLogin')]",
                 "administratorLoginPassword": "[variables('mariaDbServerAdministratorLoginPassword')]"
             }

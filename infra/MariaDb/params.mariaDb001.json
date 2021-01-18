@@ -12,13 +12,13 @@
             "value": "DataDomain001"
         },
         "mariaDbSkuName": {
-            "value": "B_Gen5_1"
+            "value": "B_Gen5_2"
         },
         "mariaDbSkuTier": {
-            "value": "Basic"
+            "value": "GeneralPurpose"
         },
         "mariaDbSkuCapacity": {
-            "value": 1
+            "value": 2
         },
         "mariaDbSkuSize": {
             "value": 5120
