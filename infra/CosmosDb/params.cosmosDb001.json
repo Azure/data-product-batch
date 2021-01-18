@@ -12,7 +12,7 @@
             "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dataproduct001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
         },
         "subnetId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/datanode001-network/providers/Microsoft.Network/virtualNetworks/datanode001-vnet/subnets/dn001-dd001-privatelink-subnet"
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-vnet/providers/Microsoft.Network/virtualNetworks/datanode001-vnet/subnets/dn001-dd001-privatelink-subnet"
         },
         "privateDnsZoneId": {
             "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com"
