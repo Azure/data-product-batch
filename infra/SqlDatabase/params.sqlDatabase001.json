@@ -45,7 +45,7 @@
             "value": -1
         },
         "keyVaultId": {
-            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
         }
     }
 }
