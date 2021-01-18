@@ -7,18 +7,22 @@ trigger:
   paths:
     include:
       - code/*
-      - infra/KeyVault/*
-      - infra/Databricks/*
+      - infra/BigDataPool/*
+      - infra/Cosmos/*
       - infra/DataFactory/*
-      - infra/Synapse/*
-      - infra/SqlDataWarehouse/*
+      - infra/KeyVault/*
+      - infra/MariaDb/*
+      - infra/MySql/*
+      - infra/PostgreSql/*
+      - infra/SqlDatabase/*
+      - infra/SqlPool/*
       - infra/SqlServer/*
-      - infra/PrivateEndpoint/*
+      - infra/Synapse/*
       - .ado/workflows/dataDomainDeployment.yml
 
 variables:
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'Marvins Azure Subscription(558bd446-4212-46a2-908c-9ab0a628705e)'
-  AZURE_SUBSCRIPTION_ID: '558bd446-4212-46a2-908c-9ab0a628705e'
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'My Subscription'
+  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d'
   AZURE_RESOURCE_GROUP_NAME: 'dn001-dd001'
   AZURE_LOCATION: 'North Europe'
 
@@ -43,24 +47,10 @@ stages:
           continueOnError: false
           enabled: true
         
-        # Generate Password
-        - task: PowerShell@2
-          name: generate_password
-          displayName: Generate Password
-          enabled: true
-          continueOnError: false
-          inputs:
-            targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
-            errorActionPreference: 'stop'
-            failOnStderr: false
-            ignoreLASTEXITCODE: false
-            pwsh: true
-        
-        # Deploy key vault 001 - validation
+        # Deploy Key Vault 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: key_vault_001_validation
-          displayName: Deploy key vault 001 - validation
+          displayName: Deploy Key Vault 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -75,28 +65,24 @@ stages:
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault001.json'
             deploymentMode: 'Validation'
         
-        # Deploy databricks 001 - validation
-        - task: AzureResourceManagerTemplateDeployment@3
-          name: databricks_001_validation
-          displayName: Deploy databricks 001 - validation
+        # Generate Password 001
+        - task: PowerShell@2
+          name: generate_password_001
+          displayName: Generate Password 001
           enabled: true
           continueOnError: false
           inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
-            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
-            location: '$(AZURE_LOCATION)'
-            templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/Databricks/deploy.databricks.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Databricks/params.databricks001.json'
-            deploymentMode: 'Validation'
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
         
-        # Deploy sql server 001 - validation
+        # Deploy SQL Server 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: sql_server_001_validation
-          displayName: Deploy sql server 001 - validation
+          displayName: Deploy SQL Server 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -113,10 +99,10 @@ stages:
             overrideParameters: >
               -administratorLoginPassword "$(password)"
         
-        # Deploy data warehouse 001 - validation
+        # Deploy SQL Database 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
-          name: sql_data_warehouse_001_validation
-          displayName: Deploy data warehouse 001 - validation
+          name: sql_database_001_validation
+          displayName: Deploy SQL Database 001 - validation
           enabled: true
           continueOnError: false
           inputs:
@@ -127,16 +113,168 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/deploy.sqlDatabase.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/SqlDatabase/params.sqlDatabase001.json'
             deploymentMode: 'Validation'
             overrideParameters: >
               -sqlServerAdministratorLoginPassword "$(password)"
         
-        # Deploy synapse 001 - validation
+        # Generate Password 002
+        - task: PowerShell@2
+          name: generate_password_002
+          displayName: Generate Password 002
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy Maria DB 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: maria_db_001_validation
+          displayName: Deploy Maria DB 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MariaDb/deploy.mariaDb.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/MariaDb/params.mariaDb001.json'
+            deploymentMode: 'Validation'
+            overrideParameters: >
+              -mariaDbServerAdministratorLoginPassword "$(password)"
+        
+        # Generate Password 003
+        - task: PowerShell@2
+          name: generate_password_003
+          displayName: Generate Password 003
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy MySQL DB 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: mysql_db_001_validation
+          displayName: Deploy MySQL DB 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/MySql/deploy.mySql.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/MySql/params.mySql001.json'
+            deploymentMode: 'Validation'
+            overrideParameters: >
+              -mySqlServerAdministratorLoginPassword "$(password)"
+        
+        # Generate Password 004
+        - task: PowerShell@2
+          name: generate_password_004
+          displayName: Generate Password 004
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy PostgreSQL DB 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: postgresql_db_001_validation
+          displayName: Deploy PostgreSQL DB 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/PostgreSql/deploy.postgreSql.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/PostgreSql/params.postgreSql001.json'
+            deploymentMode: 'Validation'
+            overrideParameters: >
+              -postgreSqlServerAdministratorLoginPassword "$(password)"
+        
+        # Deploy Cosmos DB 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: cosmos_db_001_validation
+          displayName: Deploy Cosmos DB 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/CosmosDb/deploy.cosmosDb.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/CosmosDb/params.cosmosDb001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Data Factory 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: data_factory_001_validation
+          displayName: Deploy Data Factory 001 - validation
+          enabled: true
+          continueOnError: false
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/deploy.dataFactory.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json'
+            deploymentMode: 'Validation'
+        
+        # Generate Password 005
+        - task: PowerShell@2
+          name: generate_password_005
+          displayName: Generate Password 005
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy Synapse 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
           name: synapse_001_validation
-          displayName: Deploy synapse 001 - validation
+          displayName: Deploy Synapse 001 - validation
           enabled: false
           continueOnError: true
           inputs:
@@ -151,12 +289,12 @@ stages:
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/params.synapse001.json'
             deploymentMode: 'Validation'
         
-        # Deploy data factory 001 - validation
+        # Deploy SQL Pool 001 - validation
         - task: AzureResourceManagerTemplateDeployment@3
-          name: data_factory_001_validation
-          displayName: Deploy data factory 001 - validation
-          enabled: true
-          continueOnError: false
+          name: sql_pool_001_validation
+          displayName: Deploy SQL Pool 001 - validation
+          enabled: false
+          continueOnError: true
           inputs:
             deploymentScope: 'Resource Group'
             azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
@@ -165,8 +303,26 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/deploy.dataFactory.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/deploy.sqlPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/params.sqlPool001.json'
+            deploymentMode: 'Validation'
+        
+        # Deploy Big Data Pool 001 - validation
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: big_data_pool_001_validation
+          displayName: Deploy Big Data Pool 001 - validation
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/deploy.bigDataPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/params.bigDataPool001.json'
             deploymentMode: 'Validation'
 
   - stage: Deployment
@@ -191,24 +347,10 @@ stages:
           continueOnError: false
           enabled: true
         
-        # Generate Password
-        - task: PowerShell@2
-          name: generate_password
-          displayName: Generate Password
-          enabled: true
-          continueOnError: false
-          inputs:
-            targetType: 'filePath'
-            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
-            errorActionPreference: 'stop'
-            failOnStderr: false
-            ignoreLASTEXITCODE: false
-            pwsh: true
-        
-        # Deploy key vault 001
+        # Deploy Key Vault 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: key_vault_001_deployment
-          displayName: Deploy key vault 001
+          displayName: Deploy Key Vault 001
           enabled: true
           continueOnError: false
           inputs:
@@ -223,28 +365,24 @@ stages:
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/KeyVault/params.keyVault001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy databricks 001
-        - task: AzureResourceManagerTemplateDeployment@3
-          name: databricks_001_deployment
-          displayName: Deploy databricks 001
+        # Generate Password 001
+        - task: PowerShell@2
+          name: generate_password_001
+          displayName: Generate Password 001
           enabled: true
           continueOnError: false
           inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
-            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
-            location: '$(AZURE_LOCATION)'
-            templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/Databricks/deploy.databricks.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Databricks/params.databricks001.json'
-            deploymentMode: 'Incremental'
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
         
-        # Deploy sql server 001
+        # Deploy SQL Server 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: sql_server_001_deployment
-          displayName: Deploy sql server 001
+          displayName: Deploy SQL Server 001
           enabled: true
           continueOnError: false
           inputs:
@@ -261,10 +399,10 @@ stages:
             overrideParameters: >
               -administratorLoginPassword "$(password)"
         
-        # Deploy data warehouse 001
+        # Deploy SQL Database 001
         - task: AzureResourceManagerTemplateDeployment@3
-          name: sql_data_warehouse_001_deployment
-          displayName: Deploy data warehouse 001
+          name: sql_database_001_deployment
+          displayName: Deploy SQL Database 001
           enabled: true
           continueOnError: false
           inputs:
@@ -275,17 +413,119 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/deploy.sqlDatabase.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/SqlDatabase/params.sqlDatabase001.json'
             deploymentMode: 'Incremental'
             overrideParameters: >
               -sqlServerAdministratorLoginPassword "$(password)"
         
-        # Deploy synapse 001
+        # # Generate Password 002
+        # - task: PowerShell@2
+        #   name: generate_password_002
+        #   displayName: Generate Password 002
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     targetType: 'filePath'
+        #     filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+        #     errorActionPreference: 'stop'
+        #     failOnStderr: false
+        #     ignoreLASTEXITCODE: false
+        #     pwsh: true
+        
+        # # Deploy Maria DB 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: maria_db_001_deployment
+        #   displayName: Deploy Maria DB 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MariaDb/deploy.mariaDb.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/MariaDb/params.mariaDb001.json'
+        #     deploymentMode: 'Incremental'
+        #     overrideParameters: >
+        #       -mariaDbServerAdministratorLoginPassword "$(password)"
+        
+        # # Generate Password 003
+        # - task: PowerShell@2
+        #   name: generate_password_003
+        #   displayName: Generate Password 003
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     targetType: 'filePath'
+        #     filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+        #     errorActionPreference: 'stop'
+        #     failOnStderr: false
+        #     ignoreLASTEXITCODE: false
+        #     pwsh: true
+        
+        # # Deploy MySQL DB 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: mysql_db_001_deployment
+        #   displayName: Deploy MySQL DB 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MySql/deploy.mySql.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/MySql/params.mySql001.json'
+        #     deploymentMode: 'Incremental'
+        #     overrideParameters: >
+        #       -mySqlServerAdministratorLoginPassword "$(password)"
+        
+        # # Generate Password 004
+        # - task: PowerShell@2
+        #   name: generate_password_004
+        #   displayName: Generate Password 004
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     targetType: 'filePath'
+        #     filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+        #     errorActionPreference: 'stop'
+        #     failOnStderr: false
+        #     ignoreLASTEXITCODE: false
+        #     pwsh: true
+        
+        # # Deploy PostgreSQL DB 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: postgresql_db_001_deployment
+        #   displayName: Deploy PostgreSQL DB 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/PostgreSql/deploy.postgreSql.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/PostgreSql/params.postgreSql001.json'
+        #     deploymentMode: 'Incremental'
+        #     overrideParameters: >
+        #       -postgreSqlServerAdministratorLoginPassword "$(password)"
+        
+        # Deploy Cosmos DB 001
         - task: AzureResourceManagerTemplateDeployment@3
-          name: synapse_001_deployment
-          displayName: Deploy synapse 001
-          enabled: false
+          name: cosmos_db_001_deployment
+          displayName: Deploy Cosmos DB 001
+          enabled: true
           continueOnError: false
           inputs:
             deploymentScope: 'Resource Group'
@@ -295,14 +535,14 @@ stages:
             resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/deploy.synapse.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/params.synapse001.json'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/CosmosDb/deploy.cosmosDb.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/CosmosDb/params.cosmosDb001.json'
             deploymentMode: 'Incremental'
         
-        # Deploy data factory 001
+        # Deploy Data Factory 001
         - task: AzureResourceManagerTemplateDeployment@3
           name: data_factory_001_deployment
-          displayName: Deploy data factory 001
+          displayName: Deploy Data Factory 001
           enabled: true
           continueOnError: false
           inputs:
@@ -315,4 +555,72 @@ stages:
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/deploy.dataFactory.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/DataFactory/params.dataFactory001.json'
+            deploymentMode: 'Incremental'
+        
+        # Generate Password 005
+        - task: PowerShell@2
+          name: generate_password_005
+          displayName: Generate Password 005
+          enabled: true
+          continueOnError: false
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)/code/GeneratePassword.ps1'
+            errorActionPreference: 'stop'
+            failOnStderr: false
+            ignoreLASTEXITCODE: false
+            pwsh: true
+        
+        # Deploy Synapse 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: synapse_001_deployment
+          displayName: Deploy Synapse 001
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/deploy.synapse.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/Synapse/params.synapse001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy SQL Pool 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: sql_pool_001_deployment
+          displayName: Deploy SQL Pool 001
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/deploy.sqlPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/params.sqlPool001.json'
+            deploymentMode: 'Incremental'
+        
+        # Deploy Big Data Pool 001
+        - task: AzureResourceManagerTemplateDeployment@3
+          name: big_data_pool_001_deployment
+          displayName: Deploy Big Data Pool 001
+          enabled: false
+          continueOnError: true
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+            location: '$(AZURE_LOCATION)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/deploy.bigDataPool.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/BigDataPool/params.bigDataPool001.json'
             deploymentMode: 'Incremental'

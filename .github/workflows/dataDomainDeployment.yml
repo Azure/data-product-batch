@@ -13,7 +13,7 @@ on:
       - 'infra/MySql/**'
       - 'infra/PostgreSql/**'
       - 'infra/SqlDatabase/**'
-      - 'infra/SqlPools/**'
+      - 'infra/SqlPool/**'
       - 'infra/SqlServer/**'
       - 'infra/Synapse/**'
       - '.github/workflows/dataDomainDeployment.yml'
@@ -89,8 +89,8 @@ jobs:
         parameters: ${{ github.workspace }}/infra/KeyVault/params.keyVault001.json
         deploymentMode: Validate
     
-    # Generate Password
-    - name: Generate Password
+    # Generate Password 001
+    - name: Generate Password 001
       id: generate_password_001
       run: |
         echo "Generating Password"
@@ -122,6 +122,79 @@ jobs:
         parameters: ${{ github.workspace }}/infra/SqlDatabase/params.sqlDatabase001.json sqlServerAdministratorLoginPassword="${{ steps.generate_password_001.outputs.password }}"
         deploymentMode: Validate
     
+    # Generate Password 002
+    - name: Generate Password 002
+      id: generate_password_002
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
+    # Deploy Maria DB 001 - validation
+    - name: Deploy Maria DB 001 - validation
+      id: maria_db_001_validation
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/MariaDb/deploy.mariaDb.json
+        parameters: ${{ github.workspace }}/infra/MariaDb/params.mariaDb001.json mariaDbServerAdministratorLoginPassword="${{ steps.generate_password_002.outputs.password }}"
+        deploymentMode: Validate
+    
+    # Generate Password 003
+    - name: Generate Password 003
+      id: generate_password_003
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
+    # Deploy MySQL DB 001 - validation
+    - name: Deploy MySQL DB 001 - validation
+      id: mysql_db_001_validation
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/MySql/deploy.mySql.json
+        parameters: ${{ github.workspace }}/infra/MySql/params.mySql001.json mySqlServerAdministratorLoginPassword="${{ steps.generate_password_003.outputs.password }}"
+        deploymentMode: Validate
+    
+    # Generate Password 004
+    - name: Generate Password 004
+      id: generate_password_004
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
+    # Deploy PostgreSQL DB 001 - validation
+    - name: Deploy PostgreSQL DB 001 - validation
+      id: postgresql_db_001_validation
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/PostgreSql/deploy.postgreSql.json
+        parameters: ${{ github.workspace }}/infra/PostgreSql/params.postgreSql001.json postgreSqlServerAdministratorLoginPassword="${{ steps.generate_password_004.outputs.password }}"
+        deploymentMode: Validate
+    
+    # Deploy Cosmos DB 001 - validation
+    - name: Deploy Cosmos  DB 001 - validation
+      id: cosmos_db_001_validation
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/CosmosDb/deploy.cosmosDb.json
+        parameters: ${{ github.workspace }}/infra/CosmosDb/params.cosmosDb001.json
+        deploymentMode: Validate
+    
     # Deploy Data Factory 001 - validation
     - name: Deploy Data Factory 001 - validation
       id: data_factory_001_validation
@@ -135,6 +208,13 @@ jobs:
         parameters: ${{ github.workspace }}/infra/DataFactory/params.dataFactory001.json
         deploymentMode: Validate
     
+    # Generate Password 005
+    - name: Generate Password 005
+      id: generate_password_005
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
     # Deploy Synapse 001 - validation
     - name: Deploy Synapse 001 - validation
       id: synapse_001_validation
@@ -145,7 +225,7 @@ jobs:
         resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
         region: ${{ env.AZURE_LOCATION }}
         template: ${{ github.workspace }}/infra/Synapse/deploy.synapse.json
-        parameters: ${{ github.workspace }}/infra/Synapse/params.synapse001.json synapseSqlAdministratorPassword="${{ steps.generate_password_003.outputs.password }}"
+        parameters: ${{ github.workspace }}/infra/Synapse/params.synapse001.json synapseSqlAdministratorPassword="${{ steps.generate_password_005.outputs.password }}"
         deploymentMode: Validate
     
     # Deploy Sql Pool 001 - validation
@@ -183,124 +263,6 @@ jobs:
         inlineScript: |
           az logout
     
-    ################################################################################
-
-    # Generate Password
-    - name: Generate Password
-      id: generate_password
-      run: |
-        echo "Generating Password"
-        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
-    
-    # Update parameter files
-    - name: Update Parameter files
-      id: update_parameter_files
-      run: |
-        echo "Updating value in parameter file"
-        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -administratorLoginPassword "${{ steps.generate_password.outputs.password }}"
-        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -sqlServerAdministratorLoginPassword "${{ steps.generate_password.outputs.password }}"
-    
-    # Login to Azure
-    - name: Azure Login
-      id: azure_login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    # Deploy key vault 001 - validation
-    - name: Deploy key vault 001 - validation
-      id: key_vault_001_validation
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/KeyVault/deploy.keyVault.json \
-            --parameters $GITHUB_WORKSPACE/infra/KeyVault/params.keyVault001.json
-    
-    # Deploy databricks 001 - validation
-    - name: Deploy databricks 001 - validation
-      id: databricks_001_validation
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/Databricks/deploy.databricks.json \
-            --parameters $GITHUB_WORKSPACE/infra/Databricks/params.databricks001.json
-    
-    # Deploy sql server 001 - validation
-    - name: Deploy sql server 001 - validation
-      id: sql_server_001_validation
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/SqlServer/deploy.sqlServer.json \
-            --parameters $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json
-    
-    # Deploy sql data warehouse 001 - validation
-    - name: Deploy sql data warehouse 001 - validation
-      id: sql_data_warehouse_001_validation
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json \
-            --parameters $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json
-    
-    # # Deploy synapse workspace 001 - validation
-    # - name: Deploy synapse workspace 001 - validation
-    #   id: synapse_001_validation
-    #   uses: azure/cli@v1
-    #   with:
-    #     azcliversion: latest
-    #     inlineScript: |
-    #       echo "Creating deployment in resource group"
-    #       az deployment group validate \
-    #         --mode Incremental \
-    #         --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-    #         --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
-    #         --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
-    #   continue-on-error: true
-    
-    # Deploy data factory 001 - validation
-    - name: Deploy data factory 001 - validation
-      id: data_factory_001_validation
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group validate \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/DataFactory/deploy.dataFactory.json \
-            --parameters $GITHUB_WORKSPACE/infra/DataFactory/params.dataFactory001.json
-    
-    # Log out from Azure
-    - name: Log out from Azure
-      id: azure_logout
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az logout
-  
   deployment:
     needs: [ prerequisite, validation ]
     runs-on: ubuntu-latest
@@ -312,21 +274,6 @@ jobs:
       id: checkout_repository
       uses: actions/checkout@v2
     
-    # Generate Password
-    - name: Generate Password
-      id: generate_password
-      run: |
-        echo "Generating Password"
-        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
-    
-    # Update parameter files
-    - name: Update Parameter files
-      id: update_parameter_files
-      run: |
-        echo "Updating value in parameter file"
-        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json -administratorLoginPassword "${{ steps.generate_password.outputs.password }}"
-        pwsh $GITHUB_WORKSPACE/code/UpdateParameterFile.ps1 -FilePath $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json -sqlServerAdministratorLoginPassword "${{ steps.generate_password.outputs.password }}"
-    
     # Login to Azure
     - name: Azure Login
       id: azure_login
@@ -334,90 +281,184 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    # Deploy key vault 001
-    - name: Deploy key vault 001
+    # Deploy Key Vault 001
+    - name: Deploy Key Vault 001
       id: key_vault_001_deployment
-      uses: azure/cli@v1
+      uses: azure/arm-deploy@v1
       with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/KeyVault/deploy.keyVault.json \
-            --parameters $GITHUB_WORKSPACE/infra/KeyVault/params.keyVault001.json
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/KeyVault/deploy.keyVault.json
+        parameters: ${{ github.workspace }}/infra/KeyVault/params.keyVault001.json
+        deploymentMode: Incremental
     
-    # Deploy databricks 001
-    - name: Deploy databricks 001
-      id: databricks_001_deployment
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/Databricks/deploy.databricks.json \
-            --parameters $GITHUB_WORKSPACE/infra/Databricks/params.databricks001.json
+    # Generate Password 001
+    - name: Generate Password 001
+      id: generate_password_001
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
     
-    # Deploy sql server 001
-    - name: Deploy sql server 001
+    # Deploy SQL Server 001
+    - name: Deploy SQL Server 001
       id: sql_server_001_deployment
-      uses: azure/cli@v1
+      uses: azure/arm-deploy@v1
       with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/SqlServer/deploy.sqlServer.json \
-            --parameters $GITHUB_WORKSPACE/infra/SqlServer/params.sqlServer001.json
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/SqlServer/deploy.sqlServer.json
+        parameters: ${{ github.workspace }}/infra/SqlServer/params.sqlServer001.json administratorLoginPassword="${{ steps.generate_password_001.outputs.password }}"
+        deploymentMode: Incremental
     
-    # Deploy sql data warehouse 001
-    - name: Deploy sql data warehouse 001
-      id: sql_data_warehouse_001_deployment
-      uses: azure/cli@v1
+    # Deploy SQL Database 001
+    - name: Deploy SQL Database 001
+      id: sql_database_001_deployment
+      uses: azure/arm-deploy@v1
       with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/SqlDataWarehouse/deploy.sqlDataWarehouse.json \
-            --parameters $GITHUB_WORKSPACE/infra/SqlDataWarehouse/params.sqlDataWarehouse001.json
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/SqlDatabase/deploy.sqlDatabase.json
+        parameters: ${{ github.workspace }}/infra/SqlDatabase/params.sqlDatabase001.json sqlServerAdministratorLoginPassword="${{ steps.generate_password_001.outputs.password }}"
+        deploymentMode: Incremental
     
-    # # Deploy synapse workspace 001
-    # - name: Deploy synapse workspace 001
-    #   id: synapse_001_deployment
-    #   uses: azure/cli@v1
-    #   with:
-    #     azcliversion: latest
-    #     inlineScript: |
-    #       echo "Creating deployment in resource group"
-    #       az deployment group create \
-    #         --mode Incremental \
-    #         --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-    #         --template-file $GITHUB_WORKSPACE/infra/Synapse/deploy.synapse.json \
-    #         --parameters $GITHUB_WORKSPACE/infra/Synapse/params.synapse001.json
+    # Generate Password 002
+    - name: Generate Password 002
+      id: generate_password_002
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
     
-    # Deploy data factory 001
-    - name: Deploy data factory 001
+    # Deploy Maria DB 001
+    - name: Deploy Maria DB 001
+      id: maria_db_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/MariaDb/deploy.mariaDb.json
+        parameters: ${{ github.workspace }}/infra/MariaDb/params.mariaDb001.json mariaDbServerAdministratorLoginPassword="${{ steps.generate_password_002.outputs.password }}"
+        deploymentMode: Incremental
+    
+    # Generate Password 003
+    - name: Generate Password 003
+      id: generate_password_003
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
+    # Deploy MySQL DB 001
+    - name: Deploy MySQL DB 001
+      id: mysql_db_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/MySql/deploy.mySql.json
+        parameters: ${{ github.workspace }}/infra/MySql/params.mySql001.json mySqlServerAdministratorLoginPassword="${{ steps.generate_password_003.outputs.password }}"
+        deploymentMode: Incremental
+    
+    # Generate Password 004
+    - name: Generate Password 004
+      id: generate_password_004
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
+    # Deploy PostgreSQL DB 001
+    - name: Deploy PostgreSQL DB 001
+      id: postgresql_db_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/PostgreSql/deploy.postgreSql.json
+        parameters: ${{ github.workspace }}/infra/PostgreSql/params.postgreSql001.json postgreSqlServerAdministratorLoginPassword="${{ steps.generate_password_004.outputs.password }}"
+        deploymentMode: Incremental
+    
+    # Deploy Cosmos DB 001
+    - name: Deploy Cosmos  DB 001
+      id: cosmos_db_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/CosmosDb/deploy.cosmosDb.json
+        parameters: ${{ github.workspace }}/infra/CosmosDb/params.cosmosDb001.json
+        deploymentMode: Incremental
+    
+    # Deploy Data Factory 001
+    - name: Deploy Data Factory 001
       id: data_factory_001_deployment
-      uses: azure/cli@v1
+      uses: azure/arm-deploy@v1
       with:
-        azcliversion: latest
-        inlineScript: |
-          echo "Creating deployment in resource group"
-          az deployment group create \
-            --mode Incremental \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} \
-            --template-file $GITHUB_WORKSPACE/infra/DataFactory/deploy.dataFactory.json \
-            --parameters $GITHUB_WORKSPACE/infra/DataFactory/params.dataFactory001.json
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/DataFactory/deploy.dataFactory.json
+        parameters: ${{ github.workspace }}/infra/DataFactory/params.dataFactory001.json
+        deploymentMode: Incremental
     
+    # Generate Password 005
+    - name: Generate Password 005
+      id: generate_password_005
+      run: |
+        echo "Generating Password"
+        pwsh $GITHUB_WORKSPACE/code/GeneratePassword.ps1 -GitHub
+    
+    # Deploy Synapse 001
+    - name: Deploy Synapse 001
+      id: synapse_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/Synapse/deploy.synapse.json
+        parameters: ${{ github.workspace }}/infra/Synapse/params.synapse001.json synapseSqlAdministratorPassword="${{ steps.generate_password_005.outputs.password }}"
+        deploymentMode: Incremental
+    
+    # Deploy Sql Pool 001
+    - name: Deploy Sql Pool 001
+      id: sql_pool_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/SqlPool/deploy.sqlPool.json
+        parameters: ${{ github.workspace }}/infra/SqlPool/params.sqlPool001.json
+        deploymentMode: Incremental
+    
+    # Deploy Big Data Pool 001
+    - name: Deploy Big Data Pool 001
+      id: big_data_pool_001_deployment
+      uses: azure/arm-deploy@v1
+      with:
+        scope: resourcegroup
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        region: ${{ env.AZURE_LOCATION }}
+        template: ${{ github.workspace }}/infra/BigDataPool/deploy.bigDataPool.json
+        parameters: ${{ github.workspace }}/infra/BigDataPool/params.bigDataPool001.json
+        deploymentMode: Incremental
+
     # Log out from Azure
     - name: Log out from Azure
       id: azure_logout
