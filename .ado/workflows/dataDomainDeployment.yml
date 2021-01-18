@@ -401,25 +401,25 @@ stages:
             overrideParameters: >
               -administratorLoginPassword "$(password)"
         
-        # Deploy SQL Database 001
-        - task: AzureResourceManagerTemplateDeployment@3
-          name: sql_database_001_deployment
-          displayName: Deploy SQL Database 001
-          enabled: true
-          continueOnError: false
-          inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
-            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
-            location: '$(AZURE_LOCATION)'
-            templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/deploy.sqlDatabase.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/SqlDatabase/params.sqlDatabase001.json'
-            deploymentMode: 'Incremental'
-            overrideParameters: >
-              -sqlServerAdministratorLoginPassword "$(password)"
+        # # Deploy SQL Database 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: sql_database_001_deployment
+        #   displayName: Deploy SQL Database 001
+        #   enabled: true
+        #   continueOnError: false
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/deploy.sqlDatabase.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/SqlDatabase/params.sqlDatabase001.json'
+        #     deploymentMode: 'Incremental'
+        #     overrideParameters: >
+        #       -sqlServerAdministratorLoginPassword "$(password)"
         
         # # Generate Password 002
         # - task: PowerShell@2
@@ -593,23 +593,23 @@ stages:
             overrideParameters: >
               -synapseSqlAdministratorPassword "$(password)"
         
-        # Deploy SQL Pool 001
-        - task: AzureResourceManagerTemplateDeployment@3
-          name: sql_pool_001_deployment
-          displayName: Deploy SQL Pool 001
-          enabled: false
-          continueOnError: true
-          inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
-            subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
-            location: '$(AZURE_LOCATION)'
-            templateLocation: 'Linked artifact'
-            csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/deploy.sqlPool.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/params.sqlPool001.json'
-            deploymentMode: 'Incremental'
+        # # Deploy SQL Pool 001
+        # - task: AzureResourceManagerTemplateDeployment@3
+        #   name: sql_pool_001_deployment
+        #   displayName: Deploy SQL Pool 001
+        #   enabled: false
+        #   continueOnError: true
+        #   inputs:
+        #     deploymentScope: 'Resource Group'
+        #     azureResourceManagerConnection: '$(AZURE_RESOURCE_MANAGER_CONNECTION_NAME)'
+        #     subscriptionId: '$(AZURE_SUBSCRIPTION_ID)'
+        #     action: 'Create Or Update Resource Group'
+        #     resourceGroupName: '$(AZURE_RESOURCE_GROUP_NAME)'
+        #     location: '$(AZURE_LOCATION)'
+        #     templateLocation: 'Linked artifact'
+        #     csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/deploy.sqlPool.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlPool/params.sqlPool001.json'
+        #     deploymentMode: 'Incremental'
         
         # Deploy Big Data Pool 001
         - task: AzureResourceManagerTemplateDeployment@3
