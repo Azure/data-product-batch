@@ -12,13 +12,13 @@
             "value": "DataDomain001"
         },
         "postgreSqlSkuName": {
-            "value": "B_Gen5_1"
+            "value": "GP_Gen5_2"
         },
         "postgreSqlSkuTier": {
-            "value": "Basic"
+            "value": "GeneralPurpose"
         },
         "postgreSqlSkuCapacity": {
-            "value": 1
+            "value": 2
         },
         "postgreSqlSkuSize": {
             "value": 5120
@@ -27,7 +27,7 @@
             "value": "Gen5"
         },
         "postgreSqlServerAdministratorLogin": {
-            "value": "PostgreSqlServerMainUser"
+            "value": "ServerMainUser"
         },
         "postgreSqlServerAdministratorLoginPassword": {
             "value": "<your-secure-password>"
