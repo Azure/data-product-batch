@@ -9,7 +9,7 @@
             "value": "dn001-dd001-cosmos001"
         },
         "keyVaultId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dataproduct001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
+            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
         },
         "subnetId": {
             "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dd001-privatelink-subnet"
