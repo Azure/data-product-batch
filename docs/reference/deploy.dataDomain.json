@@ -49,13 +49,13 @@
             }
         },
         "synapseDefaultStorageAccountName": {
-            "type": "securestring",
+            "type": "string",
             "metadata": {
                 "description": "Specifies the name of the storage account that should be used as default for the synapse workspace."
             }
         },
         "synapseDefaultStorageAccountFileSystem": {
-            "type": "securestring",
+            "type": "string",
             "metadata": {
                 "description": "Specifies the name of the file system in the storage account that should be used as default for the synapse workspace."
             }
