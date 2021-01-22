@@ -1,0 +1,601 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enterpriseScaleAnalyticsCompanyPrefix": {
+            "type": "string",
+            "maxLength": 5,
+            "metadata": {
+                "description": "Provide the prefix (max 5 characters) for all services that will be created"
+            }
+        },
+        "dataNodeName": {
+            "type": "string",
+            "defaultValue": "dn001",
+            "metadata": {
+                "description": "Name of the data node."
+            }
+        },
+        "dataDomainName": {
+            "type": "string",
+            "defaultValue": "dd001",
+            "metadata": {
+                "description": "Name of the data domain."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Specifies the location for all resources."
+            }
+        },
+        "privateDnsZoneResourceGroupId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource ID of the resource group of the private dns zones."
+            }
+        },
+        "privateLinkSubnetId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the resource ID of the subnet for the data domain services."
+            }
+        },
+        "databaseAdministratorLoginPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Specifies the admin password of the database servers."
+            }
+        },
+        "synapseDefaultStorageAccountName": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Specifies the name of the storage account that should be used as default for the synapse workspace."
+            }
+        },
+        "synapseDefaultStorageAccountFileSystem": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Specifies the name of the file system in the storage account that should be used as default for the synapse workspace."
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "enterpriseScaleAnalyticsCompanyPrefix": "[parameters('enterpriseScaleAnalyticsCompanyPrefix')]",
+        "dataNodeName": "[parameters('dataNodeName')]",
+        "dataDomainName": "[parameters('dataDomainName')]",
+        "location": "[parameters('location')]",
+        "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
+        "privateLinkSubnetId": "[parameters('privateLinkSubnetId')]",
+        "databaseAdministratorLoginPassword": "[parameters('databaseAdministratorLoginPassword')]",
+        "synapseDefaultStorageAccountName": "[parameters('synapseDefaultStorageAccountName')]",
+        "synapseDefaultStorageAccountFileSystem": "[parameters('synapseDefaultStorageAccountFileSystem')]",
+        "keyVaultTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/KeyVault/deploy.keyVault.json?token=AIHRGTR3PX3WDDEU4PKMPLDACQEUA",
+        "sqlServerTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlServer/deploy.sqlServer.json?token=AIHRGTS63P2BIAGICUA6MWDACQEVS",
+        "sqlDatabaseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlDatabase/deploy.sqlDatabase.json?token=AIHRGTQSLUAHB6JRPS7FWE3ACQEXM",
+        "mariaDbTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/MariaDb/deploy.mariaDb.json?token=AIHRGTVLWQYAF5PTVADQ2I3ACQEZE",
+        "mySqlTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/MySql/deploy.mySql.json?token=AIHRGTXWQ3YDTZT62YDURO3ACQE2U",
+        "postgreSqlTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PostgreSql/deploy.postgreSql.json?token=AIHRGTSPDNJLF5IC6S5LCHDACQE4G",
+        "cosmosDbTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/CosmosDb/deploy.cosmosDb.json?token=AIHRGTSF5ACZZROCL776XMDACQE5S",
+        "dataFactoryTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/DataFactory/deploy.dataFactory.json?token=AIHRGTSEPQOIPAN53YQXWO3ACQE7S",
+        "synapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/Synapse/deploy.synapse.json?token=AIHRGTTIYJCWL2RBIS7LSF3ACQFA6",
+        "sqlPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlPool/deploy.sqlPool.json?token=AIHRGTTPNIKPANVF5MG4MYLACQFCM",
+        "bigDataPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/BigDataPool/deploy.bigDataPool.json?token=AIHRGTTL5BNRN6TUBQKFPZ3ACQFDK"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "keyVault001Deployment",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('keyVaultTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-keyvault001')]"
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "sqlServer001Deployment",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('sqlServerTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "sqlServerName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-sqlserver001')]"
+                    },
+                    "administratorLogin": {
+                        "value": "ServerMainUser"
+                    },
+                    "administratorLoginPassword": {
+                        "value": "[variables('databaseAdministratorLoginPassword')]"
+                    },
+                    "sqlAdminGroupName": {
+                        "value": ""
+                    },
+                    "sqlAdminGroupObjectID": {
+                        "value": ""
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "sqlDatabase001Deployment",
+            "dependsOn": [
+                "keyVault001Deployment",
+                "sqlserver001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('sqlDatabaseTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "sqlServerId": {
+                        "value": "[reference('sqlserver001Deployment').outputs.sqlServerId.value]"
+                    },
+                    "sqlServerAdministratorLoginPassword": {
+                        "value": "[variables('databaseAdministratorLoginPassword')]"
+                    },
+                    "sqlDatabaseName": {
+                        "value": "DataDomain001"
+                    },
+                    "sqlDatabaseSku": {
+                        "value": "Basic"
+                    },
+                    "sqlDatabaseTier": {
+                        "value": "Basic"
+                    },
+                    "sqlDatabaseCapacity": {
+                        "value": 5
+                    },
+                    "sqlDatabaseMaxSizeInBytes": {
+                        "value": 524288000
+                    },
+                    "sqlDatabaseZoneRedundant": {
+                        "value": false
+                    },
+                    "sqlDatabaseLicenseType": {
+                        "value": "LicenseIncluded"
+                    },
+                    "sqlDatabaseReadReplicaCount": {
+                        "value": 0
+                    },
+                    "sqlDatabaseMinCapacity": {
+                        "value": "0.5"
+                    },
+                    "sqlDatabaseStorageAccountType": {
+                        "value": "GRS"
+                    },
+                    "sqlDatabaseAutoPauseDelay": {
+                        "value": -1
+                    },
+                    "keyVaultId": {
+                        "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "mariaDb001Deployment",
+            "dependsOn": [
+                "keyVault001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('mariaDbTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "mariaDbServerName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-mariadbserver001')]"
+                    },
+                    "mariaDbDatabaseName": {
+                        "value": "DataDomain001"
+                    },
+                    "mariaDbSkuName": {
+                        "value": "GP_Gen5_2"
+                    },
+                    "mariaDbSkuTier": {
+                        "value": "GeneralPurpose"
+                    },
+                    "mariaDbSkuCapacity": {
+                        "value": 2
+                    },
+                    "mariaDbSkuSize": {
+                        "value": 5120
+                    },
+                    "mariaDbSkuFamily": {
+                        "value": "Gen5"
+                    },
+                    "mariaDbServerAdministratorLogin": {
+                        "value": "ServerMainUser"
+                    },
+                    "mariaDbServerAdministratorLoginPassword": {
+                        "value": "[variables('databaseAdministratorLoginPassword')]"
+                    },
+                    "keyVaultId": {
+                        "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "mySql001Deployment",
+            "dependsOn": [
+                "keyVault001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('mySqlTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "mySqlServerName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-mysqlserver001')]"
+                    },
+                    "mySqlDatabaseName": {
+                        "value": "DataDomain001"
+                    },
+                    "mySqlSkuName": {
+                        "value": "GP_Gen5_2"
+                    },
+                    "mySqlSkuTier": {
+                        "value": "GeneralPurpose"
+                    },
+                    "mySqlSkuCapacity": {
+                        "value": 2
+                    },
+                    "mySqlSkuSize": {
+                        "value": 5120
+                    },
+                    "mySqlSkuFamily": {
+                        "value": "Gen5"
+                    },
+                    "mySqlServerAdministratorLogin": {
+                        "value": "ServerMainUser"
+                    },
+                    "mySqlServerAdministratorLoginPassword": {
+                        "value": "[variables('databaseAdministratorLoginPassword')]"
+                    },
+                    "mySqlAdminGroupName": {
+                        "value": ""
+                    },
+                    "mySqlAdminGroupObjectID": {
+                        "value": ""
+                    },
+                    "keyVaultId": {
+                        "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "postgreSql001Deployment",
+            "dependsOn": [
+                "keyVault001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('postgreSqlTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "postgreSqlServerName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-postgresqlserver001')]"
+                    },
+                    "postgreSqlDatabaseName": {
+                        "value": "DataDomain001"
+                    },
+                    "postgreSqlSkuName": {
+                        "value": "GP_Gen5_2"
+                    },
+                    "postgreSqlSkuTier": {
+                        "value": "GeneralPurpose"
+                    },
+                    "postgreSqlSkuCapacity": {
+                        "value": 2
+                    },
+                    "postgreSqlSkuSize": {
+                        "value": 5120
+                    },
+                    "postgreSqlSkuFamily": {
+                        "value": "Gen5"
+                    },
+                    "postgreSqlServerAdministratorLogin": {
+                        "value": "ServerMainUser"
+                    },
+                    "postgreSqlServerAdministratorLoginPassword": {
+                        "value": "[variables('databaseAdministratorLoginPassword')]"
+                    },
+                    "postgreSqlAdminGroupName": {
+                        "value": ""
+                    },
+                    "postgreSqlAdminGroupObjectID": {
+                        "value": ""
+                    },
+                    "keyVaultId": {
+                        "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "cosmosDb001Deployment",
+            "dependsOn": [
+                "keyVault001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('cosmosDbTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "cosmosAccountName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-cosmos001')]"
+                    },
+                    "keyVaultId": {
+                        "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneId": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "dataFactory001Deployment",
+            "dependsOn": [
+                "keyVault001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('dataFactoryTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "dataFactoryName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-datafactory001')]"
+                    },
+                    "dataFactoryGitAccount": {
+                        "value": ""
+                    },
+                    "dataFactoryGitRepo": {
+                        "value": ""
+                    },
+                    "dataFactoryGitCollaborationBranch": {
+                        "value": ""
+                    },
+                    "dataFactoryGitRootFolder": {
+                        "value": ""
+                    },
+                    "dataFactoryGitType": {
+                        "value": "FactoryGitHubConfiguration"
+                    },
+                    "keyVaultId": {
+                        "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneIdDataFactory": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net')]"
+                    },
+                    "privateDnsZoneIdPortal": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.azure.com')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "synapse001Deployment",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('synapseTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "synapseWorkspaceName": {
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataDomainName'), 'synapse001')]"
+                    },
+                    "synapseDefaultStorageAccountName": {
+                        "value": "[variables('synapseDefaultStorageAccountName')]"
+                    },
+                    "synapseDefaultStorageAccountFileSystem": {
+                        "value": "[variables('synapseDefaultStorageAccountFileSystem')]"
+                    },
+                    "synapseSqlAdministratorLogin": {
+                        "value": "ServerMainUser"
+                    },
+                    "synapseSqlAdministratorPassword": {
+                        "value": "[variables('databaseAdministratorLoginPassword')]"
+                    },
+                    "synapseDatalakeAnalyticsResourceId": {
+                        "value": ""
+                    },
+                    "synapseComputeSubnetResourceId": {
+                        "value": ""
+                    },
+                    "synapseSqlAdminGroupName": {
+                        "value": ""
+                    },
+                    "synapseSqlAdminGroupObjectID": {
+                        "value": ""
+                    },
+                    "subnetId": {
+                        "value": "[variables('privateLinkSubnetId')]"
+                    },
+                    "privateDnsZoneIdSql": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net')]"
+                    },
+                    "privateDnsZoneIdDev": {
+                        "value": "[concat(variables('privateDnsZoneResourceGroupId'), '/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "sqlPool001Deployment",
+            "dependsOn": [
+                "synapse001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('sqlPoolTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "sqlPoolName": {
+                        "value": "sqlpool001"
+                    },
+                    "sqlPoolCapacity": {
+                        "value": "DW100c"
+                    },
+                    "synapseWorkspaceId": {
+                        "value": "[reference('synapse001Deployment').outputs.synapseWorkspaceId.value]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "bigDataPool001Deployment",
+            "dependsOn": [
+                "synapse001Deployment"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('bigDataPoolTemplateLink')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "bigDataPoolName": {
+                        "value": "bigdatapool001"
+                    },
+                    "bigDataPoolNodeSize": {
+                        "value": "Medium"
+                    },
+                    "bigDataPoolMinNodes": {
+                        "value": 3
+                    },
+                    "bigDataPoolMaxNodes": {
+                        "value": 10
+                    },
+                    "bigDataPoolAutopauseDelay": {
+                        "value": 15
+                    },
+                    "synapseWorkspaceId": {
+                        "value": "[reference('synapse001Deployment').outputs.synapseWorkspaceId.value]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

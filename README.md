@@ -3,7 +3,7 @@
 **Access required:**
 * Access to resource group - Contributor
 * Access to global DNS - Private DNS Zone Contributor
-* Access to vnet - Network Contributor
+* Access to subnet(s) - Network Contributor
 
 
 # Contributing
