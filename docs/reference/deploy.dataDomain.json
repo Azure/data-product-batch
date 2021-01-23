@@ -491,7 +491,7 @@
                         "value": "[variables('location')]"
                     },
                     "synapseWorkspaceName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), variables('dataNodeName'), variables('dataDomainName'), 'synapse001')]"
+                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-synapse001')]"
                     },
                     "synapseDefaultStorageAccountName": {
                         "value": "[variables('synapseDefaultStorageAccountName')]"
