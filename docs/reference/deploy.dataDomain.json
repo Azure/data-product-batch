@@ -25,19 +25,21 @@
         },
         "location": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "northeurope",
             "metadata": {
                 "description": "Specifies the location for all resources."
             }
         },
         "privateDnsZoneResourceGroupId": {
             "type": "string",
+            "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>",
             "metadata": {
                 "description": "Specifies the resource ID of the resource group of the private dns zones."
             }
         },
         "privateLinkSubnetId": {
             "type": "string",
+            "defaultValue": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<your-rg-name>/providers/Microsoft.Network/virtualNetworks/<your-vnet-name>/subnets/<your-subnet-name>",
             "metadata": {
                 "description": "Specifies the resource ID of the subnet for the data domain services."
             }
