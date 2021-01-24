@@ -100,7 +100,7 @@
                         "value": "[variables('location')]"
                     },
                     "keyVaultName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-keyvault001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-keyvault001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 24)]"
                     },
                     "subnetId": {
                         "value": "[variables('privateLinkSubnetId')]"
@@ -126,7 +126,7 @@
                         "value": "[variables('location')]"
                     },
                     "sqlServerName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-sqlserver001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-sqlserver001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 63)]"
                     },
                     "administratorLogin": {
                         "value": "ServerMainUser"
@@ -230,7 +230,7 @@
                         "value": "[variables('location')]"
                     },
                     "mariaDbServerName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-mariadbserver001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-mariadbserver001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 63)]"
                     },
                     "mariaDbDatabaseName": {
                         "value": "DataDomain001"
@@ -286,7 +286,7 @@
                         "value": "[variables('location')]"
                     },
                     "mySqlServerName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-mysqlserver001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-mysqlserver001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 63)]"
                     },
                     "mySqlDatabaseName": {
                         "value": "DataDomain001"
@@ -348,7 +348,7 @@
                         "value": "[variables('location')]"
                     },
                     "postgreSqlServerName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-postgresqlserver001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-postgresqlserver001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 63)]"
                     },
                     "postgreSqlDatabaseName": {
                         "value": "DataDomain001"
@@ -410,7 +410,7 @@
                         "value": "[variables('location')]"
                     },
                     "cosmosAccountName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-cosmos001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-cosmos001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 44)]"
                     },
                     "keyVaultId": {
                         "value": "[reference('keyVault001Deployment').outputs.keyVaultId.value]"
@@ -442,7 +442,7 @@
                         "value": "[variables('location')]"
                     },
                     "dataFactoryName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-datafactory001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-datafactory001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 63)]"
                     },
                     "dataFactoryGitAccount": {
                         "value": ""
@@ -491,7 +491,7 @@
                         "value": "[variables('location')]"
                     },
                     "synapseWorkspaceName": {
-                        "value": "[concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-synapse001')]"
+                        "value": "[take(concat(variables('enterpriseScaleAnalyticsCompanyPrefix'), '-', variables('dataNodeName'), '-', variables('dataDomainName'), '-synapse001', uniqueString(subscription().subscriptionId, resourceGroup().id)), 50)]"
                     },
                     "synapseDefaultStorageAccountName": {
                         "value": "[variables('synapseDefaultStorageAccountName')]"
