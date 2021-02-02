@@ -42,8 +42,7 @@ jobs:
             -Location '${{ env.LOCATION }}' \
             -SubnetId '${{ env.SUBNET_ID }}' \
             -SynapseStorageAccountName '${{ env.SYNAPSE_STORAGE_ACCOUNT_NAME }}' \
-            -SynapseStorageAccountFileSystemName '${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }}' \
-            -AzureResourceManagerConnectionName '${{ env.AZURE_RESOURCE_MANAGER_CONNECTION_NAME }}'
+            -SynapseStorageAccountFileSystemName '${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }}'
 
       # Create Artifact
       - uses: actions/upload-artifact@v2
