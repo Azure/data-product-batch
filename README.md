@@ -3,13 +3,38 @@
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
 
 
+# Description
+
+TODO
+
+# Notes on Parameter Update Process
+
+**Process**
+
+TODO
+
+**What do the parameters mean**
+
+TODO
+
 # Notes on Service Principal
+
+**Setup for GH Workflows**
+
+TODO
+
+**Setup for ADO Workflows**
+
+TODO
 
 **Access required:**
 * Access to resource group - Contributor
 * Access to global DNS - Private DNS Zone Contributor
 * Access to subnet(s) - Network Contributor
 
+# Connecting ADO to GitHub to deploy through ADO
+
+TODO
 
 # Contributing
 
