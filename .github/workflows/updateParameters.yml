@@ -33,7 +33,8 @@ jobs:
         id: install_modules
         run: |
           echo "Install Modules"
-          pwsh Install-Module -Name powershell-yaml
+          pwsh
+          Install-Module -Name powershell-yaml
 
       # Update Parameters
       - name: Update Parameters
