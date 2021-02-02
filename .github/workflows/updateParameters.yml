@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - "config/**"
-      - ".github/workflows/updateParameters.yml"
+      - 'config/**'
+      - '.github/workflows/updateParameters.yml'
 
 env:
   MANAGEMENT_SUBSCRIPTION_ID: 'mgmtSub'
