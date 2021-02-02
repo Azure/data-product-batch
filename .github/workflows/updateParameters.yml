@@ -41,8 +41,8 @@ jobs:
         id: update_parameters
         run: |
           echo "Updating Parameters"
-          pwsh $GITHUB_WORKSPACE/config/UpdateParameters.ps1 \
-            -ConfigurationFilePath 'config/config.json' \
+          pwsh $GITHUB_WORKSPACE/configs/UpdateParameters.ps1 \
+            -ConfigurationFilePath 'configs/config.json' \
             -ManagementSubscriptionId '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}' \
             -GlobalDnsRgName '${{ env.GLOBAL_DNS_RG_NAME }}' \
             -DataLandingZoneSubscriptionId '${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }}' \
@@ -51,26 +51,8 @@ jobs:
             -SubnetId '${{ env.SUBNET_ID }}' \
             -SynapseStorageAccountName '${{ env.SYNAPSE_STORAGE_ACCOUNT_NAME }}' \
             -SynapseStorageAccountFileSystemName '${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }}'
-
-      # Create Artifact
-      - uses: actions/upload-artifact@v2
-        with:
-          name: updated-parameters
-          path: ${{ github.workspace }}
       
-      # # Create Branch and Push Changes
-      # - name: Create Branch and Push Changes
-      #   id: create_branch_and_push_changes
-      #   run: |
-      #     cd $GITHUB_WORKSPACE
-      #     git config --local --unset-all "http.https://github.com/.extraheader"
-      #     git config --local user.email "action@github.com"
-      #     git config --local user.name "GitHub Update Workflow"
-      #     git checkout -b 'parameter_update_${{ github.run_id }}'
-      #     git add .
-      #     git commit -m "Updated Parameters" -a
-      #     git push "https://${{ github.token }}@github.com/Azure/data-domain.git" --force
-
+      # Create Pull Request
       - name: Create Pull Request
         id: create_pull_request
         uses: peter-evans/create-pull-request@v3
