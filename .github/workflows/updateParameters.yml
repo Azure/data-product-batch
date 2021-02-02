@@ -1,0 +1,51 @@
+name: Update Parameters
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "config/**"
+      - ".github/workflows/updateParameters.yml"
+
+env:
+  MANAGEMENT_SUBSCRIPTION_ID: "4060c03e-0d2e-44b7-82a3-da9376fe50b2"
+  GLOBAL_DNS_RG_NAME: "dh-global-dns"
+  DATA_LANDING_ZONE_SUBSCRIPTION_ID: ""
+  DATA_LANDING_ZONE_NAME: ""
+  LOCATION: "northeurope"
+  SUBNET_ID: ""
+  SYNAPSE_STORAGE_ACCOUNT_NAME: ""
+  SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: ""
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: ""
+
+jobs:
+  renaming:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Update Parameters
+      - name: Update Parameters
+        id: generate_password_001
+        run: |
+          echo "Updating Parameters"
+          pwsh $GITHUB_WORKSPACE/config/UpdateParameters.ps1 `
+            -ManagementSubscriptionId ${{ env.MANAGEMENT_SUBSCRIPTION_ID }} `
+            -GlobalDnsRgName ${{ env.GLOBAL_DNS_RG_NAME }} `
+            -DataLandingZoneSubscriptionId ${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }} `
+            -DataLandingZoneName ${{ env.DATA_LANDING_ZONE_NAME }} `
+            -Location ${{ env.LOCATION }} `
+            -SubnetId ${{ env.SUBNET_ID }} `
+            -SynapseStorageAccountName ${{ env.SYNAPSE_STORAGE_ACCOUNT_NAME }} `
+            -SynapseStorageAccountFileSystemName ${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }} `
+            -AzureResourceManagerConnectionName ${{ env.AZURE_RESOURCE_MANAGER_CONNECTION_NAME }} `
+
+      # Create Artifact
+      - uses: actions/upload-artifact@v2
+        with:
+          name: updated-parameters
+          path: ${{ github.workspace }}
