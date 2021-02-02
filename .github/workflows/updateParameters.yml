@@ -27,10 +27,17 @@ jobs:
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@v2
+      
+      # Install Required Packages
+      - name: Install Required Modules
+        id: install_modules
+        run: |
+          echo "Install Modules"
+          pwsh Install-Module -Name powershell-yaml
 
       # Update Parameters
       - name: Update Parameters
-        id: generate_password_001
+        id: update_parameters
         run: |
           echo "Updating Parameters"
           pwsh $GITHUB_WORKSPACE/config/UpdateParameters.ps1 \
