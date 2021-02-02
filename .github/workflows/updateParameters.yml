@@ -33,16 +33,17 @@ jobs:
         id: generate_password_001
         run: |
           echo "Updating Parameters"
-          pwsh $GITHUB_WORKSPACE/config/UpdateParameters.ps1 `
-            -ManagementSubscriptionId ${{ env.MANAGEMENT_SUBSCRIPTION_ID }} `
-            -GlobalDnsRgName ${{ env.GLOBAL_DNS_RG_NAME }} `
-            -DataLandingZoneSubscriptionId ${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }} `
-            -DataLandingZoneName ${{ env.DATA_LANDING_ZONE_NAME }} `
-            -Location ${{ env.LOCATION }} `
-            -SubnetId ${{ env.SUBNET_ID }} `
-            -SynapseStorageAccountName ${{ env.SYNAPSE_STORAGE_ACCOUNT_NAME }} `
-            -SynapseStorageAccountFileSystemName ${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }} `
-            -AzureResourceManagerConnectionName ${{ env.AZURE_RESOURCE_MANAGER_CONNECTION_NAME }} `
+          pwsh $GITHUB_WORKSPACE/config/UpdateParameters.ps1 \
+            -ConfigurationFilePath 'config/config.json' \
+            -ManagementSubscriptionId ${{ env.MANAGEMENT_SUBSCRIPTION_ID }} \
+            -GlobalDnsRgName ${{ env.GLOBAL_DNS_RG_NAME }} \
+            -DataLandingZoneSubscriptionId ${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }} \
+            -DataLandingZoneName ${{ env.DATA_LANDING_ZONE_NAME }} \
+            -Location ${{ env.LOCATION }} \
+            -SubnetId ${{ env.SUBNET_ID }} \
+            -SynapseStorageAccountName ${{ env.SYNAPSE_STORAGE_ACCOUNT_NAME }} \
+            -SynapseStorageAccountFileSystemName ${{ env.SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME }} \
+            -AzureResourceManagerConnectionName ${{ env.AZURE_RESOURCE_MANAGER_CONNECTION_NAME }}
 
       # Create Artifact
       - uses: actions/upload-artifact@v2

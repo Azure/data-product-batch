@@ -3,6 +3,11 @@ Param(
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string]
+    $ConfigurationFilePath,
+
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [string]
     $ManagementSubscriptionId,
 
     [Parameter(Mandatory)]
@@ -57,7 +62,7 @@ function SetValue($Object, $Key, $Value) {
 
 # Loading Configuration File for Parameter Updates
 Write-Host "Loading Configuration File for Parameter Updates"
-$configs = Get-Content -Path "config.json" -Raw | Out-String | ConvertFrom-Json
+$configs = Get-Content -Path $ConfigurationFilePath -Raw | Out-String | ConvertFrom-Json
 
 foreach ($config in $configs) {
     # Get Replacement Key-Value Pairs
