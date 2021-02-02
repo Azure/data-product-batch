@@ -33,6 +33,7 @@ jobs:
         id: install_modules
         run: |
           echo "Install Modules"
+          pwsh -Command "Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted"
           pwsh -Command "Install-Module -Name powershell-yaml"
 
       # Update Parameters
