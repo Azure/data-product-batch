@@ -57,3 +57,23 @@ jobs:
         with:
           name: updated-parameters
           path: ${{ github.workspace }}
+      
+      # # Create Branch and Push Changes
+      # - name: Create Branch and Push Changes
+      #   id: create_branch_and_push_changes
+      #   run: |
+      #     cd $GITHUB_WORKSPACE
+      #     git config --local --unset-all "http.https://github.com/.extraheader"
+      #     git config --local user.email "action@github.com"
+      #     git config --local user.name "GitHub Update Workflow"
+      #     git checkout -b 'parameter_update_${{ github.run_id }}'
+      #     git add .
+      #     git commit -m "Updated Parameters" -a
+      #     git push "https://${{ github.token }}@github.com/Azure/data-domain.git" --force
+
+      - name: Create Pull Request
+        id: create_pull_request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: 'Updated Parameters'
+          branch: 'parameter_update_${{ github.run_id }}'
