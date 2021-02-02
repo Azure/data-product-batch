@@ -122,14 +122,5 @@
             "variables.AZURE_RESOURCE_GROUP_NAME": "${DataLandingZoneName}-rg",
             "variables.AZURE_LOCATION": "${Location}"
         }
-    },
-    {
-        "filePath": ".github/workflows/dataDomainDeployment.yml",
-        "fileType": "yaml",
-        "parameters": {
-            "env.AZURE_SUBSCRIPTION_ID": "${DataLandingZoneSubscriptionId}",
-            "env.AZURE_RESOURCE_GROUP_NAME": "${DataLandingZoneName}-rg",
-            "env.AZURE_LOCATION": "${Location}"
-        }
     }
 ]
