@@ -36,7 +36,7 @@ jobs:
           pwsh $GITHUB_WORKSPACE/config/UpdateParameters.ps1 \
             -ConfigurationFilePath 'config/config.json' \
             -ManagementSubscriptionId '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}' \
-            -GlobalDnsRgName '${{ env.GLOBAL_DNS_RG_NAME }} \
+            -GlobalDnsRgName '${{ env.GLOBAL_DNS_RG_NAME }}' \
             -DataLandingZoneSubscriptionId '${{ env.DATA_LANDING_ZONE_SUBSCRIPTION_ID }}' \
             -DataLandingZoneName '${{ env.DATA_LANDING_ZONE_NAME }}' \
             -Location '${{ env.LOCATION }}' \
