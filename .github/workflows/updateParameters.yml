@@ -77,3 +77,5 @@ jobs:
         with:
           commit-message: 'Updated Parameters'
           branch: 'parameter_update_${{ github.run_id }}'
+          title: 'Updated Parameters with GitHub Workflow Run ID ${{ github.run_id }}'
+          body: 'Please Update the GitHub Workflow environment variables in ".github/workflows/dataDomainDeployment.yml" (AZURE_SUBSCRIPTION_ID, AZURE_RESOURCE_GROUP_NAME, AZURE_LOCATION) as described [here](). '
