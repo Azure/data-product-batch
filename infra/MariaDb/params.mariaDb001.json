@@ -1,45 +1,45 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "value": "northeurope"
-        },
-        "mariaDbServerName": {
-            "value": "dn001-dd001-mariadbserver001"
-        },
-        "mariaDbDatabaseName": {
-            "value": "DataDomain001"
-        },
-        "mariaDbSkuName": {
-            "value": "GP_Gen5_2"
-        },
-        "mariaDbSkuTier": {
-            "value": "GeneralPurpose"
-        },
-        "mariaDbSkuCapacity": {
-            "value": 2
-        },
-        "mariaDbSkuSize": {
-            "value": 5120
-        },
-        "mariaDbSkuFamily": {
-            "value": "Gen5"
-        },
-        "mariaDbServerAdministratorLogin": {
-            "value": "ServerMainUser"
-        },
-        "mariaDbServerAdministratorLoginPassword": {
-            "value": "<your-secure-password>"
-        },
-        "keyVaultId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-dd001/providers/Microsoft.KeyVault/vaults/dn001-dd001-keyvault001"
-        },
-        "subnetId": {
-            "value": "/subscriptions/2f68ca09-59d9-4ab5-ad11-c54872bfa28d/resourceGroups/dn001-network/providers/Microsoft.Network/virtualNetworks/dn001-vnet/subnets/dn001-dd001-privatelink-subnet"
-        },
-        "privateDnsZoneId": {
-            "value": "/subscriptions/4060c03e-0d2e-44b7-82a3-da9376fe50b2/resourceGroups/dh-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "<my-region>"
+    },
+    "mariaDbServerName": {
+      "value": "<my-data-landing-zone-name>-mariadbserver001"
+    },
+    "mariaDbDatabaseName": {
+      "value": "DataDomain001"
+    },
+    "mariaDbSkuName": {
+      "value": "GP_Gen5_2"
+    },
+    "mariaDbSkuTier": {
+      "value": "GeneralPurpose"
+    },
+    "mariaDbSkuCapacity": {
+      "value": 2
+    },
+    "mariaDbSkuSize": {
+      "value": 5120
+    },
+    "mariaDbSkuFamily": {
+      "value": "Gen5"
+    },
+    "mariaDbServerAdministratorLogin": {
+      "value": "ServerMainUser"
+    },
+    "mariaDbServerAdministratorLoginPassword": {
+      "value": "<your-secure-password>"
+    },
+    "keyVaultId": {
+      "value": "/subscriptions/<my-data-landing-zone-subscription-id>/resourceGroups/<my-data-landing-zone-name>-rg/providers/Microsoft.KeyVault/vaults/<my-data-landing-zone-name>-keyvault001"
+    },
+    "subnetId": {
+      "value": "<my-subnet-resource-id>"
+    },
+    "privateDnsZoneId": {
+      "value": "<my-global-dns-resource-group-resource-id>/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com"
     }
+  }
 }
