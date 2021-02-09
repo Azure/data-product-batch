@@ -3,6 +3,11 @@
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
 
 
+<p align="center">
+    <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/> 
+</p>
+
+
 # Description
 
 TODO
