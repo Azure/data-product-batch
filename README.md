@@ -22,7 +22,7 @@ TODO
 
 ## What will be deployed?
 
-By default, all the services which comes under Data Domain Batch are enabled and you must explicitly disable them if you don't want it to be deployed. For more details regarding the services which will be deployed, please check [Domains](https://github.com/Azure/Enterprise-Scale-Analytics/blob/main/docs/03-datalandingzones/05-domains.md).
+By default, all the services which comes under Data Domain Batch are enabled and you must explicitly disable them if you don't want it to be deployed. 
 
 <p align="center">
     <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/> 
@@ -42,6 +42,8 @@ For each Domain, in a Data Landing Zone, which is onboarded it is created:
  - [Sql Elastic Pool](https://docs.microsoft.com/en-us/azure/azure-sql/database/elastic-pool-overview)
  - [BigData Pool](https://docs.microsoft.com/en-us/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15)
 
+
+For more details regarding the services which will be deployed, please check [Domains](https://github.com/Azure/Enterprise-Scale-Analytics/blob/main/docs/03-datalandingzones/05-domains.md).
 
 You have two options for deploying this reference architecture:
 1. Use the `Deploy to Azure` Button or
