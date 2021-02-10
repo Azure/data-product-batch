@@ -19,9 +19,9 @@ on:
       - '.github/workflows/dataDomainDeployment.yml'
 
 env:
-  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d'
-  AZURE_RESOURCE_GROUP_NAME: 'dn001-dd001'
-  AZURE_LOCATION: 'northeurope'
+  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d' # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: 'dn001-dd001'                      # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: 'northeurope'                                 # Update to '{regionName}'
 
 jobs:
   prerequisite:
