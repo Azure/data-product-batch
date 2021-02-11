@@ -65,24 +65,24 @@ jobs:
 
           \`\`\`Shell
           # Get Service Principal Object ID
-          az ad sp list --display-name "{servicePrincipalName}" --query "[].{objectId:objectId}" --output tsv
+          az ad sp list --display-name \"{servicePrincipalName}\" --query \"[].{objectId:objectId}\" --output tsv
 
           # Add role assignment
           az role assignment create \\
-            --assignee "{servicePrincipalObjectId}" \
-            --role "Contributor" \
+            --assignee \"{servicePrincipalObjectId}\" \\
+            --role \"Contributor\" \\
             --resource-group \"${{ steps.update_parameters.outputs.landingZoneName }}-rg\"
           \`\`\`
 
           \`\`\`Powershell
           # Get Service Principal Object ID
-          $spObjectId = (Get-AzADServicePrincipal -DisplayName "{servicePrincipalName}").id
+          \$spObjectId = (Get-AzADServicePrincipal -DisplayName \"{servicePrincipalName}\").id
 
           # Add role assignment
           New-AzRoleAssignment \`
-            -ObjectId $spObjectId \`
-            -RoleDefinitionName "Contributor" \`
-            -ResourceGroupName "${{ steps.update_parameters.outputs.landingZoneName }}-rg"
+            -ObjectId \$spObjectId \`
+            -RoleDefinitionName \"Contributor\" \`
+            -ResourceGroupName \"${{ steps.update_parameters.outputs.landingZoneName }}-rg\"
           \`\`\`
           
           ## 2. Update Parameters in the workflow
