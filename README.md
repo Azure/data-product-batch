@@ -14,7 +14,7 @@ By default, all the services which comes under Data Domain Batch are enabled and
     <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/>
 </p>
 
-For each Domain, in a Data Landing Zone, which is onboarded it is created:
+For each Data Domain Batch template, the following services are created:
  - [Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/general)
  - [Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/)
  - [Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction)
