@@ -74,16 +74,16 @@ jobs:
             --resource-group "${{ steps.update_parameters.outputs.landingZoneName }}-rg"
           \`\`\`
 
-          ```Powershell
+          \`\`\`Powershell
           # Get Service Principal Object ID
           $spObjectId = (Get-AzADServicePrincipal -DisplayName "{servicePrincipalName}").id
 
           # Add role assignment
-          New-AzRoleAssignment `
-            -ObjectId $spObjectId `
-            -RoleDefinitionName "Contributor" `
+          New-AzRoleAssignment \`
+            -ObjectId $spObjectId \`
+            -RoleDefinitionName "Contributor" \`
             -ResourceGroupName "${{ steps.update_parameters.outputs.landingZoneName }}-rg"
-          ``` 
+          \`\`\`
           
           ## 2. Update Parameters in the workflow
           
