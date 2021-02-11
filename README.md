@@ -79,11 +79,14 @@ A service principal needs to be generated for authentication and authorization f
 > NOTE: The purpose of this new Service Principal is to assign least priviliges rights. Therefore, it requires the **Contributor** role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific `data domain`. The **Network Contributor** role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
 
 **Azure CLI**
-
-```sh
-# Replace {service-principal-name}, {subscription-id} and {resource-group} with your 
-# Azure subscription id and resource group name and any name for your service principal
-az ad sp create-for-rbac --name {service-principal-name} 
+```Shell
+# Replace {service-principal-name} and {subscription-id}  with your 
+# Azure subscription id and any name for your service principal.
+az ad sp create-for-rbac \
+  --name "{service-principal-name}" \
+  --role "Contributor" \
+  --scopes "/subscriptions/{subscription-id}" \
+  --sdk-auth
 ```
 
 **Azure Powershell**
@@ -91,11 +94,12 @@ az ad sp create-for-rbac --name {service-principal-name}
 # Replace {service-principal-name} and {subscription-id}  with your 
 # Azure subscription id and any name for your service principal.
 New-AzADServicePrincipal `
-  -DisplayName "{service-principal-name}"
-
+  -DisplayName "{service-principal-name}" `
+  -Role "Contributor" `
+  -Scope "/subscriptions/{subscription-id}"
 ```
-
 This will generate the following JSON output:
+
 ```JSON
 {
   "clientId": "<GUID>",
@@ -105,6 +109,7 @@ This will generate the following JSON output:
   (...)
 }
 ```
+
 **Take note of the output. It will be required for the next steps.**
 
 Few more role assignments are required for this service principle in order to be able to successfully deploy all services. Required role assignments include:
