@@ -63,6 +63,7 @@ jobs:
 
           Now, grant the service principal from earlier access to the resource group with the following commands (either with Azure CLI or with Powershell):
 
+          **For Azure CLI**
           \`\`\`Shell
           # Get Service Principal Object ID
           az ad sp list --display-name \"{servicePrincipalName}\" --query \"[].{objectId:objectId}\" --output tsv
@@ -74,6 +75,7 @@ jobs:
             --resource-group \"${{ steps.update_parameters.outputs.landingZoneName }}-rg\"
           \`\`\`
 
+          **For Powershell**
           \`\`\`Powershell
           # Get Service Principal Object ID
           \$spObjectId = (Get-AzADServicePrincipal -DisplayName \"{servicePrincipalName}\").id
