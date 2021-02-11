@@ -109,7 +109,7 @@ This will generate the following JSON output:
 
 **Take note of the output. It will be required for the next steps.**
 
-Now that the new Service Principal is created, as mentioned,  role assignments are required for this service principal in order to be able to successfully deploy all services. The assignments will be needed on a later step. Required role assignments include:
+Now that the new Service Principal is created, as mentioned,  role assignments are required for this service principal in order to be able to successfully deploy all services. Required role assignments which will be added on a later step include:
 
 | Role Name | Description | Scope |
 |:----------|:------------|:------|
