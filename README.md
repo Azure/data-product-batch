@@ -1,4 +1,4 @@
-# Enterprise Scale Analytics - Data Domain Batch
+# Enterprise Scale Analytics - Data Domain: Batch Processing
 
 > **General disclaimer** Please be aware that this template is in public preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
 
