@@ -1,31 +1,17 @@
-# Deploy to Azure
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
-
-
-
-
-
-
-
-
-
-
-
-
 # Enterprise Scale Analytics - Data Domain Batch
 
 > **General disclaimer** Please be aware that this template is in public preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue, if you come across any issues that you would like us to fix.
 
 # Description 
-TODO
+
+Enterprise Scale analytics emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation end responsibility of these landing zones is handed over to teh responsible teams inside the data node. The teams are free to deploy their own services within the guardrails of Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the consept of Data Domain and Data Product templates. Data Domain and Data Product templates are blueprints, which can be used to quickly spin up environments for cross-functional teams. The teams can fork these repos to quickly spin up environemnts based on their requirements. This Data Domain template deploys a set of services, which can be used for batch processing of data. The template includes a set of different SQL engines, which allows the teams to choose their option based on their requirements and preferences.
 
 ## What will be deployed?
 
-By default, all the services which comes under Data Domain Batch are enabled and you must explicitly disable them if you don't want it to be deployed. 
+By default, all the services which comes under Data Domain Batch are enabled and you must explicitly disable them if you don't want it to be deployed.
 
 <p align="center">
-    <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/> 
+    <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/>
 </p>
 
 For each Domain, in a Data Landing Zone, which is onboarded it is created:
@@ -49,12 +35,12 @@ You have two options for deploying this reference architecture:
 1. Use the `Deploy to Azure` Button or
 2. Use GitHub Actions or Azure DevOps Pipelines
 
-
 # Prerequisites
 
 The following prerequisites are required to make this repository work:
-* An Azure subscription
-* [User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) access to the subscription to be able to create a service principal and role assignments for it.
+* A resource group within and Azure subscription
+* [User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) access to a resource group to be able to create a service principal and role assignments for it.
+* Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration.
 
 If you don’t have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/en-us/free/).
 
@@ -90,19 +76,7 @@ If you don’t have an Azure subscription, [create your Azure free account today
 
 A service principal needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure subscription. This is required to deploy resources to your environment. Just go to the `Azure Portal` to find the id of your subscription. Then start CLI or PowerShell, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
 
-> NOTE: The purpose of this new Service Principal is to assign least priviliges rights. Therefor, it requires the **Contributor** role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific `data domain`. The **Network Contributor** role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
-
-Required role assignments for this repository include:
-
-| Role Name | Description | Scope |
-|:----------|:------------|:------|
-| [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) | We expect you to deploy all data-domain-batch services into a single subscription and resource group. The service principal needs to be Contributor on that resource group. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | (Resource Group Scope)  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}` |
-| [Network Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#network-contributor) | In order to have access on the dedicated subnet | (Resource Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName} /providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"` |
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-To add these role assignments, you can use the [Azure Portal](https://portal.azure.com/) or run the following commands:
-
+> NOTE: The purpose of this new Service Principal is to assign least priviliges rights. Therefore, it requires the **Contributor** role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific `data domain`. The **Network Contributor** role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
 
 **Azure CLI**
 
@@ -133,11 +107,20 @@ This will generate the following JSON output:
 ```
 **Take note of the output. It will be required for the next steps.**
 
-The next step is to add the role assignments: 
+Few more role assignments are required for this service principle in order to be able to successfully deploy all services. Required role assignments include:
+
+| Role Name | Description | Scope |
+|:----------|:------------|:------|
+| [Private DNS Zone Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#private-dns-zone-contributor) | We expect you to deploy all Private DNS zones for all data services into a single subscription and resource group. The service principal needs to be Private DNS Zone Contributor on that resource group. This is required to deploy A-records for the respective private endpoints.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | (Resource Group Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}` |
+| [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) | We expect you to deploy all data-domain-batch services into a single resource group within the Data Landing Zone subscription. The service principal requires a **Contributor** role-assignment on that resource group. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | (Resource Group Scope)  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}` |
+| [Network Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#network-contributor) | In order to deploy Private Endpoints to the specified subnet, the service principal requires **Network Contributor** access on the subnet. | (Child-Resource Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName} /providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"` |
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+To add these role assignments, you can use the [Azure Portal](https://portal.azure.com/) or run the following commands:
 
 **Azure CLI**
-
-```sh
+```Shell
 # Get Service Principle Object ID
 az ad sp list --display-name "{servicePrincipalName}" --query "[].{objectId:objectId}" --output tsv
 
@@ -154,6 +137,8 @@ az role assignment create \
   --role "{roleName}" \
   --resource-group "{resourceGroupName}"
 
+# 3. Child-Resource Scope
+# TBD
 ```
 
 **Azure Powershell**
@@ -173,8 +158,16 @@ New-AzRoleAssignment `
   -ObjectId $spObjectId `
   -RoleDefinitionName "{roleName}" `
   -ResourceGroupName "{resourceGroupName}"
-``` 
 
+# 3. Child-Resource Scope
+New-AzRoleAssignment `
+  -ObjectId $spObjectId `
+  -RoleDefinitionName "{roleName}" `
+  -ResourceName "{subnetName}" `
+  -ResourceType "Microsoft.Network/virtualNetworks/subnets" `
+  -ParentResource "virtualNetworks/{virtualNetworkName}" `
+  -ResourceGroupName "{resourceGroupName}
+``` 
 
 Now you can choose, whether you would like to use GitHub Actions or Azure DevOps for your deployment.
 
