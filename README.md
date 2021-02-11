@@ -9,6 +9,7 @@ Enterprise Scale analytics emphasizes self-service and follows the concept of cr
 ## What will be deployed?
 
 By default, all the services which come under Data Domain Batch are enabled, and you must explicitly disable services that you don't want to be deployed.
+> Note: Before deploying the resources, you will need to check that your subscription is registered for each of the resource providers. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
 
 <p align="center">
     <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/>
@@ -70,7 +71,7 @@ If you don’t have an Azure subscription, [create your Azure free account today
 6. Optionally, to include the directory structure and files from all branches in the template and not just the default branch, select **Include all branches**.
 7. Click **Create repository from template**.
 
-## 2. Setting up the required Service Principal and access
+## 2. Setting up the required Service Principal
 
 A service principal needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure subscription. This is required to deploy resources to your environment. Just go to the `Azure Portal` to find the ID of your subscription. Then start Azure CLI or PowerShell, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
 
@@ -82,8 +83,7 @@ A service principal needs to be generated for authentication and authorization f
 # Azure subscription id and any name for your service principal.
 az ad sp create-for-rbac \
   --name "{service-principal-name}" \
-  --role "Contributor" \
-  --scopes "/subscriptions/{subscription-id}" \
+  --skip-assignment \
   --sdk-auth
 ```
 
@@ -93,8 +93,7 @@ az ad sp create-for-rbac \
 # Azure subscription id and any name for your service principal.
 New-AzADServicePrincipal `
   -DisplayName "{service-principal-name}" `
-  -Role "Contributor" `
-  -Scope "/subscriptions/{subscription-id}"
+  -SkipAssignment
 ```
 
 This will generate the following JSON output:
@@ -110,7 +109,7 @@ This will generate the following JSON output:
 
 **Take note of the output. It will be required for the next steps.**
 
-A few more role assignments are required for this service principal in order to be able to successfully deploy all services. Required role assignments include:
+Now that the new Service Principal is created, as mentioned,  role assignments are required for this service principal in order to be able to successfully deploy all services. The assignments will be needed on a later step. Required role assignments include:
 
 | Role Name | Description | Scope |
 |:----------|:------------|:------|
@@ -323,6 +322,19 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 - [Implementation - Data Domain - Streaming](https://github.com/Azure/data-domain-streaming)
 - [Implementation - Data Product - Reporting](https://github.com/Azure/data-product-reporting)
 - [Implementation - Data Product - Analytics & Data Science](https://github.com/Azure/data-product-analytics)
+
+
+## Known issues
+
+### Error: MissingSubscriptionRegistration
+
+**Error message: **
+```sh
+Message: ***'error': ***'code': 'MissingSubscriptionRegistration', 'message': "The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions.", 'details': [***'code': 'MissingSubscriptionRegistration', 'target': 'Microsoft.KeyVault', 'message': "The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions
+```
+**Solution:**
+
+This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the `Azure Portal`, `Azure Powershell` or `Azure CLI` as mentioned [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
 
 # Contributing
 
