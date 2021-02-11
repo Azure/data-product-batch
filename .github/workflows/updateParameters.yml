@@ -68,10 +68,10 @@ jobs:
           az ad sp list --display-name "{servicePrincipalName}" --query "[].{objectId:objectId}" --output tsv
 
           # Add role assignment
-          az role assignment create \
+          az role assignment create \\
             --assignee "{servicePrincipalObjectId}" \
             --role "Contributor" \
-            --resource-group "${{ steps.update_parameters.outputs.landingZoneName }}-rg"
+            --resource-group \"${{ steps.update_parameters.outputs.landingZoneName }}-rg\"
           \`\`\`
 
           \`\`\`Powershell
