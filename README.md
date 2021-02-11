@@ -328,9 +328,19 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 
 ### Error: MissingSubscriptionRegistration
 
-**Error message: **
+**Error Message:**
+
 ```sh
-Message: ***'error': ***'code': 'MissingSubscriptionRegistration', 'message': "The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions.", 'details': [***'code': 'MissingSubscriptionRegistration', 'target': 'Microsoft.KeyVault', 'message': "The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions
+ERROR: Deployment failed. Correlation ID: ***
+  "error": ***
+    "code": "MissingSubscriptionRegistration",
+    "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions.",
+    "details": [
+      ***
+        "code": "MissingSubscriptionRegistration",
+        "target": "Microsoft.DocumentDB",
+        "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions."
+ 
 ```
 **Solution:**
 
