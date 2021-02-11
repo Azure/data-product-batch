@@ -9,7 +9,7 @@ Enterprise Scale analytics emphasizes self-service and follows the concept of cr
 ## What will be deployed?
 
 By default, all the services which come under Data Domain Batch are enabled, and you must explicitly disable services that you don't want to be deployed.
-> Note: Before deploying the resources, you will need to check that your subscription is registered for each of the resource providers. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
+> Note: Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
 
 <p align="center">
     <img src="./docs/media/DomainBatch.png" alt="Data Domain - Batch" width="500"/>
