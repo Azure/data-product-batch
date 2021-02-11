@@ -35,7 +35,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    # Create resource group
+    # Validate existence of resource group
     - name: Validating existence of resource group
       id: resource_group_storage
       uses: azure/cli@v1
