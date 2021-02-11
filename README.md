@@ -1,8 +1,8 @@
 # Enterprise Scale Analytics - Data Domain Batch
 
-> **General disclaimer** Please be aware that this template is in public preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue if you come across any issues that you would like us to fix.
+> **General disclaimer** Please be aware that this template is in public preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
 
-# Description 
+# Description
 
 Enterprise Scale analytics emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Domain and Data Product templates. Data Domain and Data Product templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repos to quickly spin up environments based on their requirements. This Data Domain template deploys a set of services, which can be used for batch processing of data. The template includes a set of different SQL engines, which allows the teams to choose their tools based on their requirements and preferences.
 
@@ -28,7 +28,6 @@ For each Data Domain Batch template, the following services are created:
  - [SQL Elastic Pool](https://docs.microsoft.com/en-us/azure/azure-sql/database/elastic-pool-overview)
  - [BigData Pool](https://docs.microsoft.com/en-us/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15)
 
-
 For more details regarding the services that will be deployed, please read the [Domains](https://github.com/Azure/Enterprise-Scale-Analytics/blob/main/docs/03-datalandingzones/05-domains.md) guide in the Enterprise Scale Analytics documentation.
 
 You have two options for deploying this reference architecture:
@@ -49,7 +48,6 @@ If you don’t have an Azure subscription, [create your Azure free account today
 | &nbsp;Data Domain Batch |
 |:---------------------|
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
-
 
 # Option 2: GitHub Actions or Azure DevOps Pipelines
 
@@ -98,8 +96,8 @@ New-AzADServicePrincipal `
   -Role "Contributor" `
   -Scope "/subscriptions/{subscription-id}"
 ```
-This will generate the following JSON output:
 
+This will generate the following JSON output:
 ```JSON
 {
   "clientId": "<GUID>",
@@ -244,7 +242,7 @@ The following table explains each of the parameters:
 |:-----------------------------------------|:-------------|:-------------|
 | **GLOBAL_DNS_RESOURCE_GROUP_ID**             | Specifies the global DNS resource group resource ID which gets deployed with the [Data Management Landing Zone](https://github.com/Azure/data-management-zone) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-resource-group` |
 | **DATA_LANDING_ZONE_SUBSCRIPTION_ID**        | Specifies the subscription ID of the Data Landing Zone where all the resources will be deployed | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
-| **DATA_LANDING_ZONE_NAME**                   | Specifies the name of your Data Landing Zone. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `mynode01`  |
+| **DATA_LANDING_ZONE_NAME**                   | Specifies the name of your Data Landing Zone. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `mynode01` |
 | **LOCATION**                                 | Specifies the region where you want the resources to be deployed. | `northeurope` |
 | **SUBNET_ID**                              | Specifies the resource ID of the dedicated subnet which was created during the Data Landing Zone deployment. | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/mysubnet` |
 |**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account | `synapsestorageaccount`
