@@ -80,17 +80,17 @@
         "databaseAdministratorLoginPassword": "[parameters('databaseAdministratorLoginPassword')]",
         "synapseDefaultStorageAccountName": "[parameters('synapseDefaultStorageAccountName')]",
         "synapseDefaultStorageAccountFileSystem": "[parameters('synapseDefaultStorageAccountFileSystem')]",
-        "bigDataPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/BigDataPool/deploy.bigDataPool.json",
-        "cosmosDbTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/CosmosDb/deploy.cosmosDb.json",
-        "dataFactoryTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/DataFactory/deploy.dataFactory.json",
-        "keyVaultTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/KeyVault/deploy.keyVault.json",
-        "mariaDbTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/MariaDb/deploy.mariaDb.json",
-        "mySqlTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/MySql/deploy.mySql.json",
-        "postgreSqlTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/PostgreSql/deploy.postgreSql.json",
-        "sqlDatabaseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlDatabase/deploy.sqlDatabase.json",
-        "sqlPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlPool/deploy.sqlPool.json",
-        "sqlServerTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/SqlServer/deploy.sqlServer.json",
-        "synapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain/main/infra/Synapse/deploy.synapse.json"
+        "bigDataPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/BigDataPool/deploy.bigDataPool.json",
+        "cosmosDbTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/CosmosDb/deploy.cosmosDb.json",
+        "dataFactoryTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/DataFactory/deploy.dataFactory.json",
+        "keyVaultTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/KeyVault/deploy.keyVault.json",
+        "mariaDbTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/MariaDb/deploy.mariaDb.json",
+        "mySqlTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/MySql/deploy.mySql.json",
+        "postgreSqlTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/PostgreSql/deploy.postgreSql.json",
+        "sqlDatabaseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/SqlDatabase/deploy.sqlDatabase.json",
+        "sqlPoolTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/SqlPool/deploy.sqlPool.json",
+        "sqlServerTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/SqlServer/deploy.sqlServer.json",
+        "synapseTemplateLink": "https://raw.githubusercontent.com/Azure/data-domain-batch/main/infra/Synapse/deploy.synapse.json"
     },
     "resources": [
         {
