@@ -88,7 +88,7 @@ jobs:
           \`\`\`
           
           ## 2. Update Parameters in the workflow
-          
+
           **For GitHub Actions**
           
           Go to \`/.github/workflows/dataDomainDeployment.yml\` in the branch \`parameter_update_${{ github.run_id }}\` and update the environment variables to the following:
