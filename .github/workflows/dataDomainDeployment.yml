@@ -35,7 +35,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    # Create resource group
+    # Validate existence of resource group
     - name: Validating existence of resource group
       id: resource_group_storage
       uses: azure/cli@v1
@@ -54,11 +54,6 @@ jobs:
         inlineScript: |
           az logout
     
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: Check Out Repository
-      id: checkout_repository
-      uses: actions/checkout@v2
-
   validation:
     needs: [ prerequisite ]
     runs-on: ubuntu-latest
