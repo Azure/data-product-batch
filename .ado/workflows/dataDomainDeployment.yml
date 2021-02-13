@@ -1,4 +1,4 @@
-name: Data Domain Batch Deployment
+name: Data Domain Deployment
 
 trigger:
   branches:
