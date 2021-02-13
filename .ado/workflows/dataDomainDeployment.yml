@@ -1,4 +1,4 @@
-name: Data Node Deployment
+name: Data Domain Batch Deployment
 
 trigger:
   branches:
@@ -114,7 +114,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/deploy.sqlDatabase.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/SqlDatabase/params.sqlDatabase001.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/params.sqlDatabase001.json'
             deploymentMode: 'Validation'
             overrideParameters: >
               -sqlServerAdministratorLoginPassword "$(password)"
@@ -148,7 +148,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/MariaDb/deploy.mariaDb.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/MariaDb/params.mariaDb001.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MariaDb/params.mariaDb001.json'
             deploymentMode: 'Validation'
             overrideParameters: >
               -mariaDbServerAdministratorLoginPassword "$(password)"
@@ -182,7 +182,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/MySql/deploy.mySql.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/MySql/params.mySql001.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MySql/params.mySql001.json'
             deploymentMode: 'Validation'
             overrideParameters: >
               -mySqlServerAdministratorLoginPassword "$(password)"
@@ -216,7 +216,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/PostgreSql/deploy.postgreSql.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/PostgreSql/params.postgreSql001.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/PostgreSql/params.postgreSql001.json'
             deploymentMode: 'Validation'
             overrideParameters: >
               -postgreSqlServerAdministratorLoginPassword "$(password)"
@@ -236,7 +236,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/CosmosDb/deploy.cosmosDb.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/CosmosDb/params.cosmosDb001.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/CosmosDb/params.cosmosDb001.json'
             deploymentMode: 'Validation'
         
         # Deploy Data Factory 001 - validation
@@ -416,7 +416,7 @@ stages:
         #     location: '$(AZURE_LOCATION)'
         #     templateLocation: 'Linked artifact'
         #     csmFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/deploy.sqlDatabase.json'
-        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/SqlDatabase/params.sqlDatabase001.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/SqlDatabase/params.sqlDatabase001.json'
         #     deploymentMode: 'Incremental'
         #     overrideParameters: >
         #       -sqlServerAdministratorLoginPassword "$(password)"
@@ -450,7 +450,7 @@ stages:
         #     location: '$(AZURE_LOCATION)'
         #     templateLocation: 'Linked artifact'
         #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MariaDb/deploy.mariaDb.json'
-        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/MariaDb/params.mariaDb001.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MariaDb/params.mariaDb001.json'
         #     deploymentMode: 'Incremental'
         #     overrideParameters: >
         #       -mariaDbServerAdministratorLoginPassword "$(password)"
@@ -484,7 +484,7 @@ stages:
         #     location: '$(AZURE_LOCATION)'
         #     templateLocation: 'Linked artifact'
         #     csmFile: '$(System.DefaultWorkingDirectory)/infra/MySql/deploy.mySql.json'
-        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/MySql/params.mySql001.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/MySql/params.mySql001.json'
         #     deploymentMode: 'Incremental'
         #     overrideParameters: >
         #       -mySqlServerAdministratorLoginPassword "$(password)"
@@ -518,7 +518,7 @@ stages:
         #     location: '$(AZURE_LOCATION)'
         #     templateLocation: 'Linked artifact'
         #     csmFile: '$(System.DefaultWorkingDirectory)/infra/PostgreSql/deploy.postgreSql.json'
-        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/PostgreSql/params.postgreSql001.json'
+        #     csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/PostgreSql/params.postgreSql001.json'
         #     deploymentMode: 'Incremental'
         #     overrideParameters: >
         #       -postgreSqlServerAdministratorLoginPassword "$(password)"
@@ -538,7 +538,7 @@ stages:
             location: '$(AZURE_LOCATION)'
             templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/infra/CosmosDb/deploy.cosmosDb.json'
-            csmParametersFile: '$(System.DefaultWorkingDirectory)/CosmosDb/params.cosmosDb001.json'
+            csmParametersFile: '$(System.DefaultWorkingDirectory)/infra/CosmosDb/params.cosmosDb001.json'
             deploymentMode: 'Incremental'
         
         # Deploy Data Factory 001
