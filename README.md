@@ -371,6 +371,7 @@ This error message appears, in case during the deployment it tries to create a t
 ```
 
 **Solution:**
+
 This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites** or if the `SUBNET_ID` parameter from <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml`</a>, which specifies the resource ID of the dedicated subnet is not the right one. 
 
 
