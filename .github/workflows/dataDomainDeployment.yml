@@ -17,6 +17,22 @@ on:
       - 'infra/SqlServer/**'
       - 'infra/Synapse/**'
       - '.github/workflows/dataDomainDeployment.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'code/**'
+      - 'infra/BigDataPool/**'
+      - 'infra/CosmosDb/**'
+      - 'infra/DataFactory/**'
+      - 'infra/KeyVault/**'
+      - 'infra/MariaDb/**'
+      - 'infra/MySql/**'
+      - 'infra/PostgreSql/**'
+      - 'infra/SqlDatabase/**'
+      - 'infra/SqlPool/**'
+      - 'infra/SqlServer/**'
+      - 'infra/Synapse/**'
+      - '.github/workflows/dataDomainDeployment.yml'
 
 env:
   AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d' # Update to '{dataLandingZoneSubscriptionId}'
