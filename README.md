@@ -49,7 +49,7 @@ If you don’t have an Azure subscription, [create your Azure free account today
 
 | &nbsp;Data Domain Batch |
 |:---------------------|
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
 
 # Option 2: GitHub Actions or Azure DevOps Pipelines
 
@@ -235,7 +235,7 @@ The following table explains each of the parameters:
 | **DATA_LANDING_ZONE_SUBSCRIPTION_ID**        | Specifies the subscription ID of the Data Landing Zone where all the resources will be deployed | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | **DATA_LANDING_ZONE_NAME**                   | Specifies the name of your Data Landing Zone. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `mynode01` |
 | **LOCATION**                                 | Specifies the region where you want the resources to be deployed. | `northeurope` |
-| **SUBNET_ID**                              | Specifies the resource ID of the dedicated subnet which was created during the Data Landing Zone deployment. | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/mysubnet` |
+| **SUBNET_ID**                                | Specifies the resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. The subnet should be configured with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies`, as mentioned in the *Prerequisites* | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/{my}-privatelink-subnet` |
 |**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account | `synapsestorageaccount`
 |**SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME**| Specifies the name of the Synapse Account filesystem| `fs`| 
 | **AZURE_RESOURCE_MANAGER_CONNECTION_NAME**   | Specifies the resource manager connection name in Azure DevOps. You can leave the default value if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found in step 4. b) or [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
@@ -310,7 +310,26 @@ If you are using GitHub Actions, you can navigate to the **Actions** tab of the 
 
 If you are using Azure DevOps Pipelines, you can navigate to the pipeline that you have created as part of step 6 and monitor it as each service is deployed. If you run into any issues, please open an issue [here](https://github.com/Azure/data-landing-zone/issues).
 
-# Enterprise Scale Analytics Documentation and Implementation
+
+# Documentation
+
+## Code Structure
+
+| File/folder                   | Description                                |
+| ----------------------------- | ------------------------------------------ |
+| `.ado/workflows`              | Folder for ADO workflows. The `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
+| `.github/workflows`           | Folder for GitHub workflows. The `updateParameters.yml` workflow is used for the parameter update process, while the `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
+| `code`                        | Sample password generation script that will be run in the deployment workflow for resources that require a password during the deployment. |
+| `configs`                     | Folder containing a script and configuration file that is used for the parameter update process. |
+| `docs`                        | Resources for this README.                 |
+| `infra`                       | Folder containing all the ARM templates for each of the resources that will be deployed (`deploy.{resource}.json`) together with their parameter files (`params.{resource}.json`). |
+| `CODE_OF_CONDUCT.md`          | Microsoft Open Source Code of Conduct.     |
+| `LICENSE`                     | The license for the sample.                |
+| `README.md`                   | This README file.                          |
+| `SECURITY.md`                 | Microsoft Security README.                 |
+
+
+## Enterprise Scale Analytics Documentation and Implementation
 
 - [Documentation](https://github.com/Azure/Enterprise-Scale-Analytics)
 - [Implementation - Data Management](https://github.com/Azure/data-management-zone)
@@ -342,6 +361,19 @@ ERROR: Deployment failed. Correlation ID: ***
 **Solution:**
 
 This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the `Azure Portal`, `Azure Powershell` or `Azure CLI` as mentioned [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
+
+### Error: PECsNotExistingToDenyPublicNetworkAccess
+
+**Error Message:**
+
+```sh
+[error]PECsNotExistingToDenyPublicNetworkAccess: Unable to set Deny Public Network Access to Yes since there is no private endpoint enabled to access the server. Please set up private endpoints and retry the operation (https://docs.microsoft.com/azure/sql-database/sql-database-private-endpoint-overview#how-to-set-up-private-link-for-azure-sql-database).
+```
+
+**Solution:**
+
+This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites**. Please update the subnet configuration or set the correct `SUBNET_ID` parameter in <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml`</a>. 
+
 
 # Contributing
 
