@@ -197,7 +197,7 @@
             }
         },
         {
-            "name": "SecretDeployment",
+            "name": "MariaDbSecretDeployment",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "dependsOn": [
