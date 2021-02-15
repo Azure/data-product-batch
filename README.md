@@ -291,21 +291,12 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 
 | File/folder                   | Description                                |
 | ----------------------------- | ------------------------------------------ |
-<<<<<<< HEAD
-| `.ado/workflows`              | Folder for ADO workflows. The `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment|
-| `.github/workflows`           | Folder for GitHub workflows. The `updateParameters.yml` sample workflow shows you how you can update the parameters with your preferred naming, while the `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment |
-| `code`                        | Sample Password Generation code that will be run in the deployment workflow of the resources that needs a Password during the creation  |
-| `configs`                     | Folder containing the `config.json` file containing details of all the resources files which will be deployed in this repository. This file will be reference by the `UpdateParameters.ps1` script in order to update the parameters name before the deployment |
-| `docs`                        | Resources for this README.                 |
-| `infra`                       | Folder containing zll the ARM templates for each of the resources that will be deployed (`deploy.{resource}.json`) together with their parameter files (`params.{resource}.json`).
-=======
 | `.ado/workflows`              | Folder for ADO workflows. The `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
 | `.github/workflows`           | Folder for GitHub workflows. The `updateParameters.yml` workflow is used for the parameter update process, while the `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
 | `code`                        | Sample password generation script that will be run in the deployment workflow for resources that require a password during the deployment. |
 | `configs`                     | Folder containing a script and configuration file that is used for the parameter update process. |
 | `docs`                        | Resources for this README.                 |
 | `infra`                       | Folder containing all the ARM templates for each of the resources that will be deployed (`deploy.{resource}.json`) together with their parameter files (`params.{resource}.json`). |
->>>>>>> 0648ef9a4d276f491a07746cd35d6a25fec5c0d9
 | `CODE_OF_CONDUCT.md`          | Microsoft Open Source Code of Conduct.     |
 | `LICENSE`                     | The license for the sample.                |
 | `README.md`                   | This README file.                          |
@@ -354,12 +345,7 @@ This error message appears, in case during the deployment it tries to create a t
 
 **Solution:**
 
-<<<<<<< HEAD
-This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites** or if the `SUBNET_ID` parameter from [/.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml), which specifies the resource ID of the dedicated subnet is not the right one.
-=======
-This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites**. Please update the subnet configuration or set the correct `SUBNET_ID` parameter in <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml`</a>. 
-
->>>>>>> 0648ef9a4d276f491a07746cd35d6a25fec5c0d9
+This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites**. Please update the subnet configuration or set the correct `SUBNET_ID` parameter in [/.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml`).
 
 ## Contributing
 
