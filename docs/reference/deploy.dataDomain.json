@@ -73,7 +73,7 @@
         "location": "[parameters('location')]",
         "privateDnsZoneResourceGroupId": "[parameters('privateDnsZoneResourceGroupId')]",
         "subnetId": "[parameters('subnetId')]",
-        "subnetName": "[last(variables('subnetId'))]",
+        "subnetName": "[last(split(variables('subnetId'), '/'))]",
         "vnetName": "[split(variables('subnetId'), '/')[8]]",
         "vnetSubscriptionId": "[split(variables('subnetId'), '/')[2]]",
         "vnetResourceGroupName": "[split(variables('subnetId'), '/')[4]]",
