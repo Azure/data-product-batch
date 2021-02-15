@@ -1,4 +1,4 @@
-name: Data Node Deployment
+name: Data Domain Deployment
 
 on:
   push:
