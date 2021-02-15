@@ -310,7 +310,26 @@ If you are using GitHub Actions, you can navigate to the **Actions** tab of the 
 
 If you are using Azure DevOps Pipelines, you can navigate to the pipeline that you have created as part of step 6 and monitor it as each service is deployed. If you run into any issues, please open an issue [here](https://github.com/Azure/data-landing-zone/issues).
 
-# Enterprise Scale Analytics Documentation and Implementation
+
+# Documentation
+
+## Code Structure
+
+| File/folder                   | Description                                |
+| ----------------------------- | ------------------------------------------ |
+| `.ado/workflows`              | Folder for ADO workflows. The `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment|
+| `.github/workflows`           | Folder for GitHub workflows. The `updateParameters.yml` sample workflow shows you how you can update the parameters with your preffered naming, while the `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment |
+| `code`                        | Sample Password Generation code that will be run in the deployment workflow of the resources that needs a Password during the creation  |
+| `configs`                     | Folder containing the `config.json` file containing details of all the resources files which will be deployed in this repository. This file will be reference by the `UpdateParameters.ps1` script in order to update the paramenters name before the deployment |
+| `docs`                        | Resources for this README.                 |
+| `infra`                       | Folder containing zll the ARM templates for each of the resources that will be deployed (`deploy.{resource}.json`) together with their parameter files (`params.{resource}.json`). 
+| `CODE_OF_CONDUCT.md`          | Microsoft Open Source Code of Conduct.     |
+| `LICENSE`                     | The license for the sample.                |
+| `README.md`                   | This README file.                          |
+| `SECURITY.md`                 | Microsoft Security README.                 |
+
+
+## Enterprise Scale Analytics Documentation and Implementation
 
 - [Documentation](https://github.com/Azure/Enterprise-Scale-Analytics)
 - [Implementation - Data Management](https://github.com/Azure/data-management-zone)
