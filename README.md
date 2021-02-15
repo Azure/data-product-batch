@@ -235,7 +235,8 @@ The following table explains each of the parameters:
 | **DATA_LANDING_ZONE_SUBSCRIPTION_ID**        | Specifies the subscription ID of the Data Landing Zone where all the resources will be deployed | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | **DATA_LANDING_ZONE_NAME**                   | Specifies the name of your Data Landing Zone. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `mynode01` |
 | **LOCATION**                                 | Specifies the region where you want the resources to be deployed. | `northeurope` |
-| **SUBNET_ID**                              | Specifies the resource ID of the dedicated subnet which was created during the Data Landing Zone deployment. | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/mysubnet` |
+| **SUBNET_ID**                              | Specifies the resource ID of the dedicated subnet which was created during the Data Landing Zone deployment. <br>
+The subnet should be configured with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies`, as mentioned in the pre-requisites| `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/mysubnet` |
 |**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account | `synapsestorageaccount`
 |**SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME**| Specifies the name of the Synapse Account filesystem| `fs`| 
 | **AZURE_RESOURCE_MANAGER_CONNECTION_NAME**   | Specifies the resource manager connection name in Azure DevOps. You can leave the default value if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found in step 4. b) or [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
@@ -342,6 +343,18 @@ ERROR: Deployment failed. Correlation ID: ***
 **Solution:**
 
 This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the `Azure Portal`, `Azure Powershell` or `Azure CLI` as mentioned [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types).
+
+### Error: PECsNotExistingToDenyPublicNetworkAccess
+
+**Error Message:**
+
+```sh
+[error]PECsNotExistingToDenyPublicNetworkAccess: Unable to set Deny Public Network Access to Yes since there is no private endpoint enabled to access the server. Please set up private endpoints and retry the operation (https://docs.microsoft.com/azure/sql-database/sql-database-private-endpoint-overview#how-to-set-up-private-link-for-azure-sql-database).
+```
+
+**Solution:**
+This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites** or if the `SUBNET_ID` parameter from <a href="/.github/workflows/updateParameters.yml">`/.github/workflows/updateParameters.yml`</a>, which specifies the resource ID of the dedicated subnet is not the right one. 
+
 
 # Contributing
 
