@@ -37,8 +37,12 @@ You have two options for deploying this reference architecture:
 2. Use GitHub Actions or Azure DevOps Pipelines for an automated, repeatable deployment
 
 # Prerequisites
+> Note: Please make sure you already have succesfully deployed a [Data Management Subscription](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). Without these, the Data Domain Batch deployment will fail. 
 
 The following prerequisites are required to make this repository work:
+
+* A **Data Management Subscription** deployed.  For more information, check the [Data Management Subscription](https://github.com/Azure/data-management-zone) repo.
+* A **Data Landing Zone** deployed. For more information, check the [Data Landing Zone](https://github.com/Azure/data-landing-zone) repo.
 * A resource group within an Azure subscription
 * [User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) access to a resource group to be able to create a service principal and role assignments for it.
 * Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration.
