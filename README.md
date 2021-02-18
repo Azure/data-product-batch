@@ -37,7 +37,7 @@ You have two options for deploying this reference architecture:
 2. Use GitHub Actions or Azure DevOps Pipelines for an automated, repeatable deployment
 
 # Prerequisites
-> Note: Please make sure you already have succesfully deployed a [Data Management Subscription](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). Without these, the Data Domain Batch deployment will fail. 
+> Note: Please make sure you have succesfully deployed a [Data Management Subscription](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Domain Deployment relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also rely on these. If you do not have any Private DNS Zones deployed for the respective services, this template deployment will fail. 
 
 The following prerequisites are required to make this repository work:
 
