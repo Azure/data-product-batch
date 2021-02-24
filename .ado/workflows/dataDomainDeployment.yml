@@ -19,12 +19,31 @@ trigger:
       - infra/SqlServer/*
       - infra/Synapse/*
       - .ado/workflows/dataDomainDeployment.yml
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - code/*
+      - infra/BigDataPool/*
+      - infra/CosmosDb/*
+      - infra/DataFactory/*
+      - infra/KeyVault/*
+      - infra/MariaDb/*
+      - infra/MySql/*
+      - infra/PostgreSql/*
+      - infra/SqlDatabase/*
+      - infra/SqlPool/*
+      - infra/SqlServer/*
+      - infra/Synapse/*
+      - .ado/workflows/dataDomainDeployment.yml
 
 variables:
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'My Subscription'     # Update to '{resourceManagerConnectionName}'
-  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d' # Update to '{dataLandingZoneSubscriptionId}'
-  AZURE_RESOURCE_GROUP_NAME: 'dn001-dd001'                      # Update to '{dataLandingZoneName}-rg'
-  AZURE_LOCATION: 'North Europe'                                # Update to '{regionName}'
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: 'data-dp-service-connection' # Update to '{resourceManagerConnectionName}'
+  AZURE_SUBSCRIPTION_ID: '2f68ca09-59d9-4ab5-ad11-c54872bfa28d'        # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: 'dn001-dd001'                             # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: 'North Europe'                                       # Update to '{regionName}'
 
 stages:
   - stage: Validation
@@ -330,7 +349,7 @@ stages:
   - stage: Deployment
     displayName: 'Deployment of ARM templates'
     dependsOn: Validation
-    condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+    # condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
     jobs:
       - job: Deployment
         displayName: 'Deployment of ARM templates'

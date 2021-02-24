@@ -1,7 +1,23 @@
-name: Data Node Deployment
+name: Data Domain Deployment
 
 on:
   push:
+    branches: [ main ]
+    paths:
+      - 'code/**'
+      - 'infra/BigDataPool/**'
+      - 'infra/CosmosDb/**'
+      - 'infra/DataFactory/**'
+      - 'infra/KeyVault/**'
+      - 'infra/MariaDb/**'
+      - 'infra/MySql/**'
+      - 'infra/PostgreSql/**'
+      - 'infra/SqlDatabase/**'
+      - 'infra/SqlPool/**'
+      - 'infra/SqlServer/**'
+      - 'infra/Synapse/**'
+      - '.github/workflows/dataDomainDeployment.yml'
+  pull_request:
     branches: [ main ]
     paths:
       - 'code/**'

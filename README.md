@@ -41,8 +41,16 @@ You have two options for deploying this reference architecture:
 2. Use GitHub Actions or Azure DevOps Pipelines for an automated, repeatable deployment
 
 ## Prerequisites
+> Note: Please make sure you have succesfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Domain relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone alsready creates a few subnets, which can be used for this Data Domain. 
 
 The following prerequisites are required to make this repository work:
+
+* A **Data Management Landing Zone** deployed.  For more information, check the [Data Management Landing Zone](https://github.com/Azure/data-management-zone) repo.
+* A **Data Landing Zone** deployed. For more information, check the [Data Landing Zone](https://github.com/Azure/data-landing-zone) repo.
+* A resource group within an Azure subscription
+* [User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) access to a resource group to be able to create a service principal and role assignments for it.
+* Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration.
+
 
 - A resource group within an Azure subscription
 - [User Access Administrator](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator) or [Owner](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#owner) access to a resource group to be able to create a service principal and role assignments for it.
@@ -50,11 +58,12 @@ The following prerequisites are required to make this repository work:
 
 If you don’t have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/free/).
 
-## Option 1: Deploy to Azure - Quickstart
+# Option 1: Deploy to Azure - Quickstart (Coming soon ...)
 
 | &nbsp;&nbsp;Data Domain Batch |
 |:---------------------|
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
+<!-- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json) -->
+![Deploy to Azure](/docs/media/deploytoazuregrey.png)
 
 ## Option 2: GitHub Actions or Azure DevOps Pipelines
 
@@ -309,7 +318,8 @@ If you are using GitHub Actions, you can navigate to the **Actions** tab of the 
 
 If you are using Azure DevOps Pipelines, you can navigate to the pipeline that you have created as part of step 6 and monitor it as each service is deployed. If you run into any issues, please open an issue [here](https://github.com/Azure/data-landing-zone/issues).
 
-### Documentation
+
+## Documentation
 
 ### Code Structure
 
@@ -325,6 +335,7 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 | `LICENSE`                     | The license for the sample.                |
 | `README.md`                   | This README file.                          |
 | `SECURITY.md`                 | Microsoft Security README.                 |
+
 
 ### Enterprise Scale Analytics and AI - Documentation and Implementation
 
