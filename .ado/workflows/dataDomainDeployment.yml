@@ -596,7 +596,7 @@ stages:
         - task: AzureResourceManagerTemplateDeployment@3
           name: synapse_001_deployment
           displayName: Deploy Synapse 001
-          enabled: false
+          enabled: true
           continueOnError: true
           inputs:
             deploymentScope: 'Resource Group'
