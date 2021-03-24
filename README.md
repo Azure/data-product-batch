@@ -80,7 +80,7 @@ If you don’t have an Azure subscription, [create your Azure free account today
 
 ### 2. Setting up the required Service Principal
 
-A service principal with *Contributor* role needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure **Data Landing Zone** subscription, where the data domain batch services will be deployed. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
+A service principal with *Contributor* role needs to be generated for authentication and authorization from GitHub or Azure DevOps to your Azure **Data Landing Zone** subscription, where the data-domain-batch services will be deployed. Just go to the Azure Portal to find the ID of your subscription. Then start the Cloud Shell or Azure CLI, login to Azure, set the Azure context and execute the following commands to generate the required credentials:
 
 > **Note:** The purpose of this new **Service Principal** is to assign least-privilege rights. Therefore, it requires the **Contributor** role at a resource group scope in order to deploy the resources inside the resource group dedicated to a specific data domain. The **Network Contributor** role assignment is required as well in this repository in order to assign the resources to the dedicated subnet.
 
