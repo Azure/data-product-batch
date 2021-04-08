@@ -155,9 +155,9 @@ az role assignment create \
   --assignee "{servicePrincipalObjectId}" \
   --role "{roleName}" \
   --resource-group "{resourceGroupName}"
-```
 
-# 3. Child-Resource Scope
+
+# For Child-Resource Scope level assignment
 # TBD
 
 #### Azure Powershell - Add role assignments
