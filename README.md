@@ -1,4 +1,4 @@
-# Enterprise Scale Analytics and AI - Data Domain: Stream Processing
+# Enterprise Scale Analytics and AI - Data Domain: Batch Processing
 
 > **General disclaimer** Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
 
@@ -14,7 +14,7 @@ By default, all the services which come under Data Domain Batch are enabled, and
 
 > **Note:** Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types).
 
-![Data Management Zone](./docs/images/DomainBatch.png)
+![Data Domain Batch](./docs/images/DomainBatch.png)
 
 For each Data Domain Batch template, the following services are created:
 
