@@ -1,4 +1,4 @@
-# Enterprise Scale Analytics and AI - Data Domain: Batch Processing
+# Enterprise Scale Analytics and AI - Data Domain: Stream Processing
 
 > **General disclaimer** Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
 
@@ -6,8 +6,7 @@
 
 ## Description
 
-[**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of Data Domain and Data Product templates. `Data Domain` and `Data Product` templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements.
-This Data Domain template deploys a set of services, which can be used for batch processing of data. The template includes a set of different SQL engines, which allows the teams to choose their tools based on their requirements and preferences.
+[**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of `Data Domain` and `Data Product` templates. Data Domain and Data Product templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements. This Data Domain template deploys a set of services, which can be used for data stream processing. The template includes a set of different services for processing data streams, which allows the teams to choose their tools based on their requirements and preferences.
 
 ## What will be deployed?
 
@@ -15,20 +14,17 @@ By default, all the services which come under Data Domain Batch are enabled, and
 
 > **Note:** Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types).
 
-<p align="center">
-  <img src="./docs/images/DomainBatch.png" alt="Data Domain - Batch" width="500"/>
-</p>
+![Data Management Zone](./docs/images/DomainBatch.png)
 
 For each Data Domain Batch template, the following services are created:
 
 - [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
-- [Data Factory](https://docs.microsoft.com/azure/data-factory/)
+- [Event Hub](https://docs.microsoft.com/azure/event-hubs/)
+- [IoT Hub](https://docs.microsoft.com/azure/iot-hub/about-iot-hub)
+- [Stream Analytics](https://docs.microsoft.com/azure/stream-analytics/stream-analytics-introduction)
 - [Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction)
 - [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
-- [MySQL Database](https://docs.microsoft.com/azure/mysql/overview)
 - [Azure SQL Database](https://docs.microsoft.com/azure/azure-sql/database/)
-- [PostgreSQL Database](https://docs.microsoft.com/azure/postgresql/)
-- [MariaDB Database](https://docs.microsoft.com/azure/mariadb/)
 - [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is)
 - [SQL Server](https://docs.microsoft.com/sql/sql-server/?view=sql-server-ver15)
 - [SQL Elastic Pool](https://docs.microsoft.com/azure/azure-sql/database/elastic-pool-overview)
@@ -54,27 +50,27 @@ The following prerequisites are required to make this repository work:
 - Access to a subnet with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to disabled. The Data Landing Zone deployment already creates a few subnets with this configuration (subnets with suffix `-privatelink-subnet`).
 - For deployment, please choose one of the below **Supported Regions** list.
 
-#### **Supported Regions:** 
-  - Asia Southeast
-  - Europe North
-  - Europe West
-  - France Central
-  - Japan East
-  - South Africa North 
-  - UK South
-  - US Central
-  - US East
-  - US East 2
-  - US West 2
+### **Supported Regions:**
 
-If you don’t have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/free/).
+- Asia Southeast
+- Europe North
+- Europe West
+- France Central
+- Japan East
+- South Africa North
+- UK South
+- US Central
+- US East
+- US East 2
+- US West 2
 
-## Option 1: Deploy to Azure - Quickstart (Coming soon ...)
+If you don't have an Azure subscription, [create your Azure free account today](https://azure.microsoft.com/free/).
 
-| &nbsp;&nbsp;Data Domain Batch |
+## Option 1: Deploy to Azure - Quickstart
+
+|Data Domain Batch |
 |:---------------------|
-<!-- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json) -->
-![Deploy to Azure](/docs/media/deploytoazuregrey.png)
+[&nbsp;&nbsp;![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
 
 ## Option 2: GitHub Actions or Azure DevOps Pipelines
 
@@ -82,13 +78,13 @@ If you don’t have an Azure subscription, [create your Azure free account today
 
 1. On GitHub, navigate to the main page of this repository.
 1. Above the file list, click **Use this template**
-    <p align="center">
-      <img src="docs/images/UseThisTemplateGH.png" alt="GitHub Template repository" width="600"/>
-    </p>
+
+ ![GitHub Template repository](docs/images/UseThisTemplateGH.png)
+
 1. Use the **Owner** drop-down menu and select the account you want to own the repository.
-    <p align="center">
-      <img src="docs/images/CreateRepoGH.png" alt="Create Repository from Template" width="600"/>
-    </p>
+
+ ![Create Repository from Template](docs/images/CreateRepoGH.png)
+
 1. Type a name for your repository and an optional description.
 1. Choose a repository visibility. For more information, see "[About repository visibility](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-repository-visibility)."
 1. Optionally, to include the directory structure and files from all branches in the template and not just the default branch, select **Include all branches**.
@@ -102,8 +98,8 @@ A service principal with *Contributor* role needs to be generated for authentica
 
 #### Azure CLI
 
-```Sh
-# Replace {service-principal-name} and {subscription-id} with your 
+```sh
+# Replace {service-principal-name} and {subscription-id} with your
 # Azure subscription id and any name for your service principal.
 az ad sp create-for-rbac \
   --name "{service-principal-name}" \
@@ -113,7 +109,7 @@ az ad sp create-for-rbac \
 
 This will generate the following JSON output:
 
-```JSON
+```json
 {
   "clientId": "<GUID>",
   "clientSecret": "<GUID>",
@@ -123,14 +119,14 @@ This will generate the following JSON output:
 }
 ```
 
->**Note:** Take note of the output. It will be required for the next steps.
+> **Note:** Take note of the output. It will be required for the next steps.
 
 Now that the new Service Principal is created, as mentioned,  role assignments are required for this service principal in order to be able to successfully deploy all services. Required role assignments which will be added on a later step include:
 
 | Role Name | Description | Scope |
 |:----------|:------------|:------|
-| [Private DNS Zone Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#private-dns-zone-contributor) | We expect you to deploy all Private DNS Zones for all data services into a single subscription and resource group. Therefor, the service principal needs to be Private DNS Zone Contributor on the global dns resource group which was created during the Data Management Zone deployment. This is required to deploy A-records for the respective private endpoints. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | (Resource Group Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}` |
-| [Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) | We expect you to deploy all data-domain-batch services into a single resource group within the Data Landing Zone subscription. The resource group and the role assignment will be setup in the parameter update process (4). The service principal requires a **Contributor** role-assignment on that newly created resource group to deploy all services. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | (Resource Group Scope)  `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}` |
+| [Private DNS Zone Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#private-dns-zone-contributor) | We expect you to deploy all Private DNS Zones for all data services into a single subscription and resource group. Therefor, the service principal needs to be Private DNS Zone Contributor on the global dns resource group which was created during the Data Management Zone deployment. This is required to deploy A-records for the respective private endpoints. | (Resource Group Scope)  <div style="width: 36ch">`/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`</div> |
+| [Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) | We expect you to deploy all data-domain-streaming services into a single resource group within the Data Landing Zone subscription. The service principal requires a **Contributor** role-assignment on that resource group. | (Resource Group Scope)  <div style="width: 36ch">`/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`</div> |
 | [Network Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#network-contributor) | In order to deploy Private Endpoints to the specified privatelink-subnet which was created during the Data Landing Zone deployment, the service principal requires **Network Contributor** access on that specific subnet.  | (Child-Resource Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName} /providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"` |
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -139,7 +135,7 @@ To add these role assignments, you can use the [Azure Portal](https://portal.azu
 
 #### Azure CLI - Add role assignments
 
-```Sh
+```sh
 # Get Service Principal Object ID
 az ad sp list --display-name "{servicePrincipalName}" --query "[].{objectId:objectId}" --output tsv
 
@@ -200,9 +196,8 @@ Deployment options:
 #### GitHub Actions
 
 If you want to use GitHub Actions for deploying the resources, add the previous JSON output as a [repository secret](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) with the name `AZURE_CREDENTIALS` in your GitHub repository:
-<p align="center">
-  <img src="docs/images/AzureCredentialsGH.png" alt="GitHub Secrets" width="600"/>
-</p>
+
+![GitHub Secrets](docs/images/AzureCredentialsGH.png)
 
 To do so, execute the following steps:
 
@@ -222,9 +217,8 @@ If you want to use Azure DevOps Pipelines for deploying the resources, you need 
 1. In Azure DevOps, open the **Project settings**.
 1. Now, select the **Service connections** page from the project settings page.
 1. Choose **New service connection** and select **Azure Resource Manager**.
-    <p align="center">
-      <img src="docs/images/ARMConnectionDevOps.png" alt="ARM Connection" width="600"/>
-    </p>
+
+    ![ARM Connection](docs/images/ARMConnectionDevOps.png)
 
 1. On the next page select **Service principal (manual)**.
 1. Select the appropriate environment to which you would like to deploy the templates. Only the default option **Azure Cloud** is currently supported.
@@ -233,37 +227,33 @@ If you want to use Azure DevOps Pipelines for deploying the resources, you need 
 1. Enter a user-friendly **Connection name** to use when referring to this service connection. Take note of the name because this will be required in the parameter update process.
 1. Optionally, enter a **Description**.
 1. Click on **Verify and save**.
-    <p align="center">
-      <img src="docs/images/ConnectionDevOps.png" alt="Connection DevOps" width="300"/>
-    </p>
+  
+    ![Connection DevOps](docs/images/ConnectionDevOps.png)
 
 More information can be found [here](https://docs.microsoft.com/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal).
 
 ### 4. Parameter Update Process
 
->**Note:** This section applies for both **Azure DevOps** and **GitHub** Deployment
+> **Note:** This section applies for both **Azure DevOps** and **GitHub** Deployment
 
-In order to deploy the ARM templates in this repository to the desired Azure subscription, you will need to modify some parameters in the forked repository, which will be used for updating the files which will be used during the deployment. Therefore, **this step should not be skipped for neither Azure DevOps/GitHub options**. As updating each parameter file manually is a time-consuming and potentially error-prone process, we have simplified the task with a GitHub Action workflow.  You can update your deployment parameters by completing three steps:
-  1. Configure the `updateParameters` workflow
-  1. Execute the `updateParameters` workflow
-  1. Configure the deployment pipeline
-  1. Merge these changes back to the `main` branch of your repo
+In order to deploy the ARM templates in this repository to the desired Azure subscription, you will need to modify some parameters in the forked repository, which will be used for updating the files which will be used during the deployment. Therefor, **this step should not be skipped for neither Azure DevOps/GitHub options**. As updating each parameter file manually is a time-consuming and potentially error-prone process, we have simplified the task with a GitHub Action workflow. You can update your deployment parameters by completing three steps:
 
 #### Configure the `updateParameters` workflow
->**Note:** There is only one 'updateParametes.yml', which can be found under the '.github' folder and this one will be used also for setting up the Azure DevOps Deployment
 
-To begin, please open [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml) and update the following environment variables:
+> **Note:** There is only one 'updateParameters.yml', which can be found under the '.github' folder and this one will be used also for setting up the Azure DevOps Deployment
 
-```YAML
+To begin, please open the [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml). In this file you need to update the environment variables. Just click on [.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml) and edit the following section:
+
+```yaml
 env:
   GLOBAL_DNS_RESOURCE_GROUP_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
   DATA_LANDING_ZONE_SUBSCRIPTION_ID: '{dataLandingZoneSubscriptionId}'
-  DATA_DOMAIN_NAME: '{dataDomainName}'            # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
-  LOCATION: '{regionName}'                        # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
+  DATA_DOMAIN_NAME: '{dataDomainName}' # Choose max. 11 characters. They will be used as a prefix for all services. If not unique, deployment can fail for some services.
+  LOCATION: '{regionName}'             # Specifies the region for all services (e.g. 'northeurope', 'eastus', etc.)
   SUBNET_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}' # Resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**.
   SYNAPSE_STORAGE_ACCOUNT_NAME: '{synapseStorageAccountName}' # Choose a storage account which was previously deployed in the Data Landing Zone. 
   SYNAPSE_STORAGE_ACCOUNT_FILE_SYSTEM_NAME: '{synapseStorageAccountFileSystemName}' # Choose the name of the container inside the Storage Account which was referenced in the above SYNAPSE_STORAGE_ACCOUNT_NAME variable.
-  PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}'  # If no Purview account is deployed, leave it empty string.
+  PURVIEW_ID: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{purviewName}' # If no Purview account is deployed, leave it empty string.
   AZURE_RESOURCE_MANAGER_CONNECTION_NAME: '{resourceManagerConnectionName}' # This is needed just for ADO Deployments.
 ```
 
@@ -271,9 +261,9 @@ The following table explains each of the parameters:
 
 | Parameter                                | Description  | Sample value |
 |:-----------------------------------------|:-------------|:-------------|
-| **GLOBAL_DNS_RESOURCE_GROUP_ID**             | Specifies the global DNS resource group resource ID which gets deployed with the [Data Management Landing Zone](https://github.com/Azure/data-management-zone) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-resource-group` |
+| **GLOBAL_DNS_RESOURCE_GROUP_ID**             | Specifies the global DNS resource group resource ID which gets deployed with the [Data Management Landing Zone](https://github.com/Azure/data-management-zone) | <div style="width: 36ch">`/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-resource-group`</div> |
 | **DATA_LANDING_ZONE_SUBSCRIPTION_ID**        | Specifies the subscription ID of the Data Landing Zone where all the resources will be deployed | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
-| **DATA_DOMAIN_NAME**                   | Specifies the name of your Data Domain. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `mydomain01` |
+| **DATA_DOMAIN_NAME**                         | Specifies the name of your Data Domain. The value should consist of alphanumeric characters (A-Z, a-z, 0-9) and should not contain any special characters like `-`, `_`, `.`, etc. Special characters will be removed in the renaming process. | `mydomain01` |
 | **LOCATION**                                 | Specifies the region where you want the resources to be deployed. Please use the same region as for your Data Landing Zone. Otherwise the deployment will fail, since the Vnet and the Private Endpoints have to be in the same region. Also Check [Supported Regions](#supported-regions) | `northeurope` |
 | **SUBNET_ID**                                | Specifies the resource ID of the dedicated privatelink-subnet which was created during the Data Landing Zone deployment. Choose one which has the suffix **private-link**. The subnet is already configured with `privateEndpointNetworkPolicies` and `privateLinkServiceNetworkPolicies` set to `Disabled`, as mentioned in the *Prerequisites* | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-network-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/{my}-privatelink-subnet` |
 |**SYNAPSE_STORAGE_ACCOUNT_NAME**| Specifies the name of the Azure Synapse Storage Account, which was previously deployed in the Data Landing Zone. Go to the `{DataLandingZoneName}-storage` resource group in your Data Landing Zone and copy the resource name (`{DataLandingZoneName}worksa`).  | `mydlzworksa` |
@@ -284,20 +274,22 @@ The following table explains each of the parameters:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 #### Execute the `updateParameters` workflow
+
 After updating the values, please commit the updated version to the `main` branch of your repository. This will kick off a GitHub Action workflow, which will appear under the **Actions** tab of the main page of the repository. The `Update Parameter Files` workflow will update all parameters in your repository according to a pre-defined naming convention.
 
 #### Configure the deployment pipeline
-The workflow above will make changes to all of the ARM config files.  These changes will be stored in a new branch. Once the process has finished, it will open a new pull request in your repository where you can review the changes made by the workflow.  The pull request will also provide the values you need to use to configure the deployment pipeline. Please follow the instructions in the pull request to complete the parameter update process.
 
-If you are using GitHub Actions for your deployment, you will need to modify the `.github/workflows/dataDomainDeployment.yml` file.  If you are using Azure Pipelines, you only need to modify the `.ado/workflows/dataDomainDeployment.yml` file.  **You only need to modify one of these files. You do not need to modify both of them.**
-Please follow the instructions in the pull request to complete the parameter update process. The instructions will guide towards the following steps:
-- create a new `resource group` where all the resources specific to this Data Domain Batch will be deployed;
-- add the required role assignments for the Service Principal created at step [2. Setting up the required Service Principal](#2-setting-up-the-required-service-principal) ;
-- change the environment variables in the deployment workflow file
+The workflow above will make changes to all of the ARM config files. These changes will be stored in a new branch. Once the process has finished, it will open a new pull request in your repository where you can review the changes made by the workflow. The pull request will also provide the values you need to use to configure the deployment pipeline. Please follow the instructions in the pull request to complete the parameter update process.
+
+ The instructions will guide towards the following steps:
+    - create a new `resource group` where all the resources specific to this Data Domain Streaming will be deployed;
+    - add the required role assignments for the Service Principal created at step [2. Setting up the required Service Principal](#2-setting-up-the-required-service-principal) ;
+    - change the environment variables in the deployment workflow file
 
 >**Note:** We are not renaming the environment variables in the workflow files because this could lead to an infinite loop of workflow runs being started.
 
 #### Merge these changes back to the `main` branch of your repo
+
 After following the instructions in the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository.
 
 ### 5. (not applicable for GH Actions) Reference pipeline from GitHub repository in Azure DevOps Pipelines
@@ -307,14 +299,14 @@ After following the instructions in the pull request, you can merge the pull req
 First you need to add and install the Azure Pipelines GitHub App to your GitHub account. To do so, execute the following steps:
 
 1. Click on **Marketplace** in the top navigation bar on GitHub.
-1. In the Marketplace, search for **Azure Pipelines**. The Azure Pipelines offering is free for anyone to use for public repositories and free for a single build queue if you’re using a private repository.
-    <p align="center">
-      <img src="docs/images/AzurePipelinesGH.png" alt="Install Azure Pipelines on GitHub" width="600"/>
-    </p>
+1. In the Marketplace, search for **Azure Pipelines**. The Azure Pipelines offering is free for anyone to use for public repositories and free for a single build queue if you're using a private repository.
+
+    ![Install Azure Pipelines on GitHub](docs/images/AzurePipelinesGH.png)
+
 1. Select it and click on **Install it for free**.
-    <p align="center">
-      <img src="docs/images/InstallButtonGH.png" alt="GitHub Template repository" width="600"/>
-    </p>
+
+   ![GitHub Template repository](docs/images/InstallButtonGH.png)
+
 1. If you are part of multiple **GitHub** organizations, you may need to use the **Switch billing account** dropdown to select the one into which you forked this repository.
 1. You may be prompted to confirm your GitHub password to continue.
 1. You may be prompted to log in to your Microsoft account. Make sure you log in with the one that is associated with your Azure DevOps account.
@@ -325,19 +317,19 @@ As a last step, you need to create an Azure DevOps pipeline in your project base
 
 1. Select the Azure DevOps project where you have setup your `Resource Manager Connection`.
 1. Select **Pipelines** and then **New Pipeline** in order to create a new pipeline.
-    <p align="center">
-      <img src="docs/images/CreatePipelineDevOps.png" alt="Create Pipeline in DevOps" width="600"/>
-    </p>
+
+      ![Create Pipeline in DevOps](docs/images/CreatePipelineDevOps.png)
+
 1. Choose **GitHub YAML** and search for your repository (e.g. "`GitHubUserName/RepositoryName`").
-    <p align="center">
-      <img src="docs/images/CodeDevOps.png" alt="Choose code source in DevOps Pipeline" width="600"/>
-    </p>
+
+    ![Configure Pipeline in DevOps](docs/images/CodeDevOps.png)
+
 1. Select your repository.
 1. Click on **Existing Azure Pipelines in YAML file**
 1. Select `main` as branch and `/.ado/workflows/dataDomainDeployment.yml` as path.
-    <p align="center">
-      <img src="docs/images/ConfigurePipelineDevOps.png" alt="Configure Pipeline in DevOps" width="600"/>
-    </p>
+
+      ![Configure Pipeline in DevOps](docs/images/ConfigurePipelineDevOps.png)
+
 1. Click on **Continue** and then on **Run**.
 
 ### 6. Follow the workflow deployment
@@ -391,35 +383,17 @@ ERROR: Deployment failed. Correlation ID: ***
         "code": "MissingSubscriptionRegistration",
         "target": "Microsoft.DocumentDB",
         "message": "The subscription is not registered to use namespace 'Microsoft.DocumentDB'. See https://aka.ms/rps-not-found for how to register subscriptions."
- 
+
 ```
 
 **Solution:**
 
 This error message appears, in case during the deployment it tries to create a type of resource which has never been deployed before inside the subscription. We recommend to check prior the deployment whether the required resource providers are registered for your subscription and if needed, register them through the `Azure Portal`, `Azure Powershell` or `Azure CLI` as mentioned [here](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types).
 
-### Error: PECsNotExistingToDenyPublicNetworkAccess
-
-**Error Message:**
-
-```sh
-[error]PECsNotExistingToDenyPublicNetworkAccess: Unable to set Deny Public Network Access to Yes since there is no private endpoint enabled to access the server. Please set up private endpoints and retry the operation (https://docs.microsoft.com/azure/sql-database/sql-database-private-endpoint-overview#how-to-set-up-private-link-for-azure-sql-database).
-```
-
-**Solution:**
-
-This error message appears during the deployment of a resource, in case the subnet associated with that specific resource has not been configured as per the **Prerequisites**. Please update the subnet configuration or set the correct `SUBNET_ID` parameter in [/.github/workflows/updateParameters.yml](/.github/workflows/updateParameters.yml`).
-
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repositories using our CLA.
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
