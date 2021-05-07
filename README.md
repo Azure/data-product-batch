@@ -19,12 +19,13 @@ By default, all the services which come under Data Domain Batch are enabled, and
 For each Data Domain Batch template, the following services are created:
 
 - [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
-- [Event Hub](https://docs.microsoft.com/azure/event-hubs/)
-- [IoT Hub](https://docs.microsoft.com/azure/iot-hub/about-iot-hub)
-- [Stream Analytics](https://docs.microsoft.com/azure/stream-analytics/stream-analytics-introduction)
+- [Data Factory](https://docs.microsoft.com/azure/data-factory/)
 - [Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction)
 - [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
+- [MySQL Database](https://docs.microsoft.com/azure/mysql/overview)
 - [Azure SQL Database](https://docs.microsoft.com/azure/azure-sql/database/)
+- [PostgreSQL Database](https://docs.microsoft.com/azure/postgresql/)
+- [MariaDB Database](https://docs.microsoft.com/azure/mariadb/)
 - [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is)
 - [SQL Server](https://docs.microsoft.com/sql/sql-server/?view=sql-server-ver15)
 - [SQL Elastic Pool](https://docs.microsoft.com/azure/azure-sql/database/elastic-pool-overview)
