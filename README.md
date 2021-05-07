@@ -1,4 +1,4 @@
-# Enterprise Scale Analytics and AI - Data Domain: Stream Processing
+# Enterprise Scale Analytics and AI - Data Domain: Batch Processing
 
 > **General disclaimer** Please be aware that this template is in private preview. Therefore, expect smaller bugs and issues when working with the solution. Please submit an Issue in GitHub if you come across any issues that you would like us to fix.
 
