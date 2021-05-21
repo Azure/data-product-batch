@@ -71,7 +71,7 @@ If you don't have an Azure subscription, [create your Azure free account today](
 
 |Data Domain Batch |
 |:---------------------|
-[&nbsp;&nbsp;![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
 
 ## Option 2: GitHub Actions or Azure DevOps Pipelines
 
@@ -130,8 +130,6 @@ Now that the new Service Principal is created, as mentioned,  role assignments a
 | [Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) | We expect you to deploy all data-domain-streaming services into a single resource group within the Data Landing Zone subscription. The service principal requires a **Contributor** role-assignment on that resource group. | (Resource Group Scope)  <div style="width: 36ch">`/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}`</div> |
 | [Network Contributor](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#network-contributor) | In order to deploy Private Endpoints to the specified privatelink-subnet which was created during the Data Landing Zone deployment, the service principal requires **Network Contributor** access on that specific subnet.  | (Child-Resource Scope) `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName} /providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"` |
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
 To add these role assignments, you can use the [Azure Portal](https://portal.azure.com/) or run the following commands using Azure CLI/Azure Powershell:
 
 #### Azure CLI - Add role assignments
@@ -156,7 +154,7 @@ az role assignment create \
 
 #### Azure Powershell - Add role assignments
 
-```PowerShell
+```powershell
 # Get Service Principal Object ID
 $spObjectId = (Get-AzADServicePrincipal -DisplayName "{servicePrincipalName}").id
 
@@ -269,8 +267,6 @@ The following table explains each of the parameters:
 | **PURVIEW_ID**                               | Specifies the resource ID of the Purview account to which the Synapse workspaces and Data Factories should connect to share data lineage and other metadata. In case you do not have a Purview account deployed at this stage, leave it empty string. | `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-governance-rg/providers/Microsoft.Purview/accounts/my-purview` |
 | **AZURE_RESOURCE_MANAGER_CONNECTION_NAME**   | Specifies the resource manager connection name in Azure DevOps. You can leave the default value if you want to use GitHub Actions for your deployment. More details on how to create the resource manager connection in Azure DevOps can be found in step 4. b) or [here](https://docs.microsoft.com/azure/devops/pipelines/library/connect-to-azure?view=azure-devops#create-an-azure-resource-manager-service-connection-with-an-existing-service-principal). | `my-connection-name` |
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
 #### Execute the `updateParameters` workflow
 
 After updating the values, please commit the updated version to the `main` branch of your repository. This will kick off a GitHub Action workflow, which will appear under the **Actions** tab of the main page of the repository. The `Update Parameter Files` workflow will update all parameters in your repository according to a pre-defined naming convention.
@@ -284,7 +280,7 @@ The workflow above will make changes to all of the ARM config files. These chang
     - add the required role assignments for the Service Principal created at step [2. Setting up the required Service Principal](#2-setting-up-the-required-service-principal) ;
     - change the environment variables in the deployment workflow file
 
->**Note:** We are not renaming the environment variables in the workflow files because this could lead to an infinite loop of workflow runs being started.
+> **Note:** We are not renaming the environment variables in the workflow files because this could lead to an infinite loop of workflow runs being started.
 
 #### Merge these changes back to the `main` branch of your repo
 
@@ -371,7 +367,7 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 
 **Error Message:**
 
-```sh
+```text
 ERROR: Deployment failed. Correlation ID: ***
   "error": ***
     "code": "MissingSubscriptionRegistration",
