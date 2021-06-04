@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1.14562",
-      "templateHash": "4706871503958248826"
+      "templateHash": "4748616882747489637"
     }
   },
   "parameters": {
@@ -55,7 +55,7 @@
     "synapseDefaultStorageAccountFileSystemId": {
       "type": "string",
       "metadata": {
-        "description": "Specifies the resource ID of the default storage account file system for synapse"
+        "description": "Specifies the resource ID of the default storage account file system for synapse."
       }
     },
     "purviewId": {

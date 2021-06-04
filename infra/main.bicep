@@ -27,7 +27,7 @@ param sqlFlavour string
 @secure()
 @description('Specifies the administrator password of the sql servers.')
 param administratorPassword string
-@description('Specifies the resource ID of the default storage account file system for synapse')
+@description('Specifies the resource ID of the default storage account file system for synapse.')
 param synapseDefaultStorageAccountFileSystemId string
 @description('Specifies the resource ID of the central purview instance.')
 param purviewId string
