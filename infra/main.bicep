@@ -31,6 +31,8 @@ param administratorPassword string
 param synapseDefaultStorageAccountFileSystemId string
 @description('Specifies the resource ID of the central purview instance.')
 param purviewId string
+@description('Specifies whether role assignments should be enabled.')
+param enableRoleAssignments bool
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -102,14 +104,14 @@ module synapse001 'services/synapse.bicep' = {
   }
 }
 
-// module synapse001RoleAssignmentStorage 'auxiliary/synapseRoleAssignmentStorage.bicep' = {  // Uncomment to make a role assignment of the Synapse MSI to the Storage File System
-//   name: 'synapse001RoleAssignmentStorage'
-//   scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
-//   params: {
-//     storageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
-//     synapseId: synapse001.outputs.synapseId
-//   }
-// }
+module synapse001RoleAssignmentStorage 'auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
+  name: 'synapse001RoleAssignmentStorage'
+  scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
+  params: {
+    storageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
+    synapseId: synapse001.outputs.synapseId
+  }
+}
 
 module datafactory001 'services/datafactory.bicep' = {
   name: 'datafactory001'
