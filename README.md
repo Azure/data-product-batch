@@ -364,7 +364,7 @@ If you are using Azure DevOps Pipelines, you can navigate to the pipeline that y
 | `.github/workflows`           | Folder for GitHub workflows. The `dataDomainDeployment.yml` workflow shows the steps for an end-to-end deployment of the architecture. |
 | `code`                        | Sample password generation script that will be run in the deployment workflow for resources that require a password during the deployment. |
 | `docs`                        | Resources for this README.                 |
-| `infra`                       | Folder containing all the ARM templates for each of the resources that will be deployed (`deploy.{resource}.json`) together with their parameter files (`params.{resource}.json`). |
+| `infra`                       | Folder containing all the ARM and Bicep templates for each of the resources that will be deployed. |
 | `CODE_OF_CONDUCT.md`          | Microsoft Open Source Code of Conduct.     |
 | `LICENSE`                     | The license for the sample.                |
 | `README.md`                   | This README file.                          |
