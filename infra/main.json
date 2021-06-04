@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1.14562",
-      "templateHash": "3506343967581462865"
+      "templateHash": "7147055844063793077"
     }
   },
   "parameters": {
@@ -31,7 +31,7 @@
       "metadata": {
         "description": "Specifies the prefix for all resources created in this deployment."
       },
-      "maxLength": 10,
+      "maxLength": 5,
       "minLength": 2
     },
     "sqlFlavour": {
@@ -648,69 +648,6 @@
           }
         }
       }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "synapse001RoleAssignmentStorage",
-      "subscriptionId": "[variables('synapseDefaultStorageAccountSubscriptionId')]",
-      "resourceGroup": "[variables('synapseDefaultStorageAccountResourceGroupName')]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "storageAccountFileSystemId": {
-            "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
-          },
-          "synapseId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "1049693784175975969"
-            }
-          },
-          "parameters": {
-            "storageAccountFileSystemId": {
-              "type": "string"
-            },
-            "synapseId": {
-              "type": "string"
-            }
-          },
-          "functions": [],
-          "variables": {
-            "storageAccountFileSystemName": "[last(split(parameters('storageAccountFileSystemId'), '/'))]",
-            "storageAccountName": "[split(parameters('storageAccountFileSystemId'), '/')[8]]",
-            "synapseSubscriptionId": "[split(parameters('synapseId'), '/')[2]]",
-            "synapseResourceGroupName": "[split(parameters('synapseId'), '/')[4]]",
-            "synapseName": "[last(split(parameters('synapseId'), '/'))]"
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Authorization/roleAssignments",
-              "apiVersion": "2020-04-01-preview",
-              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[0], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[1], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[2])]",
-              "name": "[guid(uniqueString(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[0], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[1], split(format('{0}/default/{1}', variables('storageAccountName'), variables('storageAccountFileSystemName')), '/')[2]), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('synapseSubscriptionId'), variables('synapseResourceGroupName')), 'Microsoft.Synapse/workspaces', variables('synapseName'))))]",
-              "properties": {
-                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-                "principalId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', variables('synapseSubscriptionId'), variables('synapseResourceGroupName')), 'Microsoft.Synapse/workspaces', variables('synapseName')), '2021-03-01', 'full').identity.principalId]"
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
-      ]
     },
     {
       "type": "Microsoft.Resources/deployments",
