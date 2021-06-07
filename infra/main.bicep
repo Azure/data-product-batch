@@ -80,8 +80,8 @@ module keyvault001 'modules/services/keyvault.bicep' = {
     location: location
     keyvaultName: '${name}-vault001'
     tags: tags
-    privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
     subnetId: subnetId
+    privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
   }
 }
 
@@ -92,13 +92,13 @@ module synapse001 'modules/services/synapse.bicep' = {
     location: location
     synapseName: '${name}-synapse001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
     synapseSqlAdminGroupObjectID: ''
     privateDnsZoneIdSynapseDev: privateDnsZoneIdSynapseDev
     privateDnsZoneIdSynapseSql: privateDnsZoneIdSynapseSql
     purviewId: purviewId
-    subnetId: subnetId
     synapseComputeSubnetId: ''
     synapseDefaultStorageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
   }
@@ -120,11 +120,11 @@ module datafactory001 'modules/services/datafactory.bicep' = {
     location: location
     datafactoryName: '${name}-datafactory001'
     tags: tags
+    subnetId: subnetId
     keyvaultId: keyvault001.outputs.keyvaultId
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
-    subnetId: subnetId
   }
 }
 
@@ -135,8 +135,8 @@ module cosmosdb001 'modules/services/cosmosdb.bicep' = {
     location: location
     cosmosdbName: '${name}-cosmos001'
     tags: tags
-    privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
     subnetId: subnetId
+    privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
   }
 }
 
@@ -147,11 +147,11 @@ module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
     location: location
     sqlserverName: '${name}-sqlserver001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
     sqlserverAdminGroupName: ''
     sqlserverAdminGroupObjectID: ''
-    subnetId: subnetId
   }
 }
 
@@ -162,11 +162,11 @@ module mysql001 'modules/services/mysql.bicep' = if (sqlFlavour == 'mysql') {
     location: location
     mysqlserverName: '${name}-mysql001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
     mysqlserverAdminGroupName: ''
     mysqlserverAdminGroupObjectID: ''
-    subnetId: subnetId
   }
 }
 
@@ -177,9 +177,9 @@ module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') 
     location: location
     mariadbName: '${name}-mariadb001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdMariaDb: privateDnsZoneIdMariaDb
-    subnetId: subnetId
   }
 }
 
@@ -190,10 +190,10 @@ module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
     location: location
     postgresqlName: '${name}-postgresql001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     postgresqlAdminGroupName: ''
     postgresqlAdminGroupObjectID: ''
     privateDnsZoneIdPostgreSql: privateDnsZoneIdPostgreSql
-    subnetId: subnetId
   }
 }

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.63.48766",
-      "templateHash": "12642233268465430586"
+      "templateHash": "999090049913107126"
     }
   },
   "parameters": {
@@ -170,11 +170,11 @@
           "tags": {
             "value": "[variables('tags')]"
           },
-          "privateDnsZoneIdKeyVault": {
-            "value": "[parameters('privateDnsZoneIdKeyVault')]"
-          },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdKeyVault": {
+            "value": "[parameters('privateDnsZoneIdKeyVault')]"
           }
         },
         "template": {
@@ -313,6 +313,9 @@
           "tags": {
             "value": "[variables('tags')]"
           },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -330,9 +333,6 @@
           },
           "purviewId": {
             "value": "[parameters('purviewId')]"
-          },
-          "subnetId": {
-            "value": "[parameters('subnetId')]"
           },
           "synapseComputeSubnetId": {
             "value": ""
@@ -738,6 +738,9 @@
           "tags": {
             "value": "[variables('tags')]"
           },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
           "keyvaultId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyvault001'), '2019-10-01').outputs.keyvaultId.value]"
           },
@@ -749,9 +752,6 @@
           },
           "purviewId": {
             "value": "[parameters('purviewId')]"
-          },
-          "subnetId": {
-            "value": "[parameters('subnetId')]"
           }
         },
         "template": {
@@ -1000,11 +1000,11 @@
           "tags": {
             "value": "[variables('tags')]"
           },
-          "privateDnsZoneIdCosmosdbSql": {
-            "value": "[parameters('privateDnsZoneIdCosmosdbSql')]"
-          },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "privateDnsZoneIdCosmosdbSql": {
+            "value": "[parameters('privateDnsZoneIdCosmosdbSql')]"
           }
         },
         "template": {
@@ -1152,6 +1152,9 @@
           "tags": {
             "value": "[variables('tags')]"
           },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1163,9 +1166,6 @@
           },
           "sqlserverAdminGroupObjectID": {
             "value": ""
-          },
-          "subnetId": {
-            "value": "[parameters('subnetId')]"
           }
         },
         "template": {
@@ -1341,6 +1341,9 @@
           "tags": {
             "value": "[variables('tags')]"
           },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1352,9 +1355,6 @@
           },
           "mysqlserverAdminGroupObjectID": {
             "value": ""
-          },
-          "subnetId": {
-            "value": "[parameters('subnetId')]"
           }
         },
         "template": {
@@ -1529,14 +1529,14 @@
           "tags": {
             "value": "[variables('tags')]"
           },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
           "privateDnsZoneIdMariaDb": {
             "value": "[parameters('privateDnsZoneIdMariaDb')]"
-          },
-          "subnetId": {
-            "value": "[parameters('subnetId')]"
           }
         },
         "template": {
@@ -1687,6 +1687,9 @@
           "tags": {
             "value": "[variables('tags')]"
           },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1698,9 +1701,6 @@
           },
           "privateDnsZoneIdPostgreSql": {
             "value": "[parameters('privateDnsZoneIdPostgreSql')]"
-          },
-          "subnetId": {
-            "value": "[parameters('subnetId')]"
           }
         },
         "template": {
