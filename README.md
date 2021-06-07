@@ -6,7 +6,7 @@
 
 ## Description
 
-[**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of `Data Domain` and `Data Product` templates. Data Domain and Data Product templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements. This Data Domain template deploys a set of services, which can be used for data stream processing. The template includes a set of different services for processing data streams, which allows the teams to choose their tools based on their requirements and preferences.
+[**Enterprise Scale Analytics and AI**](https://github.com/Azure/Enterprise-Scale-Analytics) solution pattern emphasizes self-service and follows the concept of creating landing zones for cross-functional teams. Operation and responsibility of these landing zones is handed over to the responsible teams inside the data node. The teams are free to deploy their own services within the guardrails set by Azure Policy. To scale across the landing zones more quickly and allow a shorter time to market, we use the concept of `Data Domain` and `Data Product` templates. Data Domain and Data Product templates are blueprints, which can be used to quickly spin up environments for these cross-functional teams. The teams can fork these repositories to quickly spin up environments based on their requirements. This Data Domain template deploys a set of services, which can be used for data batch processing. The template includes a set of different services for processing batch data and allows the teams to choose their tools based on their requirements and preferences.
 
 ## What will be deployed?
 
@@ -40,7 +40,7 @@ You have two options for deploying this reference architecture:
 
 ## Prerequisites
 
-> **Note:** Please make sure you have successfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Domain relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Domain. 
+> **Note:** Please make sure you have successfully deployed a [Data Management Landing Zone](https://github.com/Azure/data-management-zone) and a [Data Landing Zone](https://github.com/Azure/data-landing-zone). The Data Domain relies on the Private DNS Zones that are deployed in the Data Management Template. If you have Private DNS Zones deployed elsewhere, you can also point to these. If you do not have the Private DNS Zones deployed for the respective services, this template deployment will fail. Also, this template requires subnets as specified in the prerequisites. The Data Landing Zone already creates a few subnets, which can be used for this Data Domain.
 
 The following prerequisites are required to make this repository work:
 
@@ -100,7 +100,7 @@ A service principal with *Contributor* role needs to be generated for authentica
 #### Azure CLI
 
 ```sh
-# Replace {service-principal-name} and {subscription-id} with your
+# Replace {service-principal-name} and {subscription-id} and {resource-group} with your
 # Azure subscription id and any name for your service principal.
 az ad sp create-for-rbac \
   --name {service-principal-name} \

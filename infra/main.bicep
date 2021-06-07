@@ -73,38 +73,38 @@ var synapseDefaultStorageAccountSubscriptionId = split(synapseDefaultStorageAcco
 var synapseDefaultStorageAccountResourceGroupName = split(synapseDefaultStorageAccountFileSystemId, '/')[4]
 
 // Resources
-module keyvault001 'services/keyvault.bicep' = {
+module keyvault001 'modules/services/keyvault.bicep' = {
   name: 'keyvault001'
   scope: resourceGroup()
   params: {
     location: location
-    keyvaultName: '${prefix}-vault001'
+    keyvaultName: '${name}-vault001'
     tags: tags
-    privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
     subnetId: subnetId
+    privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
   }
 }
 
-module synapse001 'services/synapse.bicep' = {
+module synapse001 'modules/services/synapse.bicep' = {
   name: 'synapse001'
   scope: resourceGroup()
   params: {
     location: location
-    synapseName: '${prefix}-synapse001'
+    synapseName: '${name}-synapse001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
     synapseSqlAdminGroupObjectID: ''
     privateDnsZoneIdSynapseDev: privateDnsZoneIdSynapseDev
     privateDnsZoneIdSynapseSql: privateDnsZoneIdSynapseSql
     purviewId: purviewId
-    subnetId: subnetId
     synapseComputeSubnetId: ''
     synapseDefaultStorageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
   }
 }
 
-module synapse001RoleAssignmentStorage 'auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
+module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
   name: 'synapse001RoleAssignmentStorage'
   scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
   params: {
@@ -113,87 +113,87 @@ module synapse001RoleAssignmentStorage 'auxiliary/synapseRoleAssignmentStorage.b
   }
 }
 
-module datafactory001 'services/datafactory.bicep' = {
+module datafactory001 'modules/services/datafactory.bicep' = {
   name: 'datafactory001'
   scope: resourceGroup()
   params: {
     location: location
-    datafactoryName: '${prefix}-datafactory001'
+    datafactoryName: '${name}-datafactory001'
     tags: tags
+    subnetId: subnetId
     keyvaultId: keyvault001.outputs.keyvaultId
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
-    subnetId: subnetId
   }
 }
 
-module cosmosdb001 'services/cosmosdb.bicep' = {
+module cosmosdb001 'modules/services/cosmosdb.bicep' = {
   name: 'cosmos001'
   scope: resourceGroup()
   params: {
     location: location
-    cosmosdbName: '${prefix}-cosmos001'
+    cosmosdbName: '${name}-cosmos001'
     tags: tags
-    privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
     subnetId: subnetId
+    privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
   }
 }
 
-module sql001 'services/sql.bicep' = if (sqlFlavour == 'sql') {
+module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
   name: 'sql001'
   scope: resourceGroup()
   params: {
     location: location
-    sqlserverName: '${prefix}-sqlserver001'
+    sqlserverName: '${name}-sqlserver001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
     sqlserverAdminGroupName: ''
     sqlserverAdminGroupObjectID: ''
-    subnetId: subnetId
   }
 }
 
-module mysql001 'services/mysql.bicep' = if (sqlFlavour == 'mysql') {
+module mysql001 'modules/services/mysql.bicep' = if (sqlFlavour == 'mysql') {
   name: 'mysql001'
   scope: resourceGroup()
   params: {
     location: location
-    mysqlserverName: '${prefix}-mysql001'
+    mysqlserverName: '${name}-mysql001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
     mysqlserverAdminGroupName: ''
     mysqlserverAdminGroupObjectID: ''
-    subnetId: subnetId
   }
 }
 
-module mariadb001 'services/mariadb.bicep' = if (sqlFlavour == 'maria') {
+module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') {
   name: 'mariadb001'
   scope: resourceGroup()
   params: {
     location: location
-    mariadbName: '${prefix}-mariadb001'
+    mariadbName: '${name}-mariadb001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdMariaDb: privateDnsZoneIdMariaDb
-    subnetId: subnetId
   }
 }
 
-module potsgresql001 'services/postgresql.bicep' = if (sqlFlavour == 'postgre') {
+module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'postgre') {
   name: 'postgresql001'
   scope: resourceGroup()
   params: {
     location: location
-    postgresqlName: '${prefix}-postgresql001'
+    postgresqlName: '${name}-postgresql001'
     tags: tags
+    subnetId: subnetId
     administratorPassword: administratorPassword
     postgresqlAdminGroupName: ''
     postgresqlAdminGroupObjectID: ''
     privateDnsZoneIdPostgreSql: privateDnsZoneIdPostgreSql
-    subnetId: subnetId
   }
 }
