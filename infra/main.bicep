@@ -78,7 +78,7 @@ module keyvault001 'services/keyvault.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    keyvaultName: '${prefix}-vault001'
+    keyvaultName: '${name}-vault001'
     tags: tags
     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
     subnetId: subnetId
@@ -90,7 +90,7 @@ module synapse001 'services/synapse.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    synapseName: '${prefix}-synapse001'
+    synapseName: '${name}-synapse001'
     tags: tags
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
@@ -118,7 +118,7 @@ module datafactory001 'services/datafactory.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    datafactoryName: '${prefix}-datafactory001'
+    datafactoryName: '${name}-datafactory001'
     tags: tags
     keyvaultId: keyvault001.outputs.keyvaultId
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
@@ -133,7 +133,7 @@ module cosmosdb001 'services/cosmosdb.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    cosmosdbName: '${prefix}-cosmos001'
+    cosmosdbName: '${name}-cosmos001'
     tags: tags
     privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
     subnetId: subnetId
@@ -145,7 +145,7 @@ module sql001 'services/sql.bicep' = if (sqlFlavour == 'sql') {
   scope: resourceGroup()
   params: {
     location: location
-    sqlserverName: '${prefix}-sqlserver001'
+    sqlserverName: '${name}-sqlserver001'
     tags: tags
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
@@ -160,7 +160,7 @@ module mysql001 'services/mysql.bicep' = if (sqlFlavour == 'mysql') {
   scope: resourceGroup()
   params: {
     location: location
-    mysqlserverName: '${prefix}-mysql001'
+    mysqlserverName: '${name}-mysql001'
     tags: tags
     administratorPassword: administratorPassword
     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
@@ -175,7 +175,7 @@ module mariadb001 'services/mariadb.bicep' = if (sqlFlavour == 'maria') {
   scope: resourceGroup()
   params: {
     location: location
-    mariadbName: '${prefix}-mariadb001'
+    mariadbName: '${name}-mariadb001'
     tags: tags
     administratorPassword: administratorPassword
     privateDnsZoneIdMariaDb: privateDnsZoneIdMariaDb
@@ -188,7 +188,7 @@ module potsgresql001 'services/postgresql.bicep' = if (sqlFlavour == 'postgre') 
   scope: resourceGroup()
   params: {
     location: location
-    postgresqlName: '${prefix}-postgresql001'
+    postgresqlName: '${name}-postgresql001'
     tags: tags
     administratorPassword: administratorPassword
     postgresqlAdminGroupName: ''

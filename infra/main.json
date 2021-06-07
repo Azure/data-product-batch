@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1.14562",
-      "templateHash": "4748616882747489637"
+      "version": "0.4.63.48766",
+      "templateHash": "12642233268465430586"
     }
   },
   "parameters": {
@@ -165,7 +165,7 @@
             "value": "[parameters('location')]"
           },
           "keyvaultName": {
-            "value": "[format('{0}-vault001', parameters('prefix'))]"
+            "value": "[format('{0}-vault001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -183,8 +183,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "16437263462848099421"
+              "version": "0.4.63.48766",
+              "templateHash": "7462647776196913756"
             }
           },
           "parameters": {
@@ -308,7 +308,7 @@
             "value": "[parameters('location')]"
           },
           "synapseName": {
-            "value": "[format('{0}-synapse001', parameters('prefix'))]"
+            "value": "[format('{0}-synapse001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -347,8 +347,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "4728097944233345047"
+              "version": "0.4.63.48766",
+              "templateHash": "4226228036241625269"
             }
           },
           "parameters": {
@@ -681,8 +681,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "1049693784175975969"
+              "version": "0.4.63.48766",
+              "templateHash": "7992555801639066750"
             }
           },
           "parameters": {
@@ -733,7 +733,7 @@
             "value": "[parameters('location')]"
           },
           "datafactoryName": {
-            "value": "[format('{0}-datafactory001', parameters('prefix'))]"
+            "value": "[format('{0}-datafactory001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -760,8 +760,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "16879674741023560411"
+              "version": "0.4.63.48766",
+              "templateHash": "9758677530829725024"
             }
           },
           "parameters": {
@@ -995,7 +995,7 @@
             "value": "[parameters('location')]"
           },
           "cosmosdbName": {
-            "value": "[format('{0}-cosmos001', parameters('prefix'))]"
+            "value": "[format('{0}-cosmos001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -1013,8 +1013,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "8058563456788978120"
+              "version": "0.4.63.48766",
+              "templateHash": "10773184569991276327"
             }
           },
           "parameters": {
@@ -1147,7 +1147,7 @@
             "value": "[parameters('location')]"
           },
           "sqlserverName": {
-            "value": "[format('{0}-sqlserver001', parameters('prefix'))]"
+            "value": "[format('{0}-sqlserver001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -1174,8 +1174,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "14126393915201324666"
+              "version": "0.4.63.48766",
+              "templateHash": "1317407383584095240"
             }
           },
           "parameters": {
@@ -1336,7 +1336,7 @@
             "value": "[parameters('location')]"
           },
           "mysqlserverName": {
-            "value": "[format('{0}-mysql001', parameters('prefix'))]"
+            "value": "[format('{0}-mysql001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -1363,8 +1363,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "12681130662198296205"
+              "version": "0.4.63.48766",
+              "templateHash": "18430515993164762156"
             }
           },
           "parameters": {
@@ -1524,7 +1524,7 @@
             "value": "[parameters('location')]"
           },
           "mariadbName": {
-            "value": "[format('{0}-mariadb001', parameters('prefix'))]"
+            "value": "[format('{0}-mariadb001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -1545,8 +1545,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "7748001116301758956"
+              "version": "0.4.63.48766",
+              "templateHash": "17588840526173890365"
             }
           },
           "parameters": {
@@ -1682,7 +1682,7 @@
             "value": "[parameters('location')]"
           },
           "postgresqlName": {
-            "value": "[format('{0}-postgresql001', parameters('prefix'))]"
+            "value": "[format('{0}-postgresql001', variables('name'))]"
           },
           "tags": {
             "value": "[variables('tags')]"
@@ -1709,8 +1709,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "17273115604055026315"
+              "version": "0.4.63.48766",
+              "templateHash": "18215173976984986424"
             }
           },
           "parameters": {
