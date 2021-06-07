@@ -73,7 +73,7 @@ var synapseDefaultStorageAccountSubscriptionId = split(synapseDefaultStorageAcco
 var synapseDefaultStorageAccountResourceGroupName = split(synapseDefaultStorageAccountFileSystemId, '/')[4]
 
 // Resources
-module keyvault001 'services/keyvault.bicep' = {
+module keyvault001 'modules/services/keyvault.bicep' = {
   name: 'keyvault001'
   scope: resourceGroup()
   params: {
@@ -85,7 +85,7 @@ module keyvault001 'services/keyvault.bicep' = {
   }
 }
 
-module synapse001 'services/synapse.bicep' = {
+module synapse001 'modules/services/synapse.bicep' = {
   name: 'synapse001'
   scope: resourceGroup()
   params: {
@@ -104,7 +104,7 @@ module synapse001 'services/synapse.bicep' = {
   }
 }
 
-module synapse001RoleAssignmentStorage 'auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
+module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
   name: 'synapse001RoleAssignmentStorage'
   scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
   params: {
@@ -113,7 +113,7 @@ module synapse001RoleAssignmentStorage 'auxiliary/synapseRoleAssignmentStorage.b
   }
 }
 
-module datafactory001 'services/datafactory.bicep' = {
+module datafactory001 'modules/services/datafactory.bicep' = {
   name: 'datafactory001'
   scope: resourceGroup()
   params: {
@@ -128,7 +128,7 @@ module datafactory001 'services/datafactory.bicep' = {
   }
 }
 
-module cosmosdb001 'services/cosmosdb.bicep' = {
+module cosmosdb001 'modules/services/cosmosdb.bicep' = {
   name: 'cosmos001'
   scope: resourceGroup()
   params: {
@@ -140,7 +140,7 @@ module cosmosdb001 'services/cosmosdb.bicep' = {
   }
 }
 
-module sql001 'services/sql.bicep' = if (sqlFlavour == 'sql') {
+module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
   name: 'sql001'
   scope: resourceGroup()
   params: {
@@ -155,7 +155,7 @@ module sql001 'services/sql.bicep' = if (sqlFlavour == 'sql') {
   }
 }
 
-module mysql001 'services/mysql.bicep' = if (sqlFlavour == 'mysql') {
+module mysql001 'modules/services/mysql.bicep' = if (sqlFlavour == 'mysql') {
   name: 'mysql001'
   scope: resourceGroup()
   params: {
@@ -170,7 +170,7 @@ module mysql001 'services/mysql.bicep' = if (sqlFlavour == 'mysql') {
   }
 }
 
-module mariadb001 'services/mariadb.bicep' = if (sqlFlavour == 'maria') {
+module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') {
   name: 'mariadb001'
   scope: resourceGroup()
   params: {
@@ -183,7 +183,7 @@ module mariadb001 'services/mariadb.bicep' = if (sqlFlavour == 'maria') {
   }
 }
 
-module potsgresql001 'services/postgresql.bicep' = if (sqlFlavour == 'postgre') {
+module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'postgre') {
   name: 'postgresql001'
   scope: resourceGroup()
   params: {
