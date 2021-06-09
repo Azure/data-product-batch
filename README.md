@@ -71,7 +71,8 @@ If you don't have an Azure subscription, [create your Azure free account today](
 
 |Data Domain Batch |
 |:---------------------|
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json)
+<!-- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fdata-domain-batch%2Fmain%2Fdocs%2Freference%2Fdeploy.dataDomain.json) -->
+![Deploy to Azure](docs/images/deploytoazuregrey.png)
 
 ## Option 2: GitHub Actions or Azure DevOps Pipelines
 
