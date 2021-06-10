@@ -32,7 +32,7 @@ param synapseDefaultStorageAccountFileSystemId string
 @description('Specifies the resource ID of the central purview instance.')
 param purviewId string
 @description('Specifies whether role assignments should be enabled.')
-param enableRoleAssignments bool
+param enableRoleAssignments bool = false
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
