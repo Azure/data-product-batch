@@ -284,7 +284,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | Parameter                                | Description  | Sample value |
 |:-----------------------------------------|:-------------|:-------------|
 | location | Specifies the location for all resources. | `northeurope` |
-| environment | Specifies the environment of the deployment. | `dev`, `test` or `prod` |
+| environment | Specifies the environment of the deployment. | `dev`, `tst` or `prd` |
 | prefix | Specifies the prefix for all resources created in this deployment. | `prefi` |
 | sqlFlavour | Specifies the sql flavour that will be deployed. | `sql`, `mysql`, `maria` or `postgre` |
 | administratorPassword | Specifies the administrator password of the sql servers. Will be automatically set in the workflow. **Leave this value as is.** | `<your-secure-password>` |
