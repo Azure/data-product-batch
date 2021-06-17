@@ -9,7 +9,7 @@
             "value": "prd"
         },
         "prefix": {
-            "value": "dom01"
+            "value": "int01"
         },
         "sqlFlavour": {
             "value": "sql"

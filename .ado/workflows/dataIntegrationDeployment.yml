@@ -1,4 +1,4 @@
-name: Data Domain Deployment
+name: Data Integration Deployment
 
 trigger:
   branches:
@@ -8,7 +8,7 @@ trigger:
     include:
       - code/*
       - infra/*
-      - .ado/workflows/dataDomainDeployment.yml
+      - .ado/workflows/dataIntegrationDeployment.yml
 pr:
   branches:
     include:
@@ -17,13 +17,13 @@ pr:
     include:
       - code/*
       - infra/*
-      - .ado/workflows/dataDomainDeployment.yml
+      - .ado/workflows/dataIntegrationDeployment.yml
 
 variables:
-  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: "domain-product-service-connection" # Update to '{resourceManagerConnectionName}'
-  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b"               # Update to '{dataLandingZoneSubscriptionId}'
-  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-dd001"                                # Update to '{dataLandingZoneName}-rg'
-  AZURE_LOCATION: "North Europe"                                              # Update to '{regionName}'
+  AZURE_RESOURCE_MANAGER_CONNECTION_NAME: "integration-product-service-connection" # Update to '{resourceManagerConnectionName}'
+  AZURE_SUBSCRIPTION_ID: "2150d511-458f-43b9-8691-6819ba2e6c7b"                    # Update to '{dataLandingZoneSubscriptionId}'
+  AZURE_RESOURCE_GROUP_NAME: "dlz01-dev-di001"                                     # Update to '{dataLandingZoneName}-rg'
+  AZURE_LOCATION: "North Europe"                                                   # Update to '{regionName}'
 
 stages:
   - stage: Validation
@@ -60,10 +60,10 @@ stages:
               ignoreLASTEXITCODE: false
               pwsh: true
 
-          # Deploy Data Domain - validation
+          # Deploy Data Integration - validation
           - task: AzureResourceManagerTemplateDeployment@3
-            name: data_domain_validation
-            displayName: Deploy Data Domain - validation
+            name: data_integration_validation
+            displayName: Deploy Data Integration - validation
             enabled: true
             continueOnError: false
             inputs:
@@ -116,10 +116,10 @@ stages:
               ignoreLASTEXITCODE: false
               pwsh: true
 
-          # Deploy Data Domain
+          # Deploy Data Integration
           - task: AzureResourceManagerTemplateDeployment@3
-            name: data_domain_deployment
-            displayName: Deploy Data Domain
+            name: data_integration_deployment
+            displayName: Deploy Data Integration
             enabled: true
             continueOnError: false
             inputs:
