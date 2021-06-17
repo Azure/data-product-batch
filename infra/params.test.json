@@ -21,7 +21,7 @@
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-test-storage/providers/Microsoft.Storage/storageAccounts/dlz01devwork/blobServices/default/containers/dp001"
         },
         "subnetId": {
-            "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-test-network/providers/Microsoft.Network/virtualNetworks/dlz01-test-vnet/subnets/DataDomain001Subnet"
+            "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-test-network/providers/Microsoft.Network/virtualNetworks/dlz01-test-vnet/subnets/DataIntegration001Subnet"
         },
         "purviewId": {
             "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-test-governance/providers/Microsoft.Purview/accounts/dmz-test-purview001"
