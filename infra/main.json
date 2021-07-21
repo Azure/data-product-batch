@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.63.48766",
-      "templateHash": "7146491684139338324"
+      "version": "0.4.412.5873",
+      "templateHash": "14994798034408197589"
     }
   },
   "parameters": {
@@ -34,6 +34,13 @@
       "maxLength": 10,
       "minLength": 2
     },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Specifies the tags that you want to apply to all resources."
+      }
+    },
     "sqlFlavour": {
       "type": "string",
       "metadata": {
@@ -60,6 +67,7 @@
     },
     "purviewId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the central purview instance."
       }
@@ -79,60 +87,70 @@
     },
     "privateDnsZoneIdKeyVault": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for KeyVault."
       }
     },
     "privateDnsZoneIdSynapseDev": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Synapse Dev."
       }
     },
     "privateDnsZoneIdSynapseSql": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Synapse Sql."
       }
     },
     "privateDnsZoneIdDataFactory": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Data Factory."
       }
     },
     "privateDnsZoneIdDataFactoryPortal": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Data Factory Portal."
       }
     },
     "privateDnsZoneIdCosmosdbSql": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Cosmos Sql."
       }
     },
     "privateDnsZoneIdSqlServer": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for Sql Server."
       }
     },
     "privateDnsZoneIdMySqlServer": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for MySql Server."
       }
     },
     "privateDnsZoneIdMariaDb": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for MariaDB."
       }
     },
     "privateDnsZoneIdPostgreSql": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the private DNS zone for PostgreSql."
       }
@@ -141,15 +159,16 @@
   "functions": [],
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
-    "tags": {
+    "tagsDefault": {
       "Owner": "Enterprise Scale Analytics",
       "Project": "Enterprise Scale Analytics",
       "Environment": "[parameters('environment')]",
       "Toolkit": "bicep",
       "Name": "[variables('name')]"
     },
-    "synapseDefaultStorageAccountSubscriptionId": "[split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2]]",
-    "synapseDefaultStorageAccountResourceGroupName": "[split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4]]"
+    "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
+    "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
+    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]"
   },
   "resources": [
     {
@@ -169,7 +188,7 @@
             "value": "[format('{0}-vault001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -184,8 +203,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "7462647776196913756"
+              "version": "0.4.412.5873",
+              "templateHash": "14530066335976404577"
             }
           },
           "parameters": {
@@ -268,6 +287,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdKeyVault')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('keyVaultPrivateEndpointName'), 'aRecord')]",
@@ -312,7 +332,7 @@
             "value": "[format('{0}-synapse001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -348,8 +368,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "1918938348641909336"
+              "version": "0.4.412.5873",
+              "templateHash": "5770653068322555331"
             }
           },
           "parameters": {
@@ -392,8 +412,8 @@
           },
           "functions": [],
           "variables": {
-            "synapseDefaultStorageAccountFileSystemName": "[last(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/'))]",
-            "synapseDefaultStorageAccountName": "[split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[8]]",
+            "synapseDefaultStorageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), last(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "synapseDefaultStorageAccountName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
             "synapsePrivateEndpointNameSql": "[format('{0}-sql-private-endpoint', parameters('synapseName'))]",
             "synapsePrivateEndpointNameSqlOnDemand": "[format('{0}-sqlondemand-private-endpoint', parameters('synapseName'))]",
             "synapsePrivateEndpointNameDev": "[format('{0}-dev-private-endpoint', parameters('synapseName'))]"
@@ -537,6 +557,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseSql')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameSql'), 'aRecord')]",
@@ -583,6 +604,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseSql')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameSqlOnDemand'), 'aRecord')]",
@@ -629,6 +651,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSynapseDev')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('synapsePrivateEndpointNameDev'), 'aRecord')]",
@@ -682,8 +705,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "7992555801639066750"
+              "version": "0.4.412.5873",
+              "templateHash": "6251525817379670785"
             }
           },
           "parameters": {
@@ -696,11 +719,11 @@
           },
           "functions": [],
           "variables": {
-            "storageAccountFileSystemName": "[last(split(parameters('storageAccountFileSystemId'), '/'))]",
-            "storageAccountName": "[split(parameters('storageAccountFileSystemId'), '/')[8]]",
-            "synapseSubscriptionId": "[split(parameters('synapseId'), '/')[2]]",
-            "synapseResourceGroupName": "[split(parameters('synapseId'), '/')[4]]",
-            "synapseName": "[last(split(parameters('synapseId'), '/'))]"
+            "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
+            "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
+            "synapseSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), split(parameters('synapseId'), '/')[2], subscription().subscriptionId)]",
+            "synapseResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), split(parameters('synapseId'), '/')[4], resourceGroup().name)]",
+            "synapseName": "[if(greaterOrEquals(length(split(parameters('synapseId'), '/')), 9), last(split(parameters('synapseId'), '/')), 'incorrectSegmentLength')]"
           },
           "resources": [
             {
@@ -737,12 +760,12 @@
             "value": "[format('{0}-datafactory001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
-          "keyvaultId": {
+          "keyVault001Id": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyvault001'), '2019-10-01').outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
@@ -761,8 +784,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "9758677530829725024"
+              "version": "0.4.412.5873",
+              "templateHash": "13526161420703637596"
             }
           },
           "parameters": {
@@ -781,7 +804,7 @@
             "purviewId": {
               "type": "string"
             },
-            "keyvaultId": {
+            "keyVault001Id": {
               "type": "string"
             },
             "privateDnsZoneIdDataFactory": {
@@ -793,7 +816,7 @@
           },
           "functions": [],
           "variables": {
-            "keyvaultName": "[last(split(parameters('keyvaultId'), '/'))]",
+            "keyVault001Name": "[if(greaterOrEquals(length(split(parameters('keyVault001Id'), '/')), 9), last(split(parameters('keyVault001Id'), '/')), 'incorrectSegmentLength')]",
             "datafactoryDefaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
             "datafactoryPrivateEndpointNameDatafactory": "[format('{0}-datafactory-private-endpoint', parameters('datafactoryName'))]",
             "datafactoryPrivateEndpointNamePortal": "[format('{0}-portal-private-endpoint', parameters('datafactoryName'))]"
@@ -849,11 +872,11 @@
             {
               "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
               "apiVersion": "2018-06-01",
-              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', replace(variables('keyvaultName'), '-', ''))]",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', replace(variables('keyVault001Name'), '-', ''))]",
               "properties": {
                 "fqdns": [],
                 "groupId": "vault",
-                "privateLinkResourceId": "[parameters('keyvaultId')]"
+                "privateLinkResourceId": "[parameters('keyVault001Id')]"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
@@ -863,7 +886,7 @@
             {
               "type": "Microsoft.DataFactory/factories/linkedservices",
               "apiVersion": "2018-06-01",
-              "name": "[format('{0}/{1}', parameters('datafactoryName'), replace(variables('keyvaultName'), '-', ''))]",
+              "name": "[format('{0}/{1}', parameters('datafactoryName'), replace(variables('keyVault001Name'), '-', ''))]",
               "properties": {
                 "type": "AzureKeyVault",
                 "annotations": [],
@@ -875,7 +898,7 @@
                 "description": "Key Vault for storing secrets",
                 "parameters": {},
                 "typeProperties": {
-                  "baseUrl": "[format('https://{0}{1}/', variables('keyvaultName'), environment().suffixes.keyvaultDns)]"
+                  "baseUrl": "[format('https://{0}{1}/', variables('keyVault001Name'), environment().suffixes.keyvaultDns)]"
                 }
               },
               "dependsOn": [
@@ -912,6 +935,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdDataFactory')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('datafactoryPrivateEndpointNameDatafactory'), 'aRecord')]",
@@ -958,6 +982,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdDataFactoryPortal')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('datafactoryPrivateEndpointNamePortal'), 'aRecord')]",
@@ -999,7 +1024,7 @@
             "value": "[format('{0}-cosmos001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1014,8 +1039,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "10773184569991276327"
+              "version": "0.4.412.5873",
+              "templateHash": "15461184935800423728"
             }
           },
           "parameters": {
@@ -1112,6 +1137,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdCosmosdbSql')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('cosmosdbPrivateEndpointName'), 'aRecord')]",
@@ -1151,7 +1177,7 @@
             "value": "[format('{0}-sqlserver001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1175,8 +1201,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "1317407383584095240"
+              "version": "0.4.412.5873",
+              "templateHash": "4676087885997605556"
             }
           },
           "parameters": {
@@ -1233,7 +1259,7 @@
               "condition": "[and(not(equals(parameters('sqlserverAdminGroupName'), '')), not(equals(parameters('sqlserverAdminGroupObjectID'), '')))]",
               "type": "Microsoft.Sql/servers/administrators",
               "apiVersion": "2020-11-01-preview",
-              "name": "[format('{0}/{1}', parameters('sqlserverName'), 'activeDirectory')]",
+              "name": "[format('{0}/{1}', parameters('sqlserverName'), 'ActiveDirectory')]",
               "properties": {
                 "administratorType": "ActiveDirectory",
                 "login": "[parameters('sqlserverAdminGroupName')]",
@@ -1301,6 +1327,7 @@
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdSqlServer')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('sqlserverPrivateEndpointName'), 'aRecord')]",
@@ -1340,7 +1367,7 @@
             "value": "[format('{0}-mysql001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1364,8 +1391,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "18430515993164762156"
+              "version": "0.4.412.5873",
+              "templateHash": "8873772663367406513"
             }
           },
           "parameters": {
@@ -1401,7 +1428,7 @@
           },
           "resources": [
             {
-              "type": "Microsoft.DBForMySQL/servers",
+              "type": "Microsoft.DBforMySQL/servers",
               "apiVersion": "2017-12-01",
               "name": "[parameters('mysqlserverName')]",
               "location": "[parameters('location')]",
@@ -1435,7 +1462,7 @@
             },
             {
               "condition": "[and(not(equals(parameters('mysqlserverAdminGroupName'), '')), not(equals(parameters('mysqlserverAdminGroupObjectID'), '')))]",
-              "type": "Microsoft.DBForMySQL/servers/administrators",
+              "type": "Microsoft.DBforMySQL/servers/administrators",
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('mysqlserverName'), 'activeDirectory')]",
               "properties": {
@@ -1445,11 +1472,11 @@
                 "tenantId": "[subscription().tenantId]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysqlserverName'))]"
+                "[resourceId('Microsoft.DBforMySQL/servers', parameters('mysqlserverName'))]"
               ]
             },
             {
-              "type": "Microsoft.DBForMySQL/servers/databases",
+              "type": "Microsoft.DBforMySQL/servers/databases",
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('mysqlserverName'), 'Database001')]",
               "properties": {
@@ -1457,7 +1484,7 @@
                 "collation": "latin1_swedish_ci"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysqlserverName'))]"
+                "[resourceId('Microsoft.DBforMySQL/servers', parameters('mysqlserverName'))]"
               ]
             },
             {
@@ -1475,7 +1502,7 @@
                       "groupIds": [
                         "mysqlServer"
                       ],
-                      "privateLinkServiceId": "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysqlserverName'))]",
+                      "privateLinkServiceId": "[resourceId('Microsoft.DBforMySQL/servers', parameters('mysqlserverName'))]",
                       "requestMessage": ""
                     }
                   }
@@ -1485,10 +1512,11 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysqlserverName'))]"
+                "[resourceId('Microsoft.DBforMySQL/servers', parameters('mysqlserverName'))]"
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdMySqlServer')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('mysqlserverPrivateEndpointName'), 'aRecord')]",
@@ -1528,7 +1556,7 @@
             "value": "[format('{0}-mariadb001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1546,8 +1574,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "17588840526173890365"
+              "version": "0.4.412.5873",
+              "templateHash": "6145349954913691687"
             }
           },
           "parameters": {
@@ -1577,7 +1605,7 @@
           },
           "resources": [
             {
-              "type": "Microsoft.DBForMariaDB/servers",
+              "type": "Microsoft.DBforMariaDB/servers",
               "apiVersion": "2018-06-01",
               "name": "[parameters('mariadbName')]",
               "location": "[parameters('location')]",
@@ -1607,7 +1635,7 @@
               }
             },
             {
-              "type": "Microsoft.DBForMariaDB/servers/databases",
+              "type": "Microsoft.DBforMariaDB/servers/databases",
               "apiVersion": "2018-06-01",
               "name": "[format('{0}/{1}', parameters('mariadbName'), 'Database001')]",
               "properties": {
@@ -1615,7 +1643,7 @@
                 "collation": "utf8_general_ci"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForMariaDB/servers', parameters('mariadbName'))]"
+                "[resourceId('Microsoft.DBforMariaDB/servers', parameters('mariadbName'))]"
               ]
             },
             {
@@ -1633,7 +1661,7 @@
                       "groupIds": [
                         "mariadbServer"
                       ],
-                      "privateLinkServiceId": "[resourceId('Microsoft.DBForMariaDB/servers', parameters('mariadbName'))]",
+                      "privateLinkServiceId": "[resourceId('Microsoft.DBforMariaDB/servers', parameters('mariadbName'))]",
                       "requestMessage": ""
                     }
                   }
@@ -1643,10 +1671,11 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForMariaDB/servers', parameters('mariadbName'))]"
+                "[resourceId('Microsoft.DBforMariaDB/servers', parameters('mariadbName'))]"
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdMariaDb')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('mariadbPrivateEndpointName'), 'aRecord')]",
@@ -1686,7 +1715,7 @@
             "value": "[format('{0}-postgresql001', variables('name'))]"
           },
           "tags": {
-            "value": "[variables('tags')]"
+            "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
@@ -1710,8 +1739,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.63.48766",
-              "templateHash": "18215173976984986424"
+              "version": "0.4.412.5873",
+              "templateHash": "14018814256005478074"
             }
           },
           "parameters": {
@@ -1747,7 +1776,7 @@
           },
           "resources": [
             {
-              "type": "Microsoft.DBForPostgreSQL/servers",
+              "type": "Microsoft.DBforPostgreSQL/servers",
               "apiVersion": "2017-12-01",
               "name": "[parameters('postgresqlName')]",
               "location": "[parameters('location')]",
@@ -1781,7 +1810,7 @@
             },
             {
               "condition": "[and(not(equals(parameters('postgresqlAdminGroupName'), '')), not(equals(parameters('postgresqlAdminGroupObjectID'), '')))]",
-              "type": "Microsoft.DBForPostgreSQL/servers/administrators",
+              "type": "Microsoft.DBforPostgreSQL/servers/administrators",
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('postgresqlName'), 'activeDirectory')]",
               "properties": {
@@ -1791,11 +1820,11 @@
                 "tenantId": "[subscription().tenantId]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForPostgreSQL/servers', parameters('postgresqlName'))]"
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('postgresqlName'))]"
               ]
             },
             {
-              "type": "Microsoft.DBForPostgreSQL/servers/databases",
+              "type": "Microsoft.DBforPostgreSQL/servers/databases",
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('postgresqlName'), 'Database001')]",
               "properties": {
@@ -1803,7 +1832,7 @@
                 "collation": "utf8_general_ci"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForPostgreSQL/servers', parameters('postgresqlName'))]"
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('postgresqlName'))]"
               ]
             },
             {
@@ -1821,7 +1850,7 @@
                       "groupIds": [
                         "postgresqlServer"
                       ],
-                      "privateLinkServiceId": "[resourceId('Microsoft.DBForPostgreSQL/servers', parameters('postgresqlName'))]",
+                      "privateLinkServiceId": "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('postgresqlName'))]",
                       "requestMessage": ""
                     }
                   }
@@ -1831,10 +1860,11 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DBForPostgreSQL/servers', parameters('postgresqlName'))]"
+                "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('postgresqlName'))]"
               ]
             },
             {
+              "condition": "[not(empty(parameters('privateDnsZoneIdPostgreSql')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2020-11-01",
               "name": "[format('{0}/{1}', variables('postgresqlPrivateEndpointName'), 'aRecord')]",

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a MySQL Server and Database.
 targetScope = 'resourceGroup'
 
@@ -93,7 +96,7 @@ resource mysqlserverPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-
   }
 }
 
-resource mysqlserverPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource mysqlserverPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdMySqlServer)) {
   parent: mysqlserverPrivateEndpoint
   name: 'aRecord'
   properties: {

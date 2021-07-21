@@ -11,6 +11,9 @@
         "prefix": {
             "value": "int01"
         },
+        "tags": {
+            "value": {}
+        },
         "sqlFlavour": {
             "value": "sql"
         },

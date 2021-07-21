@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a SQL Server and Database.
 targetScope = 'resourceGroup'
 
@@ -36,7 +39,7 @@ resource sqlserver 'Microsoft.Sql/servers@2020-11-01-preview' = {
 
 resource sqlserverAdministrators 'Microsoft.Sql/servers/administrators@2020-11-01-preview' = if (sqlserverAdminGroupName != '' && sqlserverAdminGroupObjectID != '') {
   parent: sqlserver
-  name: 'activeDirectory'
+  name: 'ActiveDirectory'
   properties: {
     administratorType: 'ActiveDirectory'
     login: sqlserverAdminGroupName
@@ -116,7 +119,7 @@ resource sqlserverPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01
   }
 }
 
-resource sqlserverPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource sqlserverPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdSqlServer)) {
   parent: sqlserverPrivateEndpoint
   name: 'aRecord'
   properties: {

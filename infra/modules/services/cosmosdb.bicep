@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a Cosmos Database.
 targetScope = 'resourceGroup'
 
@@ -97,7 +100,7 @@ resource cosmosdbPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01'
   }
 }
 
-resource cosmosdbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource cosmosdbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdCosmosdbSql)) {
   parent: cosmosdbPrivateEndpoint
   name: 'aRecord'
   properties: {
