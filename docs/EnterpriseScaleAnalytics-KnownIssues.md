@@ -1,4 +1,4 @@
-# Data Product Analytics - Known Issues
+# Data Product Batch - Known Issues
 
 ## Error: MissingSubscriptionRegistration
 
