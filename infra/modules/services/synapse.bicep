@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a Synapse workspace.
 targetScope = 'resourceGroup'
 
@@ -17,8 +20,8 @@ param privateDnsZoneIdSynapseDev string
 param purviewId string
 
 // Variables
-var synapseDefaultStorageAccountFileSystemName = last(split(synapseDefaultStorageAccountFileSystemId, '/'))
-var synapseDefaultStorageAccountName = split(synapseDefaultStorageAccountFileSystemId, '/')[8]
+var synapseDefaultStorageAccountFileSystemName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? last(split(synapseDefaultStorageAccountFileSystemId, '/')) : 'incorrectSegmentLength'
+var synapseDefaultStorageAccountName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[8] : 'incorrectSegmentLength'
 var synapsePrivateEndpointNameSql = '${synapse.name}-sql-private-endpoint'
 var synapsePrivateEndpointNameSqlOnDemand = '${synapse.name}-sqlondemand-private-endpoint'
 var synapsePrivateEndpointNameDev = '${synapse.name}-dev-private-endpoint'
@@ -153,7 +156,7 @@ resource synapsePrivateEndpointSql 'Microsoft.Network/privateEndpoints@2020-11-0
   }
 }
 
-resource synapsePrivateEndpointSqlARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource synapsePrivateEndpointSqlARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdSynapseSql)) {
   parent: synapsePrivateEndpointSql
   name: 'aRecord'
   properties: {
@@ -192,7 +195,7 @@ resource synapsePrivateEndpointSqlOnDemand 'Microsoft.Network/privateEndpoints@2
   }
 }
 
-resource synapsePrivateEndpointSqlOnDemandARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource synapsePrivateEndpointSqlOnDemandARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdSynapseSql)) {
   parent: synapsePrivateEndpointSqlOnDemand
   name: 'aRecord'
   properties: {
@@ -231,7 +234,7 @@ resource synapsePrivateEndpointDev 'Microsoft.Network/privateEndpoints@2020-11-0
   }
 }
 
-resource synapsePrivateEndpointDevARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource synapsePrivateEndpointDevARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdSynapseDev)) {
   parent: synapsePrivateEndpointDev
   name: 'aRecord'
   properties: {

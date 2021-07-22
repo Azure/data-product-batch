@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 targetScope = 'resourceGroup'
 
 // General parameters
@@ -14,6 +17,8 @@ param environment string
 @maxLength(10)
 @description('Specifies the prefix for all resources created in this deployment.')
 param prefix string
+@description('Specifies the tags that you want to apply to all resources.')
+param tags object = {}
 
 // Resource parameters
 @allowed([
@@ -30,7 +35,7 @@ param administratorPassword string
 @description('Specifies the resource ID of the default storage account file system for synapse.')
 param synapseDefaultStorageAccountFileSystemId string
 @description('Specifies the resource ID of the central purview instance.')
-param purviewId string
+param purviewId string = ''
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false
 
@@ -40,37 +45,38 @@ param subnetId string
 
 // Private DNS Zone parameters
 @description('Specifies the resource ID of the private DNS zone for KeyVault.')
-param privateDnsZoneIdKeyVault string
+param privateDnsZoneIdKeyVault string = ''
 @description('Specifies the resource ID of the private DNS zone for Synapse Dev.')
-param privateDnsZoneIdSynapseDev string
+param privateDnsZoneIdSynapseDev string = ''
 @description('Specifies the resource ID of the private DNS zone for Synapse Sql.')
-param privateDnsZoneIdSynapseSql string
+param privateDnsZoneIdSynapseSql string = ''
 @description('Specifies the resource ID of the private DNS zone for Data Factory.')
-param privateDnsZoneIdDataFactory string
+param privateDnsZoneIdDataFactory string = ''
 @description('Specifies the resource ID of the private DNS zone for Data Factory Portal.')
-param privateDnsZoneIdDataFactoryPortal string
+param privateDnsZoneIdDataFactoryPortal string = ''
 @description('Specifies the resource ID of the private DNS zone for Cosmos Sql.')
-param privateDnsZoneIdCosmosdbSql string
+param privateDnsZoneIdCosmosdbSql string = ''
 @description('Specifies the resource ID of the private DNS zone for Sql Server.')
-param privateDnsZoneIdSqlServer string
+param privateDnsZoneIdSqlServer string = ''
 @description('Specifies the resource ID of the private DNS zone for MySql Server.')
-param privateDnsZoneIdMySqlServer string
+param privateDnsZoneIdMySqlServer string = ''
 @description('Specifies the resource ID of the private DNS zone for MariaDB.')
-param privateDnsZoneIdMariaDb string
+param privateDnsZoneIdMariaDb string = ''
 @description('Specifies the resource ID of the private DNS zone for PostgreSql.')
-param privateDnsZoneIdPostgreSql string
+param privateDnsZoneIdPostgreSql string = ''
 
 // Variables
 var name = toLower('${prefix}-${environment}')
-var tags = {
+var tagsDefault = {
   Owner: 'Enterprise Scale Analytics'
   Project: 'Enterprise Scale Analytics'
   Environment: environment
   Toolkit: 'bicep'
   Name: name
 }
-var synapseDefaultStorageAccountSubscriptionId = split(synapseDefaultStorageAccountFileSystemId, '/')[2]
-var synapseDefaultStorageAccountResourceGroupName = split(synapseDefaultStorageAccountFileSystemId, '/')[4]
+var tagsJoined = union(tagsDefault, tags)
+var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
+var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
 
 // Resources
 module keyvault001 'modules/services/keyvault.bicep' = {
@@ -79,7 +85,7 @@ module keyvault001 'modules/services/keyvault.bicep' = {
   params: {
     location: location
     keyvaultName: '${name}-vault001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
   }
@@ -91,7 +97,7 @@ module synapse001 'modules/services/synapse.bicep' = {
   params: {
     location: location
     synapseName: '${name}-synapse001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
@@ -119,9 +125,9 @@ module datafactory001 'modules/services/datafactory.bicep' = {
   params: {
     location: location
     datafactoryName: '${name}-datafactory001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
-    keyvaultId: keyvault001.outputs.keyvaultId
+    keyVault001Id: keyvault001.outputs.keyvaultId
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
@@ -134,7 +140,7 @@ module cosmosdb001 'modules/services/cosmosdb.bicep' = {
   params: {
     location: location
     cosmosdbName: '${name}-cosmos001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
   }
@@ -146,7 +152,7 @@ module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
   params: {
     location: location
     sqlserverName: '${name}-sqlserver001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
@@ -161,7 +167,7 @@ module mysql001 'modules/services/mysql.bicep' = if (sqlFlavour == 'mysql') {
   params: {
     location: location
     mysqlserverName: '${name}-mysql001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
@@ -176,7 +182,7 @@ module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') 
   params: {
     location: location
     mariadbName: '${name}-mariadb001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     privateDnsZoneIdMariaDb: privateDnsZoneIdMariaDb
@@ -189,7 +195,7 @@ module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
   params: {
     location: location
     postgresqlName: '${name}-postgresql001'
-    tags: tags
+    tags: tagsJoined
     subnetId: subnetId
     administratorPassword: administratorPassword
     postgresqlAdminGroupName: ''

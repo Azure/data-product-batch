@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a Data Factory.
 targetScope = 'resourceGroup'
 
@@ -7,12 +10,12 @@ param tags object
 param subnetId string
 param datafactoryName string
 param purviewId string
-param keyvaultId string
+param keyVault001Id string
 param privateDnsZoneIdDataFactory string
 param privateDnsZoneIdDataFactoryPortal string
 
 // Variables
-var keyvaultName = last(split(keyvaultId, '/'))
+var keyVault001Name = length(split(keyVault001Id, '/')) >= 9 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
 var datafactoryDefaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
 var datafactoryPrivateEndpointNameDatafactory = '${datafactory.name}-datafactory-private-endpoint'
 var datafactoryPrivateEndpointNamePortal = '${datafactory.name}-portal-private-endpoint'
@@ -59,17 +62,17 @@ resource datafactoryManagedIntegrationRuntime001 'Microsoft.DataFactory/factorie
 
 resource datafactoryKeyVault001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
   parent: datafactoryManagedVirtualNetwork
-  name: replace(keyvaultName, '-', '')
+  name: replace(keyVault001Name, '-', '')
   properties: {
     fqdns: []
     groupId: 'vault'
-    privateLinkResourceId: keyvaultId
+    privateLinkResourceId: keyVault001Id
   }
 }
 
 resource datafactoryKeyVault001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
   parent: datafactory
-  name: replace(keyvaultName, '-', '')
+  name: replace(keyVault001Name, '-', '')
   properties: {
     type: 'AzureKeyVault'
     annotations: []
@@ -81,7 +84,7 @@ resource datafactoryKeyVault001LinkedService 'Microsoft.DataFactory/factories/li
     description: 'Key Vault for storing secrets'
     parameters: {}
     typeProperties: {
-      baseUrl: 'https://${keyvaultName}${environment().suffixes.keyvaultDns}/'
+      baseUrl: 'https://${keyVault001Name}${environment().suffixes.keyvaultDns}/'
     }
   }
 }
@@ -110,7 +113,7 @@ resource datafactoryPrivateEndpointDatafactory 'Microsoft.Network/privateEndpoin
   }
 }
 
-resource datafactoryPrivateEndpointDatafactoryARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource datafactoryPrivateEndpointDatafactoryARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdDataFactory)) {
   parent: datafactoryPrivateEndpointDatafactory
   name: 'aRecord'
   properties: {
@@ -149,7 +152,7 @@ resource datafactoryPrivateEndpointPortal 'Microsoft.Network/privateEndpoints@20
   }
 }
 
-resource datafactoryPrivateEndpointPortalARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource datafactoryPrivateEndpointPortalARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdDataFactoryPortal)) {
   parent: datafactoryPrivateEndpointPortal
   name: 'aRecord'
   properties: {

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a MariaDb Server and Database.
 targetScope = 'resourceGroup'
 
@@ -77,7 +80,7 @@ resource mariadbPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' 
   }
 }
 
-resource mariadbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource mariadbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdMariaDb)) {
   parent: mariadbPrivateEndpoint
   name: 'aRecord'
   properties: {

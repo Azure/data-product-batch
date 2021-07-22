@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // This template is used to create a PostgreSql Server and Database.
 targetScope = 'resourceGroup'
 
@@ -93,7 +96,7 @@ resource postgresqlPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-0
   }
 }
 
-resource postgresqlPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = {
+resource postgresqlPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdPostgreSql)) {
   parent: postgresqlPrivateEndpoint
   name: 'aRecord'
   properties: {
