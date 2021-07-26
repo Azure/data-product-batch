@@ -1,4 +1,4 @@
-name: Data Integration Deployment
+name: Data Product Deployment
 
 trigger:
   branches:
@@ -8,7 +8,7 @@ trigger:
     include:
       - code/*
       - infra/*
-      - .ado/workflows/dataIntegrationDeployment.yml
+      - .ado/workflows/dataProductDeployment.yml
 pr:
   branches:
     include:
@@ -17,7 +17,7 @@ pr:
     include:
       - code/*
       - infra/*
-      - .ado/workflows/dataIntegrationDeployment.yml
+      - .ado/workflows/dataProductDeployment.yml
 
 variables:
   AZURE_RESOURCE_MANAGER_CONNECTION_NAME: "integration-product-service-connection" # Update to '{resourceManagerConnectionName}'
@@ -60,10 +60,10 @@ stages:
               ignoreLASTEXITCODE: false
               pwsh: true
 
-          # Deploy Data Integration - validation
+          # Deploy Data Product - validation
           - task: AzureResourceManagerTemplateDeployment@3
-            name: data_integration_validation
-            displayName: Deploy Data Integration - validation
+            name: data_product_validation
+            displayName: Deploy Data Product - validation
             enabled: true
             continueOnError: false
             inputs:
@@ -116,10 +116,10 @@ stages:
               ignoreLASTEXITCODE: false
               pwsh: true
 
-          # Deploy Data Integration
+          # Deploy Data Product
           - task: AzureResourceManagerTemplateDeployment@3
-            name: data_integration_deployment
-            displayName: Deploy Data Integration
+            name: data_product_deployment
+            displayName: Deploy Data Product
             enabled: true
             continueOnError: false
             inputs:
