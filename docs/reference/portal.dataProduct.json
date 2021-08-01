@@ -161,19 +161,6 @@
 									}
 								},
                                 {
-                                    "name": "dataProductPrefix",
-                                    "label": "Data Product Prefix",
-                                    "type": "Microsoft.Common.TextBox",
-                                    "visible": true,
-                                    "defaultValue": "",
-                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
-                                    "constraints": {
-                                        "required": true,
-                                        "regex": "^[a-z0-9]{1,10}$",
-                                        "validationMessage": "The prefix must be between 1-10 lowercase characters and numbers."
-                                    }
-                                },
-                                {
                                     "name": "environment",
                                     "label": "Environment",
                                     "type": "Microsoft.Common.DropDown",
@@ -204,6 +191,127 @@
                                             }
                                         ],
                                         "required": true
+                                    }
+                                },
+                                {
+                                    "name": "dataProductPrefix",
+                                    "label": "Data Product Prefix",
+                                    "type": "Microsoft.Common.TextBox",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": "Specify a prefix (min 1 and max 10 lowercase characters and numbers).",
+                                    "constraints": {
+                                        "required": true,
+                                        "validations": [
+                                            {
+                                                "regex": "^[a-z0-9]{1,10}$",
+                                                "message": "The prefix must be between 1-10 lowercase characters and numbers."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.keyVaultNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.mariaDbServerNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.mySqlServerNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.postgresSqlServerNameApi.nameAvailable, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.sqlServerNameApi.available, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            },
+                                            {
+                                                "isValid": "[not(equals(steps('basics').dataProductName.synapseNameApi.available, false))]",
+                                                "message": "Prefix currently unavailable. Please choose a different one."
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "cosmosNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "GET",
+                                        "path": "[concat('/providers/Microsoft.DocumentDB/databaseAccountNames/', steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-cosmos001', '?api-version=2021-04-15')]"
+                                    }
+                                },
+                                {
+                                    "name": "keyVaultNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.KeyVault/checkNameAvailability?api-version=2019-09-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-vault001')]",
+                                            "type": "Microsoft.KeyVault/vaults"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "mariaDbServerNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.DBforMariaDB/checkNameAvailability?api-version=2018-06-01-preview')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-mariadb001')]",
+                                            "type": "Microsoft.DBforMariaDB"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "mySqlServerNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.DBforMySQL/checkNameAvailability?api-version=2017-12-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-mysqlserver001')]",
+                                            "type": "Microsoft.DBforMySQL"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "postgresSqlServerNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.DBforPostgreSQL/checkNameAvailability?api-version=2017-12-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-postgresql001')]",
+                                            "type": "Microsoft.DBforPostgreSQL"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "sqlServerNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Sql/checkNameAvailability?api-version=2021-02-01-preview')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-sqlserver001')]",
+                                            "type": "Microsoft.Sql/servers"
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "synapseNameApi",
+                                    "type": "Microsoft.Solutions.ArmApiControl",
+                                    "request": {
+                                        "method": "POST",
+                                        "path": "[concat(steps('basics').deploymentDetails.subscriptionId, '/providers/Microsoft.Synapse/checkNameAvailability?api-version=2021-03-01')]",
+                                        "body": {
+                                            "name": "[concat(steps('basics').dataProductName.dataProductPrefix, '-', steps('basics').dataProductName.environment, '-synapse001')]",
+                                            "type": "Microsoft.Synapse/workspaces"
+                                        }
                                     }
                                 }
                             ]
