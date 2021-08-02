@@ -20,23 +20,23 @@
                             }
                         },
                         {
-							"name": "deploymentDetails",
-							"label": "Deployment Details",
-							"type": "Microsoft.Common.Section",
+                            "name": "deploymentDetails",
+                            "label": "Deployment Details",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "deploymentDetailsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the subscription and resource group as well as the location to specify the scope of your Data Product deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "deploymentDetailsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the subscription and resource group as well as the location to specify the scope of your Data Product deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxPrerequisites",
                                     "type": "Microsoft.Common.InfoBox",
@@ -143,23 +143,23 @@
                             ]
                         },
                         {
-							"name": "dataProductName",
-							"label": "Data Product Name",
-							"type": "Microsoft.Common.Section",
+                            "name": "dataProductName",
+                            "label": "Data Product Name",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "dataPruductNamesText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Specify a prefix and select an environment (Development, Test, Production) which will both be used as a prefix for all resource names. Independent of the environment, the same resources get deployed.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "dataPruductNamesText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify a prefix and select an environment (Development, Test, Production) which will both be used as a prefix for all resource names. Independent of the environment, the same resources get deployed.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "environment",
                                     "label": "Environment",
@@ -318,34 +318,34 @@
                         }
                     ]
                 },
-				{
-					"name": "generalSettings",
-					"label": "General Settings",
-					"subLabel": {
-						"preValidation": "Provide settings for your data product deployment.",
+                {
+                    "name": "generalSettings",
+                    "label": "General Settings",
+                    "subLabel": {
+                        "preValidation": "Provide settings for your data product deployment.",
                         "postValidation": "Done"
-					},
-					"bladeTitle": "General Settings",
+                    },
+                    "bladeTitle": "General Settings",
                     "bladeSubtitle": "General Settings",
-					"elements": [
+                    "elements": [
                         {
-							"name": "synapseDeploymentSettings",
-							"label": "Synapse Deployment Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "synapseDeploymentSettings",
+                            "label": "Synapse Deployment Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "synapseDeploymentSettingsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Specify settings for your Synapse workspace.",
-										"link": {
-											"label": "Learn more",
-											"uri": "https://docs.microsoft.com/en-us/azure/synapse-analytics/overview-what-is"
-										}
-									}
-								},
+                                    "name": "synapseDeploymentSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify settings for your Synapse workspace.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/en-us/azure/synapse-analytics/overview-what-is"
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "administratorPassword",
                                     "label": {
@@ -421,23 +421,23 @@
                             ]
                         },
                         {
-							"name": "dataGovernanceSettings",
-							"label": "Data Governance Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "dataGovernanceSettings",
+                            "label": "Data Governance Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "dataGovernanceSettingsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the Purview account to which you want to connect the Synapse workspace.",
-										"link": {
-											"label": "Learn more",
-											"uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
-										}
-									}
-								},
+                                    "name": "dataGovernanceSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Purview account to which you want to connect the Synapse workspace.",
+                                        "link": {
+                                            "label": "Learn more",
+                                            "uri": "https://docs.microsoft.com/en-us/azure/purview/overview"
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "purviewId",
                                     "label": "Connect to Purview Account",
@@ -457,23 +457,23 @@
                             ]
                         },
                         {
-							"name": "generalSettings",
-							"label": "General Settings",
-							"type": "Microsoft.Common.Section",
+                            "name": "generalSettings",
+                            "label": "General Settings",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "generalSettingsText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Specify general settings for this deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "generalSettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify general settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "sqlFlavour",
                                     "label": "SQL Flavour",
@@ -530,8 +530,8 @@
                                 }
                             ]
                         }
-					]
-				},
+                    ]
+                },
                 {
                     "name": "connectivitySettings",
                     "label": "Connectivity Settings",
@@ -543,23 +543,23 @@
                     "bladeSubtitle": "Connectivity Settings",
                     "elements": [
                         {
-							"name": "virtualNetwork",
-							"label": "Virtual Network",
-							"type": "Microsoft.Common.Section",
+                            "name": "virtualNetwork",
+                            "label": "Virtual Network",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "virtualNetworkText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the Virtual Network and Subnet for your deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "virtualNetworkText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Virtual Network and Subnet for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxVirtualNetwork",
                                     "type": "Microsoft.Common.InfoBox",
@@ -622,23 +622,23 @@
                             ]
                         },
                         {
-							"name": "privateDnsZones",
-							"label": "Private DNS Zones",
-							"type": "Microsoft.Common.Section",
+                            "name": "privateDnsZones",
+                            "label": "Private DNS Zones",
+                            "type": "Microsoft.Common.Section",
                             "visible": true,
-							"elements": [
+                            "elements": [
                                 {
-									"name": "privateDnsZonesText",
-									"type": "Microsoft.Common.TextBlock",
-									"visible": true,
-									"options": {
-										"text": "Select the Private DNS Zone settings for your deployment.",
-										"link": {
-											"label": "",
-											"uri": ""
-										}
-									}
-								},
+                                    "name": "privateDnsZonesText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Select the Private DNS Zone settings for your deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
                                 {
                                     "name": "infoBoxPrivateDnsZone",
                                     "type": "Microsoft.Common.InfoBox",
@@ -872,8 +872,8 @@
                                         "required": true
                                     }
                                 }
-							]
-						}
+                            ]
+                        }
                     ]
                 },
                 {
