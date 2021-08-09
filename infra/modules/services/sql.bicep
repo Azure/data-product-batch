@@ -9,6 +9,7 @@ param location string
 param tags object
 param subnetId string
 param sqlserverName string
+param administratorUsername string = 'SqlServerMainUser'
 @secure()
 param administratorPassword string
 param sqlserverAdminGroupName string = ''
@@ -16,7 +17,6 @@ param sqlserverAdminGroupObjectID string = ''
 param privateDnsZoneIdSqlServer string = ''
 
 // Variables
-var administratorUsername = 'SqlServerMainUser'
 var sqlserverPrivateEndpointName = '${sqlserver.name}-private-endpoint'
 
 // Resources

@@ -9,6 +9,7 @@ param location string
 param tags object
 param subnetId string
 param synapseName string
+param administratorUsername string = 'SqlServerMainUser'
 @secure()
 param administratorPassword string
 param synapseSqlAdminGroupName string = ''
@@ -50,7 +51,7 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
     purviewConfiguration: {
       purviewResourceId: purviewId
     }
-    sqlAdministratorLogin: 'SqlServerMainUser'
+    sqlAdministratorLogin: administratorUsername
     sqlAdministratorLoginPassword: administratorPassword
     virtualNetworkProfile: {
       computeSubnetId: synapseComputeSubnetId

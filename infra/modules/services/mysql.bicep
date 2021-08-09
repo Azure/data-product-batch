@@ -9,6 +9,7 @@ param location string
 param tags object
 param subnetId string
 param mysqlserverName string
+param administratorUsername string = 'SqlServerMainUser'
 @secure()
 param administratorPassword string
 param mysqlserverAdminGroupName string = ''
@@ -16,7 +17,6 @@ param mysqlserverAdminGroupObjectID string = ''
 param privateDnsZoneIdMySqlServer string = ''
 
 // Variables
-var administratorUsername = 'SqlServerMainUser'
 var mysqlserverPrivateEndpointName = '${mysqlserver.name}-private-endpoint'
 
 // Resources

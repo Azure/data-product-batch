@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.451.19169",
-      "templateHash": "2131764651108959888"
+      "templateHash": "17437915384262707867"
     }
   },
   "parameters": {
@@ -168,6 +168,7 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
+    "administratorUsername": "SuperMainUser",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
     "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
     "keyVault001Name": "[format('{0}-vault001', variables('name'))]",
@@ -347,6 +348,9 @@
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -379,7 +383,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.451.19169",
-              "templateHash": "13467865626726986972"
+              "templateHash": "1288115280911381727"
             }
           },
           "parameters": {
@@ -394,6 +398,10 @@
             },
             "synapseName": {
               "type": "string"
+            },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -460,7 +468,7 @@
                 "purviewConfiguration": {
                   "purviewResourceId": "[parameters('purviewId')]"
                 },
-                "sqlAdministratorLogin": "SqlServerMainUser",
+                "sqlAdministratorLogin": "[parameters('administratorUsername')]",
                 "sqlAdministratorLoginPassword": "[parameters('administratorPassword')]",
                 "virtualNetworkProfile": {
                   "computeSubnetId": "[parameters('synapseComputeSubnetId')]"
@@ -1202,6 +1210,9 @@
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1222,7 +1233,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.451.19169",
-              "templateHash": "15326598762639820703"
+              "templateHash": "16457553923953825101"
             }
           },
           "parameters": {
@@ -1237,6 +1248,10 @@
             },
             "sqlserverName": {
               "type": "string"
+            },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1256,7 +1271,6 @@
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "sqlserverPrivateEndpointName": "[format('{0}-private-endpoint', parameters('sqlserverName'))]"
           },
           "resources": [
@@ -1270,7 +1284,7 @@
                 "type": "SystemAssigned"
               },
               "properties": {
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "administrators": {},
                 "minimalTlsVersion": "1.2",
@@ -1395,6 +1409,9 @@
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1415,7 +1432,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.451.19169",
-              "templateHash": "2990301944473085920"
+              "templateHash": "10169107016884117715"
             }
           },
           "parameters": {
@@ -1430,6 +1447,10 @@
             },
             "mysqlserverName": {
               "type": "string"
+            },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1449,7 +1470,6 @@
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "mysqlserverPrivateEndpointName": "[format('{0}-private-endpoint', parameters('mysqlserverName'))]"
           },
           "resources": [
@@ -1470,7 +1490,7 @@
                 "size": "5120"
               },
               "properties": {
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "createMode": "Default",
                 "infrastructureEncryption": "Disabled",
@@ -1587,6 +1607,9 @@
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1601,7 +1624,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.451.19169",
-              "templateHash": "6631766508857889834"
+              "templateHash": "6374537989633942447"
             }
           },
           "parameters": {
@@ -1617,6 +1640,10 @@
             "mariadbName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
@@ -1627,7 +1654,6 @@
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "mariadbPrivateEndpointName": "[format('{0}-private-endpoint', parameters('mariadbName'))]"
           },
           "resources": [
@@ -1646,7 +1672,7 @@
               },
               "properties": {
                 "createMode": "Default",
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "infrastructureEncryption": "Disabled",
                 "minimalTlsVersion": "TLS1_2",
@@ -1747,6 +1773,9 @@
           "subnetId": {
             "value": "[parameters('subnetId')]"
           },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
+          },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
           },
@@ -1767,7 +1796,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.451.19169",
-              "templateHash": "2173587318549700280"
+              "templateHash": "2177528895974489127"
             }
           },
           "parameters": {
@@ -1782,6 +1811,10 @@
             },
             "postgresqlName": {
               "type": "string"
+            },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1801,7 +1834,6 @@
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "postgresqlPrivateEndpointName": "[format('{0}-private-endpoint', parameters('postgresqlName'))]"
           },
           "resources": [
@@ -1823,7 +1855,7 @@
               },
               "properties": {
                 "createMode": "Default",
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "infrastructureEncryption": "Disabled",
                 "minimalTlsVersion": "TLS1_2",

@@ -9,6 +9,7 @@ param location string
 param tags object
 param subnetId string
 param postgresqlName string
+param administratorUsername string = 'SqlServerMainUser'
 @secure()
 param administratorPassword string
 param postgresqlAdminGroupName string = ''
@@ -16,7 +17,6 @@ param postgresqlAdminGroupObjectID string = ''
 param privateDnsZoneIdPostgreSql string = ''
 
 // Variables
-var administratorUsername = 'SqlServerMainUser'
 var postgresqlPrivateEndpointName = '${postgresql.name}-private-endpoint'
 
 // Resources

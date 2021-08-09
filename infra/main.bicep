@@ -75,6 +75,7 @@ var tagsDefault = {
   Name: name
 }
 var tagsJoined = union(tagsDefault, tags)
+var administratorUsername = 'SuperMainUser'
 var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
 var keyVault001Name = '${name}-vault001'
@@ -107,6 +108,7 @@ module synapse001 'modules/services/synapse.bicep' = {
     synapseName: synapse001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
     synapseSqlAdminGroupObjectID: ''
@@ -162,6 +164,7 @@ module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
     sqlserverName: sql001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
     sqlserverAdminGroupName: ''
@@ -177,6 +180,7 @@ module mysql001 'modules/services/mysql.bicep' = if (sqlFlavour == 'mysql') {
     mysqlserverName: mysql001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
     mysqlserverAdminGroupName: ''
@@ -192,6 +196,7 @@ module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') 
     mariadbName: mariadb001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdMariaDb: privateDnsZoneIdMariaDb
   }
@@ -205,6 +210,7 @@ module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
     postgresqlName: potsgresql001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     postgresqlAdminGroupName: ''
     postgresqlAdminGroupObjectID: ''

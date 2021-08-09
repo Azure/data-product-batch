@@ -9,12 +9,12 @@ param location string
 param tags object
 param subnetId string
 param mariadbName string
+param administratorUsername string = 'SqlServerMainUser'
 @secure()
 param administratorPassword string
 param privateDnsZoneIdMariaDb string = ''
 
 // Variables
-var administratorUsername = 'SqlServerMainUser'
 var mariadbPrivateEndpointName = '${mariadb.name}-private-endpoint'
 
 // Resources
