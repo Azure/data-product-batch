@@ -11,9 +11,9 @@ param subnetId string
 param postgresqlName string
 @secure()
 param administratorPassword string
-param postgresqlAdminGroupName string
-param postgresqlAdminGroupObjectID string
-param privateDnsZoneIdPostgreSql string
+param postgresqlAdminGroupName string = ''
+param postgresqlAdminGroupObjectID string = ''
+param privateDnsZoneIdPostgreSql string = ''
 
 // Variables
 var administratorUsername = 'SqlServerMainUser'
@@ -52,7 +52,7 @@ resource postgresql 'Microsoft.DBForPostgreSQL/servers@2017-12-01' = {
   }
 }
 
-resource postgresqlAdministrators 'Microsoft.DBForPostgreSQL/servers/administrators@2017-12-01' = if (postgresqlAdminGroupName != '' && postgresqlAdminGroupObjectID != '') {
+resource postgresqlAdministrators 'Microsoft.DBForPostgreSQL/servers/administrators@2017-12-01' = if (!empty(postgresqlAdminGroupName) && !empty(postgresqlAdminGroupObjectID)) {
   parent: postgresql
   name: 'activeDirectory'
   properties: {

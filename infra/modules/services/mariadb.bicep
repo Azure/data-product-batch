@@ -11,7 +11,7 @@ param subnetId string
 param mariadbName string
 @secure()
 param administratorPassword string
-param privateDnsZoneIdMariaDb string
+param privateDnsZoneIdMariaDb string = ''
 
 // Variables
 var administratorUsername = 'SqlServerMainUser'

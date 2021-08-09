@@ -9,7 +9,7 @@ param location string
 param tags object
 param subnetId string
 param cosmosdbName string
-param privateDnsZoneIdCosmosdbSql string
+param privateDnsZoneIdCosmosdbSql string = ''
 
 // Variables
 var cosmosdbPrivateEndpointName = '${cosmosdb.name}-private-endpoint'

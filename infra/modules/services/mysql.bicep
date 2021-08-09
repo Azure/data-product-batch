@@ -11,9 +11,9 @@ param subnetId string
 param mysqlserverName string
 @secure()
 param administratorPassword string
-param mysqlserverAdminGroupName string
-param mysqlserverAdminGroupObjectID string
-param privateDnsZoneIdMySqlServer string
+param mysqlserverAdminGroupName string = ''
+param mysqlserverAdminGroupObjectID string = ''
+param privateDnsZoneIdMySqlServer string = ''
 
 // Variables
 var administratorUsername = 'SqlServerMainUser'
@@ -52,7 +52,7 @@ resource mysqlserver 'Microsoft.DBForMySQL/servers@2017-12-01' = {
   }
 }
 
-resource mysqlserverAdministrators 'Microsoft.DBForMySQL/servers/administrators@2017-12-01' = if (mysqlserverAdminGroupName != '' && mysqlserverAdminGroupObjectID != '') {
+resource mysqlserverAdministrators 'Microsoft.DBForMySQL/servers/administrators@2017-12-01' = if (!empty(mysqlserverAdminGroupName) && !empty(mysqlserverAdminGroupObjectID)) {
   parent: mysqlserver
   name: 'activeDirectory'
   properties: {
