@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.451.19169",
-      "templateHash": "1170786244850121374"
+      "version": "0.4.613.9944",
+      "templateHash": "3045616192003385462"
     }
   },
   "parameters": {
@@ -43,6 +43,7 @@
     },
     "sqlFlavour": {
       "type": "string",
+      "defaultValue": "sql",
       "metadata": {
         "description": "Specifies the sql flavour that will be deployed."
       },
@@ -167,14 +168,23 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
+    "administratorUsername": "SqlServerMainUser",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
-    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]"
+    "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
+    "keyVault001Name": "[format('{0}-vault001', variables('name'))]",
+    "synapse001Name": "[format('{0}-synapse001', variables('name'))]",
+    "datafactory001Name": "[format('{0}-datafactory001', variables('name'))]",
+    "cosmosdb001Name": "[format('{0}-cosmos001', variables('name'))]",
+    "sql001Name": "[format('{0}-sqlserver001', variables('name'))]",
+    "mysql001Name": "[format('{0}-mysql001', variables('name'))]",
+    "mariadb001Name": "[format('{0}-mariadb001', variables('name'))]",
+    "potsgresql001Name": "[format('{0}-postgresql001', variables('name'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "keyvault001",
+      "name": "keyVault001",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -185,7 +195,7 @@
             "value": "[parameters('location')]"
           },
           "keyvaultName": {
-            "value": "[format('{0}-vault001', variables('name'))]"
+            "value": "[variables('keyVault001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -203,8 +213,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "17396931380066691428"
+              "version": "0.4.613.9944",
+              "templateHash": "15339723277993214204"
             }
           },
           "parameters": {
@@ -221,7 +231,8 @@
               "type": "string"
             },
             "privateDnsZoneIdKeyVault": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -329,13 +340,16 @@
             "value": "[parameters('location')]"
           },
           "synapseName": {
-            "value": "[format('{0}-synapse001', variables('name'))]"
+            "value": "[variables('synapse001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
           },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
@@ -368,8 +382,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "6797724573404244465"
+              "version": "0.4.613.9944",
+              "templateHash": "12236755477810815741"
             }
           },
           "parameters": {
@@ -385,29 +399,39 @@
             "synapseName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
             "synapseSqlAdminGroupName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "synapseSqlAdminGroupObjectID": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "synapseDefaultStorageAccountFileSystemId": {
               "type": "string"
             },
             "synapseComputeSubnetId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdSynapseSql": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdSynapseDev": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "purviewId": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -444,7 +468,7 @@
                 "purviewConfiguration": {
                   "purviewResourceId": "[parameters('purviewId')]"
                 },
-                "sqlAdministratorLogin": "SqlServerMainUser",
+                "sqlAdministratorLogin": "[parameters('administratorUsername')]",
                 "sqlAdministratorLoginPassword": "[parameters('administratorPassword')]",
                 "virtualNetworkProfile": {
                   "computeSubnetId": "[parameters('synapseComputeSubnetId')]"
@@ -514,7 +538,7 @@
               ]
             },
             {
-              "condition": "[and(not(equals(parameters('synapseSqlAdminGroupName'), '')), not(equals(parameters('synapseSqlAdminGroupObjectID'), '')))]",
+              "condition": "[and(not(empty(parameters('synapseSqlAdminGroupName'))), not(empty(parameters('synapseSqlAdminGroupObjectID'))))]",
               "type": "Microsoft.Synapse/workspaces/administrators",
               "apiVersion": "2021-03-01",
               "name": "[format('{0}/{1}', parameters('synapseName'), 'activeDirectory')]",
@@ -705,8 +729,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "5856561103668696973"
+              "version": "0.4.613.9944",
+              "templateHash": "16578949331457096017"
             }
           },
           "parameters": {
@@ -757,7 +781,7 @@
             "value": "[parameters('location')]"
           },
           "datafactoryName": {
-            "value": "[format('{0}-datafactory001', variables('name'))]"
+            "value": "[variables('datafactory001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -766,7 +790,7 @@
             "value": "[parameters('subnetId')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyvault001'), '2019-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2019-10-01').outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -784,8 +808,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "9076261843151006444"
+              "version": "0.4.613.9944",
+              "templateHash": "5472592531983134001"
             }
           },
           "parameters": {
@@ -801,17 +825,20 @@
             "datafactoryName": {
               "type": "string"
             },
-            "purviewId": {
-              "type": "string"
-            },
             "keyVault001Id": {
               "type": "string"
             },
             "privateDnsZoneIdDataFactory": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdDataFactoryPortal": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewId": {
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -1004,7 +1031,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'keyvault001')]"
+        "[resourceId('Microsoft.Resources/deployments', 'keyVault001')]"
       ]
     },
     {
@@ -1021,7 +1048,7 @@
             "value": "[parameters('location')]"
           },
           "cosmosdbName": {
-            "value": "[format('{0}-cosmos001', variables('name'))]"
+            "value": "[variables('cosmosdb001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -1039,8 +1066,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "10723084503331442716"
+              "version": "0.4.613.9944",
+              "templateHash": "18128198747734631092"
             }
           },
           "parameters": {
@@ -1057,7 +1084,8 @@
               "type": "string"
             },
             "privateDnsZoneIdCosmosdbSql": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
@@ -1174,13 +1202,16 @@
             "value": "[parameters('location')]"
           },
           "sqlserverName": {
-            "value": "[format('{0}-sqlserver001', variables('name'))]"
+            "value": "[variables('sql001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
           },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
@@ -1201,8 +1232,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "12494109067247966195"
+              "version": "0.4.613.9944",
+              "templateHash": "16534221649277327907"
             }
           },
           "parameters": {
@@ -1218,22 +1249,28 @@
             "sqlserverName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
             "sqlserverAdminGroupName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "sqlserverAdminGroupObjectID": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdSqlServer": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "sqlserverPrivateEndpointName": "[format('{0}-private-endpoint', parameters('sqlserverName'))]"
           },
           "resources": [
@@ -1247,7 +1284,7 @@
                 "type": "SystemAssigned"
               },
               "properties": {
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "administrators": {},
                 "minimalTlsVersion": "1.2",
@@ -1256,7 +1293,7 @@
               }
             },
             {
-              "condition": "[and(not(equals(parameters('sqlserverAdminGroupName'), '')), not(equals(parameters('sqlserverAdminGroupObjectID'), '')))]",
+              "condition": "[and(not(empty(parameters('sqlserverAdminGroupName'))), not(empty(parameters('sqlserverAdminGroupObjectID'))))]",
               "type": "Microsoft.Sql/servers/administrators",
               "apiVersion": "2020-11-01-preview",
               "name": "[format('{0}/{1}', parameters('sqlserverName'), 'ActiveDirectory')]",
@@ -1364,13 +1401,16 @@
             "value": "[parameters('location')]"
           },
           "mysqlserverName": {
-            "value": "[format('{0}-mysql001', variables('name'))]"
+            "value": "[variables('mysql001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
           },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
@@ -1391,8 +1431,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "7435646516514321228"
+              "version": "0.4.613.9944",
+              "templateHash": "14976000582826254984"
             }
           },
           "parameters": {
@@ -1408,22 +1448,28 @@
             "mysqlserverName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
             "mysqlserverAdminGroupName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "mysqlserverAdminGroupObjectID": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdMySqlServer": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "mysqlserverPrivateEndpointName": "[format('{0}-private-endpoint', parameters('mysqlserverName'))]"
           },
           "resources": [
@@ -1444,7 +1490,7 @@
                 "size": "5120"
               },
               "properties": {
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "createMode": "Default",
                 "infrastructureEncryption": "Disabled",
@@ -1461,7 +1507,7 @@
               }
             },
             {
-              "condition": "[and(not(equals(parameters('mysqlserverAdminGroupName'), '')), not(equals(parameters('mysqlserverAdminGroupObjectID'), '')))]",
+              "condition": "[and(not(empty(parameters('mysqlserverAdminGroupName'))), not(empty(parameters('mysqlserverAdminGroupObjectID'))))]",
               "type": "Microsoft.DBforMySQL/servers/administrators",
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('mysqlserverName'), 'activeDirectory')]",
@@ -1553,13 +1599,16 @@
             "value": "[parameters('location')]"
           },
           "mariadbName": {
-            "value": "[format('{0}-mariadb001', variables('name'))]"
+            "value": "[variables('mariadb001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
           },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
@@ -1574,8 +1623,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "15891412767196887124"
+              "version": "0.4.613.9944",
+              "templateHash": "7848522171434537735"
             }
           },
           "parameters": {
@@ -1591,16 +1640,20 @@
             "mariadbName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
             "privateDnsZoneIdMariaDb": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "mariadbPrivateEndpointName": "[format('{0}-private-endpoint', parameters('mariadbName'))]"
           },
           "resources": [
@@ -1619,7 +1672,7 @@
               },
               "properties": {
                 "createMode": "Default",
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "infrastructureEncryption": "Disabled",
                 "minimalTlsVersion": "TLS1_2",
@@ -1712,13 +1765,16 @@
             "value": "[parameters('location')]"
           },
           "postgresqlName": {
-            "value": "[format('{0}-postgresql001', variables('name'))]"
+            "value": "[variables('potsgresql001Name')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
+          },
+          "administratorUsername": {
+            "value": "[variables('administratorUsername')]"
           },
           "administratorPassword": {
             "value": "[parameters('administratorPassword')]"
@@ -1739,8 +1795,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.451.19169",
-              "templateHash": "11932658749668719617"
+              "version": "0.4.613.9944",
+              "templateHash": "16411681290638582082"
             }
           },
           "parameters": {
@@ -1756,22 +1812,28 @@
             "postgresqlName": {
               "type": "string"
             },
+            "administratorUsername": {
+              "type": "string",
+              "defaultValue": "SqlServerMainUser"
+            },
             "administratorPassword": {
               "type": "secureString"
             },
             "postgresqlAdminGroupName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "postgresqlAdminGroupObjectID": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             },
             "privateDnsZoneIdPostgreSql": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": ""
             }
           },
           "functions": [],
           "variables": {
-            "administratorUsername": "SqlServerMainUser",
             "postgresqlPrivateEndpointName": "[format('{0}-private-endpoint', parameters('postgresqlName'))]"
           },
           "resources": [
@@ -1793,7 +1855,7 @@
               },
               "properties": {
                 "createMode": "Default",
-                "administratorLogin": "[variables('administratorUsername')]",
+                "administratorLogin": "[parameters('administratorUsername')]",
                 "administratorLoginPassword": "[parameters('administratorPassword')]",
                 "infrastructureEncryption": "Disabled",
                 "minimalTlsVersion": "TLS1_2",
@@ -1809,7 +1871,7 @@
               }
             },
             {
-              "condition": "[and(not(equals(parameters('postgresqlAdminGroupName'), '')), not(equals(parameters('postgresqlAdminGroupObjectID'), '')))]",
+              "condition": "[and(not(empty(parameters('postgresqlAdminGroupName'))), not(empty(parameters('postgresqlAdminGroupObjectID'))))]",
               "type": "Microsoft.DBforPostgreSQL/servers/administrators",
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('postgresqlName'), 'activeDirectory')]",

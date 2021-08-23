@@ -9,14 +9,14 @@ param location string
 param tags object
 param subnetId string
 param sqlserverName string
+param administratorUsername string = 'SqlServerMainUser'
 @secure()
 param administratorPassword string
-param sqlserverAdminGroupName string
-param sqlserverAdminGroupObjectID string
-param privateDnsZoneIdSqlServer string
+param sqlserverAdminGroupName string = ''
+param sqlserverAdminGroupObjectID string = ''
+param privateDnsZoneIdSqlServer string = ''
 
 // Variables
-var administratorUsername = 'SqlServerMainUser'
 var sqlserverPrivateEndpointName = '${sqlserver.name}-private-endpoint'
 
 // Resources
@@ -37,7 +37,7 @@ resource sqlserver 'Microsoft.Sql/servers@2020-11-01-preview' = {
   }
 }
 
-resource sqlserverAdministrators 'Microsoft.Sql/servers/administrators@2020-11-01-preview' = if (sqlserverAdminGroupName != '' && sqlserverAdminGroupObjectID != '') {
+resource sqlserverAdministrators 'Microsoft.Sql/servers/administrators@2020-11-01-preview' = if (!empty(sqlserverAdminGroupName) && !empty(sqlserverAdminGroupObjectID)) {
   parent: sqlserver
   name: 'ActiveDirectory'
   properties: {

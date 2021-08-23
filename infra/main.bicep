@@ -28,7 +28,7 @@ param tags object = {}
   'postgre'
 ])
 @description('Specifies the sql flavour that will be deployed.')
-param sqlFlavour string
+param sqlFlavour string = 'sql'
 @secure()
 @description('Specifies the administrator password of the sql servers.')
 param administratorPassword string
@@ -75,16 +75,25 @@ var tagsDefault = {
   Name: name
 }
 var tagsJoined = union(tagsDefault, tags)
+var administratorUsername = 'SqlServerMainUser'
 var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
+var keyVault001Name = '${name}-vault001'
+var synapse001Name = '${name}-synapse001'
+var datafactory001Name = '${name}-datafactory001'
+var cosmosdb001Name = '${name}-cosmos001'
+var sql001Name = '${name}-sqlserver001'
+var mysql001Name = '${name}-mysql001'
+var mariadb001Name = '${name}-mariadb001'
+var potsgresql001Name = '${name}-postgresql001'
 
 // Resources
-module keyvault001 'modules/services/keyvault.bicep' = {
-  name: 'keyvault001'
+module keyVault001 'modules/services/keyvault.bicep' = {
+  name: 'keyVault001'
   scope: resourceGroup()
   params: {
     location: location
-    keyvaultName: '${name}-vault001'
+    keyvaultName: keyVault001Name
     tags: tagsJoined
     subnetId: subnetId
     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
@@ -96,9 +105,10 @@ module synapse001 'modules/services/synapse.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    synapseName: '${name}-synapse001'
+    synapseName: synapse001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     synapseSqlAdminGroupName: ''
     synapseSqlAdminGroupObjectID: ''
@@ -124,10 +134,10 @@ module datafactory001 'modules/services/datafactory.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    datafactoryName: '${name}-datafactory001'
+    datafactoryName: datafactory001Name
     tags: tagsJoined
     subnetId: subnetId
-    keyVault001Id: keyvault001.outputs.keyvaultId
+    keyVault001Id: keyVault001.outputs.keyvaultId
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
@@ -139,7 +149,7 @@ module cosmosdb001 'modules/services/cosmosdb.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    cosmosdbName: '${name}-cosmos001'
+    cosmosdbName: cosmosdb001Name
     tags: tagsJoined
     subnetId: subnetId
     privateDnsZoneIdCosmosdbSql: privateDnsZoneIdCosmosdbSql
@@ -151,9 +161,10 @@ module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
   scope: resourceGroup()
   params: {
     location: location
-    sqlserverName: '${name}-sqlserver001'
+    sqlserverName: sql001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
     sqlserverAdminGroupName: ''
@@ -166,9 +177,10 @@ module mysql001 'modules/services/mysql.bicep' = if (sqlFlavour == 'mysql') {
   scope: resourceGroup()
   params: {
     location: location
-    mysqlserverName: '${name}-mysql001'
+    mysqlserverName: mysql001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
     mysqlserverAdminGroupName: ''
@@ -181,9 +193,10 @@ module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') 
   scope: resourceGroup()
   params: {
     location: location
-    mariadbName: '${name}-mariadb001'
+    mariadbName: mariadb001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdMariaDb: privateDnsZoneIdMariaDb
   }
@@ -194,9 +207,10 @@ module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
   scope: resourceGroup()
   params: {
     location: location
-    postgresqlName: '${name}-postgresql001'
+    postgresqlName: potsgresql001Name
     tags: tagsJoined
     subnetId: subnetId
+    administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     postgresqlAdminGroupName: ''
     postgresqlAdminGroupObjectID: ''
