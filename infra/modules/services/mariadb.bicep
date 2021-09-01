@@ -82,7 +82,7 @@ resource mariadbPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01' 
 
 resource mariadbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdMariaDb)) {
   parent: mariadbPrivateEndpoint
-  name: 'aRecord'
+  name: 'default'
   properties: {
     privateDnsZoneConfigs: [
       {
