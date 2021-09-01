@@ -102,7 +102,7 @@ resource cosmosdbPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-01'
 
 resource cosmosdbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdCosmosdbSql)) {
   parent: cosmosdbPrivateEndpoint
-  name: 'aRecord'
+  name: 'default'
   properties: {
     privateDnsZoneConfigs: [
       {

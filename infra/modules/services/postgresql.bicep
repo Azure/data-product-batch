@@ -98,7 +98,7 @@ resource postgresqlPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-11-0
 
 resource postgresqlPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-11-01' = if (!empty(privateDnsZoneIdPostgreSql)) {
   parent: postgresqlPrivateEndpoint
-  name: 'aRecord'
+  name: 'default'
   properties: {
     privateDnsZoneConfigs: [
       {
