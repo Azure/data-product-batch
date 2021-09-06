@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "8465636956504615449"
+      "templateHash": "10933934198159132212"
     }
   },
   "parameters": {
@@ -45,7 +45,7 @@
       "type": "string",
       "defaultValue": "sql",
       "metadata": {
-        "description": "Specifies the sql flavour that will be deployed."
+        "description": "Specifies the sql flavour that will be deployed (None, SQL Server, MySQL Server, MariaDB Server, PostgreSQL Server)."
       },
       "allowedValues": [
         "none",

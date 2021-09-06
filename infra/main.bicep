@@ -28,7 +28,7 @@ param tags object = {}
   'maria'
   'postgre'
 ])
-@description('Specifies the sql flavour that will be deployed.')
+@description('Specifies the sql flavour that will be deployed (None, SQL Server, MySQL Server, MariaDB Server, PostgreSQL Server).')
 param sqlFlavour string = 'sql'
 @secure()
 @description('Specifies the administrator password of the sql servers.')
