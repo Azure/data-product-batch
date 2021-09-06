@@ -22,6 +22,7 @@ param tags object = {}
 
 // Resource parameters
 @allowed([
+  'none'
   'sql'
   'mysql'
   'maria'
@@ -202,7 +203,7 @@ module mariadb001 'modules/services/mariadb.bicep' = if (sqlFlavour == 'maria') 
   }
 }
 
-module potsgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'postgre') {
+module postgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'postgre') {
   name: 'postgresql001'
   scope: resourceGroup()
   params: {

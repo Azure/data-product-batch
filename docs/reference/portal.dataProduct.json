@@ -498,6 +498,10 @@
                                     "constraints": {
                                         "allowedValues": [
                                             {
+                                                "label": "None",
+                                                "value": "none"
+                                            },
+                                            {
                                                 "label": "SQL Server",
                                                 "value": "sql"
                                             },
