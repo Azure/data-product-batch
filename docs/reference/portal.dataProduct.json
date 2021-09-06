@@ -498,7 +498,7 @@
                                     "constraints": {
                                         "allowedValues": [
                                             {
-                                                "label": "None",
+                                                "label": "None (No SQL Server will be deployed)",
                                                 "value": "none"
                                             },
                                             {
