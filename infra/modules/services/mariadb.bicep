@@ -9,7 +9,7 @@ param location string
 param tags object
 param subnetId string
 param mariadbName string
-param administratorUsername string = 'SqlServerMainUser'
+param administratorUsername string = 'SqlMainUser'
 @secure()
 param administratorPassword string
 param privateDnsZoneIdMariaDb string = ''

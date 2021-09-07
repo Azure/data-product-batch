@@ -82,7 +82,7 @@ var tagsDefault = {
   Name: name
 }
 var tagsJoined = union(tagsDefault, tags)
-var administratorUsername = 'SqlServerMainUser'
+var administratorUsername = 'SqlMainUser'
 var synapseDefaultStorageAccountSubscriptionId = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
 var synapseDefaultStorageAccountResourceGroupName = length(split(synapseDefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseDefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
 var keyVault001Name = '${name}-vault001'

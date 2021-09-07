@@ -9,7 +9,7 @@ param location string
 param tags object
 param subnetId string
 param postgresqlName string
-param administratorUsername string = 'SqlServerMainUser'
+param administratorUsername string = 'SqlMainUser'
 @secure()
 param administratorPassword string
 param postgresqlAdminGroupName string = ''

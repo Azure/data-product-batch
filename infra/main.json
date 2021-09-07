@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "9479553678549445262"
+      "templateHash": "4579258817383324260"
     }
   },
   "parameters": {
@@ -181,7 +181,7 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
-    "administratorUsername": "SqlServerMainUser",
+    "administratorUsername": "SqlMainUser",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
     "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
     "keyVault001Name": "[format('{0}-vault001', variables('name'))]",
@@ -397,7 +397,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "12267714962417796830"
+              "templateHash": "4234471437318751109"
             }
           },
           "parameters": {
@@ -415,7 +415,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1248,7 +1248,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "4034071675798356379"
+              "templateHash": "17157399560196154600"
             }
           },
           "parameters": {
@@ -1266,7 +1266,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1447,7 +1447,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "7127593953025968409"
+              "templateHash": "6270923422208188023"
             }
           },
           "parameters": {
@@ -1465,7 +1465,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1639,7 +1639,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "2594769168852125945"
+              "templateHash": "14835749078277423345"
             }
           },
           "parameters": {
@@ -1657,7 +1657,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1811,7 +1811,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "16190141850797794046"
+              "templateHash": "12734819951893398844"
             }
           },
           "parameters": {
@@ -1829,7 +1829,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
