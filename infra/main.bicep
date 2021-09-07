@@ -33,8 +33,14 @@ param sqlFlavour string = 'sql'
 @secure()
 @description('Specifies the administrator password of the sql servers.')
 param administratorPassword string
-@description('Specifies the resource ID of the default storage account file system for synapse.')
-param synapseDefaultStorageAccountFileSystemId string
+@allowed([
+  'dataFactory'
+  'synapse'
+])
+@description('Specifies the data engineering service that will be deployed (Data Factory, Synapse).')
+param processingService string = 'dataFactory'
+@description('Specifies the resource ID of the default storage account file system for synapse. If you selected dataFactory as processingService, leave this value empty as is.')
+param synapseDefaultStorageAccountFileSystemId string = ''
 @description('Specifies the resource ID of the central purview instance.')
 param purviewId string = ''
 @description('Specifies whether role assignments should be enabled.')
@@ -101,7 +107,7 @@ module keyVault001 'modules/services/keyvault.bicep' = {
   }
 }
 
-module synapse001 'modules/services/synapse.bicep' = {
+module synapse001 'modules/services/synapse.bicep' = if (processingService == 'synapse') {
   name: 'synapse001'
   scope: resourceGroup()
   params: {
@@ -121,16 +127,16 @@ module synapse001 'modules/services/synapse.bicep' = {
   }
 }
 
-module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentStorage.bicep' = if (enableRoleAssignments) {
+module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentStorage.bicep' = if (processingService == 'synapse' && enableRoleAssignments) {
   name: 'synapse001RoleAssignmentStorage'
   scope: resourceGroup(synapseDefaultStorageAccountSubscriptionId, synapseDefaultStorageAccountResourceGroupName)
   params: {
     storageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
-    synapseId: synapse001.outputs.synapseId
+    synapseId: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
   }
 }
 
-module datafactory001 'modules/services/datafactory.bicep' = {
+module datafactory001 'modules/services/datafactory.bicep' = if (processingService == 'dataFactory') {
   name: 'datafactory001'
   scope: resourceGroup()
   params: {
