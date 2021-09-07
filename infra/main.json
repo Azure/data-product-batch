@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "6569489913190774017"
+      "templateHash": "9479553678549445262"
     }
   },
   "parameters": {
@@ -1447,7 +1447,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "10166918591390974281"
+              "templateHash": "7127593953025968409"
             }
           },
           "parameters": {
@@ -1541,8 +1541,8 @@
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('mysqlserverName'), 'Database001')]",
               "properties": {
-                "charset": "latin1",
-                "collation": "latin1_swedish_ci"
+                "charset": "utf8",
+                "collation": "utf8_general_ci"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DBforMySQL/servers', parameters('mysqlserverName'))]"
@@ -1811,7 +1811,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "4510420427983041821"
+              "templateHash": "16190141850797794046"
             }
           },
           "parameters": {
@@ -1906,7 +1906,7 @@
               "name": "[format('{0}/{1}', parameters('postgresqlName'), 'Database001')]",
               "properties": {
                 "charset": "utf8",
-                "collation": "utf8_general_ci"
+                "collation": "English_United States.1252"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('postgresqlName'))]"

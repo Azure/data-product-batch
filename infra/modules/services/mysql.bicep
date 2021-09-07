@@ -67,8 +67,8 @@ resource mysqlserverDatabase001 'Microsoft.DBForMySQL/servers/databases@2017-12-
   parent: mysqlserver
   name: 'Database001'
   properties: {
-    charset: 'latin1'
-    collation: 'latin1_swedish_ci'
+    charset: 'utf8'
+    collation: 'utf8_general_ci'
   }
 }
 

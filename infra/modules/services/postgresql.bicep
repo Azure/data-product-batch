@@ -68,7 +68,7 @@ resource postgresqlDatabase001 'Microsoft.DBForPostgreSQL/servers/databases@2017
   name: 'Database001'
   properties: {
     charset: 'utf8'
-    collation: 'utf8_general_ci'
+    collation: 'English_United States.1252'
   }
 }
 
