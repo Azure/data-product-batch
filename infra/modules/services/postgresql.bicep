@@ -9,7 +9,7 @@ param location string
 param tags object
 param subnetId string
 param postgresqlName string
-param administratorUsername string = 'SqlServerMainUser'
+param administratorUsername string = 'SqlMainUser'
 @secure()
 param administratorPassword string
 param postgresqlAdminGroupName string = ''
@@ -68,7 +68,7 @@ resource postgresqlDatabase001 'Microsoft.DBForPostgreSQL/servers/databases@2017
   name: 'Database001'
   properties: {
     charset: 'utf8'
-    collation: 'utf8_general_ci'
+    collation: 'English_United States.1252'
   }
 }
 

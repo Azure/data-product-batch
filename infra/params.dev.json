@@ -20,6 +20,9 @@
         "administratorPassword": {
             "value": "<your-secure-password>"
         },
+        "processingService": {
+            "value": "dataFactory"
+        },
         "synapseDefaultStorageAccountFileSystemId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-dev-storage/providers/Microsoft.Storage/storageAccounts/dlz01devencur/blobServices/default/containers/di001"
         },

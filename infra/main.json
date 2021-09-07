@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "10933934198159132212"
+      "templateHash": "4579258817383324260"
     }
   },
   "parameters": {
@@ -61,10 +61,22 @@
         "description": "Specifies the administrator password of the sql servers."
       }
     },
+    "processingService": {
+      "type": "string",
+      "defaultValue": "dataFactory",
+      "metadata": {
+        "description": "Specifies the data engineering service that will be deployed (Data Factory, Synapse)."
+      },
+      "allowedValues": [
+        "dataFactory",
+        "synapse"
+      ]
+    },
     "synapseDefaultStorageAccountFileSystemId": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the default storage account file system for synapse."
+        "description": "Specifies the resource ID of the default storage account file system for synapse. If you selected dataFactory as processingService, leave this value empty as is."
       }
     },
     "purviewId": {
@@ -169,7 +181,7 @@
       "Name": "[variables('name')]"
     },
     "tagsJoined": "[union(variables('tagsDefault'), parameters('tags'))]",
-    "administratorUsername": "SqlServerMainUser",
+    "administratorUsername": "SqlMainUser",
     "synapseDefaultStorageAccountSubscriptionId": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[2], subscription().subscriptionId)]",
     "synapseDefaultStorageAccountResourceGroupName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[4], resourceGroup().name)]",
     "keyVault001Name": "[format('{0}-vault001', variables('name'))]",
@@ -328,6 +340,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('processingService'), 'synapse')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "synapse001",
@@ -384,7 +397,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "12267714962417796830"
+              "templateHash": "4234471437318751109"
             }
           },
           "parameters": {
@@ -402,7 +415,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -705,7 +718,7 @@
       }
     },
     {
-      "condition": "[parameters('enableRoleAssignments')]",
+      "condition": "[and(equals(parameters('processingService'), 'synapse'), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "synapse001RoleAssignmentStorage",
@@ -721,7 +734,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -769,6 +782,7 @@
       ]
     },
     {
+      "condition": "[equals(parameters('processingService'), 'dataFactory')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "datafactory001",
@@ -1234,7 +1248,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "4034071675798356379"
+              "templateHash": "17157399560196154600"
             }
           },
           "parameters": {
@@ -1252,7 +1266,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1433,7 +1447,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "10166918591390974281"
+              "templateHash": "6270923422208188023"
             }
           },
           "parameters": {
@@ -1451,7 +1465,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1527,8 +1541,8 @@
               "apiVersion": "2017-12-01",
               "name": "[format('{0}/{1}', parameters('mysqlserverName'), 'Database001')]",
               "properties": {
-                "charset": "latin1",
-                "collation": "latin1_swedish_ci"
+                "charset": "utf8",
+                "collation": "utf8_general_ci"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DBforMySQL/servers', parameters('mysqlserverName'))]"
@@ -1625,7 +1639,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "2594769168852125945"
+              "templateHash": "14835749078277423345"
             }
           },
           "parameters": {
@@ -1643,7 +1657,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1797,7 +1811,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "4510420427983041821"
+              "templateHash": "12734819951893398844"
             }
           },
           "parameters": {
@@ -1815,7 +1829,7 @@
             },
             "administratorUsername": {
               "type": "string",
-              "defaultValue": "SqlServerMainUser"
+              "defaultValue": "SqlMainUser"
             },
             "administratorPassword": {
               "type": "secureString"
@@ -1892,7 +1906,7 @@
               "name": "[format('{0}/{1}', parameters('postgresqlName'), 'Database001')]",
               "properties": {
                 "charset": "utf8",
-                "collation": "utf8_general_ci"
+                "collation": "English_United States.1252"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('postgresqlName'))]"

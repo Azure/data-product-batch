@@ -329,52 +329,46 @@
                     "bladeSubtitle": "General Settings",
                     "elements": [
                         {
-                            "name": "synapseDeploymentSettings",
-                            "label": "Synapse Deployment Settings",
+                            "name": "dataProcessingServiceDeploymentSettings",
+                            "label": "Data Processing Service Deployment Settings",
                             "type": "Microsoft.Common.Section",
                             "visible": true,
                             "elements": [
                                 {
-                                    "name": "synapseDeploymentSettingsText",
-                                    "type": "Microsoft.Common.TextBlock",
-                                    "visible": true,
-                                    "options": {
-                                        "text": "Specify settings for your Synapse workspace.",
-                                        "link": {
-                                            "label": "Learn more",
-                                            "uri": "https://docs.microsoft.com/en-us/azure/synapse-analytics/overview-what-is"
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "administratorPassword",
-                                    "label": {
-                                        "password": "Password",
-                                        "confirmPassword": "Confirm password"
-                                    },
-                                    "type": "Microsoft.Compute.CredentialsCombo",
-                                    "visible": true,
-                                    "defaultValue": "",
-                                    "toolTip": {
-                                        "password": "Specify an administrator password for the Synapse workspace."
-                                    },
-                                    "constraints": {
-                                        "required": true,
-                                        "customPasswordRegex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
-                                        "customValidationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
-                                    },
-                                    "options": {
-                                        "hideConfirmation": false
-                                    },
-                                    "osPlatform": "Windows"
-                                },
-                                {
-                                    "name": "infoBoxSynapseDefaultStorageAccount",
+                                    "name": "infoBoxProcessingService",
                                     "type": "Microsoft.Common.InfoBox",
                                     "visible": true,
                                     "options": {
-                                        "text": "We are recommending to use a dedicated container per Data Product in the workspace Data Lake and per Data Integration in the Raw as well as Enriched & Curated Data Lake. Please select the respective Data Lake in your Data Landing Zone (e.g. Raw - '{prefix}{environment}raw', Enriched & Curated - '{prefix}{environment}encur', Workspace - '{prefix}{environment}work') and select one of the pre-existing storage account containers (e.g. 'di001', 'di002', 'dp001', 'dp002') or create and select a new one for this deployment if all of them are already in use.",
+                                        "text": "Select a processing engine that you want to deploy as part of the Data Product. The service can not only be used as an additional data processing engine, but also as a workflow orchestration engine to orchestrate and trigger workflows and pipelines within Machine Learning.",
                                         "style": "Info"
+                                    }
+                                },
+                                {
+                                    "name": "processingService",
+                                    "label": "Create Data Processing Service",
+                                    "type": "Microsoft.Common.DropDown",
+                                    "visible": true,
+                                    "defaultValue": "Data Factory",
+                                    "toolTip": "Specify an additional data processing engine that you want to deploy. This can be used as Spark engine as well as for workflow orchestration.",
+                                    "multiselect": false,
+                                    "selectAll": false,
+                                    "filter": true,
+                                    "filterPlaceholder": "Filter items ...",
+                                    "multiLine": true,
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Data Factory",
+                                                "description": "Select if you want to deploy a Data Factory.",
+                                                "value": "dataFactory"
+                                            },
+                                            {
+                                                "label": "Synapse",
+                                                "description": "Select if you want to deploy a Synapse workspace.",
+                                                "value": "synapse"
+                                            }
+                                        ],
+                                        "required": true
                                     }
                                 },
                                 {
@@ -386,10 +380,19 @@
                                     }
                                 },
                                 {
+                                    "name": "infoBoxSynapseDefaultStorageAccount",
+                                    "type": "Microsoft.Common.InfoBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "options": {
+                                        "text": "We are recommending to use a dedicated container per Data Product in the workspace Data Lake and per Data Integration in the Raw as well as Enriched & Curated Data Lake. Please select the respective Data Lake in your Data Landing Zone (e.g. Raw - '{prefix}{environment}raw', Enriched & Curated - '{prefix}{environment}encur', Workspace - '{prefix}{environment}work') and select one of the pre-existing storage account containers (e.g. 'di001', 'di002', 'dp001', 'dp002') or create and select a new one for this deployment if all of them are already in use.",
+                                        "style": "Info"
+                                    }
+                                },
+                                {
                                     "name": "synapseDefaultStorageAccountId",
                                     "label": "Storage Account",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
                                     "defaultValue": "",
                                     "toolTip": "Select the Storage account to which you want to connect Synapse.",
                                     "multiselect": false,
@@ -398,7 +401,7 @@
                                     "filterPlaceholder": "Filter items ...",
                                     "multiLine": true,
                                     "constraints": {
-                                        "allowedValues": "[map(filter(steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountApi.value,(item) => and(equals(item.location, steps('basics').deploymentDetails.locationName), equals(item.properties.isHnsEnabled, true))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
+                                        "allowedValues": "[map(filter(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountApi.value,(item) => and(equals(item.location, steps('basics').deploymentDetails.locationName), equals(item.properties.isHnsEnabled, true))),(item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\",\"description\":\"', 'Resource Group: ', last(take(split(item.id, '/'), 5)), '\"}')))]",
                                         "required": true
                                     }
                                 },
@@ -407,14 +410,14 @@
                                     "type": "Microsoft.Solutions.ArmApiControl",
                                     "request": {
                                         "method": "GET",
-                                        "path": "[concat(steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountId, '/blobServices/default/containers?api-version=2021-04-01')]"
+                                        "path": "[concat(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountId, '/blobServices/default/containers?api-version=2021-04-01')]"
                                     }
                                 },
                                 {
                                     "name": "synapseDefaultStorageAccountFileSystemId",
                                     "label": "Synapse Default Storage Account Container",
                                     "type": "Microsoft.Common.DropDown",
-                                    "visible": true,
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
                                     "defaultValue": "",
                                     "toolTip": "Default storage container for the Synapse workspace. If no option is shown, please make sure that a container exists within the storage account selected above.",
                                     "multiselect": false,
@@ -423,7 +426,7 @@
                                     "filterPlaceholder": "Filter items ...",
                                     "multiLine": true,
                                     "constraints": {
-                                        "allowedValues": "[map(steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
+                                        "allowedValues": "[map(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
                                         "required": true
                                     }
                                 }
@@ -519,6 +522,28 @@
                                             }
                                         ]
                                     }
+                                },
+                                {
+                                    "name": "administratorPassword",
+                                    "label": {
+                                        "password": "Password",
+                                        "confirmPassword": "Confirm password"
+                                    },
+                                    "type": "Microsoft.Compute.CredentialsCombo",
+                                    "visible": true,
+                                    "defaultValue": "",
+                                    "toolTip": {
+                                        "password": "Specify an administrator password for the SQL Server and Synapse workspace, if you have selected Synapse as processing sercice."
+                                    },
+                                    "constraints": {
+                                        "required": true,
+                                        "customPasswordRegex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
+                                        "customValidationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
+                                    },
+                                    "options": {
+                                        "hideConfirmation": false
+                                    },
+                                    "osPlatform": "Windows"
                                 },
                                 {
                                     "name": "infoBoxRoleAssignment",
@@ -921,8 +946,9 @@
                 "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
                 "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
                 "sqlFlavour": "[if(empty(steps('generalSettings').generalSettings.sqlFlavour), '', steps('generalSettings').generalSettings.sqlFlavour)]",
-                "administratorPassword": "[if(empty(steps('generalSettings').synapseDeploymentSettings.administratorPassword.password), '', steps('generalSettings').synapseDeploymentSettings.administratorPassword.password)]",
-                "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').synapseDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
+                "administratorPassword": "[if(empty(steps('generalSettings').generalSettings.administratorPassword.password), '', steps('generalSettings').generalSettings.administratorPassword.password)]",
+                "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
+                "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
