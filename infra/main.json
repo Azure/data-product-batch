@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.613.9944",
-      "templateHash": "4579258817383324260"
+      "templateHash": "12729046396633233501"
     }
   },
   "parameters": {
@@ -397,7 +397,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.613.9944",
-              "templateHash": "4234471437318751109"
+              "templateHash": "1872438708091450744"
             }
           },
           "parameters": {
@@ -532,7 +532,7 @@
                 "nodeSizeFamily": "MemoryOptimized",
                 "sessionLevelPackagesEnabled": true,
                 "sparkEventsFolder": "events/",
-                "sparkVersion": "3.0"
+                "sparkVersion": "3.1"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
