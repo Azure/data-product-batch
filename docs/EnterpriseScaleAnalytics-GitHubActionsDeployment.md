@@ -68,6 +68,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | tags | Specifies the tags that you want to apply to all resources. | {`key`: `value`} |
 | sqlFlavour | Specifies the sql flavour that will be deployed. | `sql`, `mysql`, `maria` or `postgre` |
 | administratorPassword | Specifies the administrator password of the sql servers. Will be automatically set in the workflow. **Leave this value as is.** | `<your-secure-password>` |
+| processingService | Specifies the data engineering service that will be deployed (Data Factory or Synapse). | `dataFactory` or `synapse` |
 | synapseDefaultStorageAccountFileSystemId | Specifies the resource ID of the default storage account file system for synapse. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Storage/storageAccounts/{storage-name}/blobServices/default/containers/{container-name}` |
 | subnetId | Specifies the resource ID of the subnet to which all services will connect. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/virtualNetworks/{vnet-name}/subnets/{subnet-name}` |
 | purviewId | Specifies the resource ID of the central purview instance. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Purview/accounts/{purview-name}` |
