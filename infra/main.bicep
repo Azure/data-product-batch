@@ -43,6 +43,10 @@ param processingService string = 'dataFactory'
 param synapseDefaultStorageAccountFileSystemId string = ''
 @description('Specifies the resource ID of the central purview instance.')
 param purviewId string = ''
+@description('Specifies the resource ID of the managed storage of the central purview instance.')
+param purviewManagedStorageId string = ''
+@description('Specifies the resource ID of the managed event hub of the central purview instance.')
+param purviewManagedEventHubId string = ''
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false
 
@@ -148,6 +152,8 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
     privateDnsZoneIdDataFactory: privateDnsZoneIdDataFactory
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
+    purviewManagedStorageId: purviewManagedStorageId
+    purviewManagedEventHubId: purviewManagedEventHubId
   }
 }
 

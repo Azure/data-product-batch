@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.613.9944",
-      "templateHash": "2704158531069423653"
+      "version": "0.4.1008.15138",
+      "templateHash": "9649687332565945507"
     }
   },
   "parameters": {
@@ -84,6 +84,20 @@
       "defaultValue": "",
       "metadata": {
         "description": "Specifies the resource ID of the central purview instance."
+      }
+    },
+    "purviewManagedStorageId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the managed storage of the central purview instance."
+      }
+    },
+    "purviewManagedEventHubId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the resource ID of the managed event hub of the central purview instance."
       }
     },
     "enableRoleAssignments": {
@@ -196,7 +210,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "keyVault001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -226,8 +240,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "11855677596500727104"
+              "version": "0.4.1008.15138",
+              "templateHash": "6717429930577625102"
             }
           },
           "parameters": {
@@ -342,7 +356,7 @@
     {
       "condition": "[equals(parameters('processingService'), 'synapse')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "synapse001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -396,8 +410,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "1866331156270430827"
+              "version": "0.4.1008.15138",
+              "templateHash": "12939980671520056012"
             }
           },
           "parameters": {
@@ -722,7 +736,7 @@
     {
       "condition": "[and(equals(parameters('processingService'), 'synapse'), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "synapse001RoleAssignmentStorage",
       "subscriptionId": "[variables('synapseDefaultStorageAccountSubscriptionId')]",
       "resourceGroup": "[variables('synapseDefaultStorageAccountResourceGroupName')]",
@@ -736,7 +750,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2019-10-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-06-01').outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -745,8 +759,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "16578949331457096017"
+              "version": "0.4.1008.15138",
+              "templateHash": "7805977499282852672"
             }
           },
           "parameters": {
@@ -786,7 +800,7 @@
     {
       "condition": "[equals(parameters('processingService'), 'dataFactory')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "datafactory001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -807,7 +821,7 @@
             "value": "[parameters('subnetId')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2019-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-06-01').outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -817,6 +831,12 @@
           },
           "purviewId": {
             "value": "[parameters('purviewId')]"
+          },
+          "purviewManagedStorageId": {
+            "value": "[parameters('purviewManagedStorageId')]"
+          },
+          "purviewManagedEventHubId": {
+            "value": "[parameters('purviewManagedEventHubId')]"
           }
         },
         "template": {
@@ -825,8 +845,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "6451981924177836401"
+              "version": "0.4.1008.15138",
+              "templateHash": "12319901659031497535"
             }
           },
           "parameters": {
@@ -854,6 +874,14 @@
               "defaultValue": ""
             },
             "purviewId": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewManagedStorageId": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "purviewManagedEventHubId": {
               "type": "string",
               "defaultValue": ""
             }
@@ -907,6 +935,66 @@
                     "location": "AutoResolve"
                   }
                 }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "account",
+                "privateLinkResourceId": "[parameters('purviewId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewManagedStorageId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview_blob')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "blob",
+                "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewManagedStorageId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview_queue')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "queue",
+                "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
+                "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('purviewManagedEventHubId')))]",
+              "type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}/{2}', parameters('datafactoryName'), 'default', 'Purview_namespace')]",
+              "properties": {
+                "fqdns": [],
+                "groupId": "namespace",
+                "privateLinkResourceId": "[parameters('purviewManagedEventHubId')]"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
@@ -1053,7 +1141,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "cosmos001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1083,8 +1171,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "1156447829358884525"
+              "version": "0.4.1008.15138",
+              "templateHash": "16511519182590012378"
             }
           },
           "parameters": {
@@ -1207,7 +1295,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'sql')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "sql001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1249,8 +1337,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "17157399560196154600"
+              "version": "0.4.1008.15138",
+              "templateHash": "1459442054509288273"
             }
           },
           "parameters": {
@@ -1406,7 +1494,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'mysql')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "mysql001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1448,8 +1536,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "6270923422208188023"
+              "version": "0.4.1008.15138",
+              "templateHash": "7609396376604554148"
             }
           },
           "parameters": {
@@ -1604,7 +1692,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'maria')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "mariadb001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1640,8 +1728,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "14835749078277423345"
+              "version": "0.4.1008.15138",
+              "templateHash": "13615216311112027655"
             }
           },
           "parameters": {
@@ -1770,7 +1858,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'postgre')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2020-06-01",
       "name": "postgresql001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1812,8 +1900,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.613.9944",
-              "templateHash": "12734819951893398844"
+              "version": "0.4.1008.15138",
+              "templateHash": "4343268124709788636"
             }
           },
           "parameters": {

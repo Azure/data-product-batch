@@ -24,46 +24,52 @@
             "value": "dataFactory"
         },
         "synapseDefaultStorageAccountFileSystemId": {
-            "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-prof-storage/providers/Microsoft.Storage/storageAccounts/dlz01devwork/blobServices/default/containers/di001"
+            "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-prd-storage/providers/Microsoft.Storage/storageAccounts/dlz01devwork/blobServices/default/containers/di001"
         },
         "subnetId": {
-            "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-prof-network/providers/Microsoft.Network/virtualNetworks/dlz01-prof-vnet/subnets/DataIntegration001Subnet"
+            "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-prd-network/providers/Microsoft.Network/virtualNetworks/dlz01-prd-vnet/subnets/DataIntegration001Subnet"
         },
         "purviewId": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-governance/providers/Microsoft.Purview/accounts/dmz-prof-purview001"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-governance/providers/Microsoft.Purview/accounts/dmz-prd-purview001"
+        },
+        "purviewManagedStorageId": {
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-purview001/providers/Microsoft.Storage/storageAccounts/scannortheuropekkkshlo"
+        },
+        "purviewManagedEventHubId": {
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-purview001/providers/Microsoft.EventHub/namespaces/Atlas-a487e969-df29-4159-8858-9e68d81285e9"
         },
         "enableRoleAssignments": {
             "value": false
         },
         "privateDnsZoneIdKeyVault": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
         },
         "privateDnsZoneIdSynapseDev": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
         },
         "privateDnsZoneIdSynapseSql": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
         },
         "privateDnsZoneIdDataFactory": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
         },
         "privateDnsZoneIdDataFactoryPortal": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.adf.azure.com"
         },
         "privateDnsZoneIdCosmosdbSql": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com"
         },
         "privateDnsZoneIdSqlServer": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"
         },
         "privateDnsZoneIdMySqlServer": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com"
         },
         "privateDnsZoneIdMariaDb": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com"
         },
         "privateDnsZoneIdPostgreSql": {
-            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prof-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com"
+            "value": "/subscriptions/17588eb2-2943-461a-ab3f-00a3ceac3112/resourceGroups/dmz-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com"
         }
     }
 }
