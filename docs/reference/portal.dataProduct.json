@@ -530,7 +530,7 @@
                                         "confirmPassword": "Confirm password"
                                     },
                                     "type": "Microsoft.Compute.CredentialsCombo",
-                                    "visible": true,
+                                    "visible": "[not(and(equals(steps('generalSettings').generalSettings.sqlFlavour, 'none'), equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'dataFactory')))]",
                                     "defaultValue": "",
                                     "toolTip": {
                                         "password": "Specify an administrator password for the SQL Server and Synapse workspace, if you have selected Synapse as processing sercice."
