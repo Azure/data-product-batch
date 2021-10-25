@@ -31,8 +31,8 @@ param tags object = {}
 @description('Specifies the sql flavour that will be deployed (None, SQL Server, MySQL Server, MariaDB Server, PostgreSQL Server).')
 param sqlFlavour string = 'sql'
 @secure()
-@description('Specifies the administrator password of the sql servers.')
-param administratorPassword string
+@description('Specifies the administrator password of the sql servers and synapse workspace.')
+param administratorPassword string = ''
 @allowed([
   'dataFactory'
   'synapse'

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "9649687332565945507"
+      "templateHash": "16707337611244079964"
     }
   },
   "parameters": {
@@ -57,8 +57,9 @@
     },
     "administratorPassword": {
       "type": "secureString",
+      "defaultValue": "",
       "metadata": {
-        "description": "Specifies the administrator password of the sql servers."
+        "description": "Specifies the administrator password of the sql servers and synapse workspace."
       }
     },
     "processingService": {
