@@ -39,13 +39,13 @@ param administratorPassword string = ''
 ])
 @description('Specifies the data engineering service that will be deployed (Data Factory, Synapse).')
 param processingService string = 'dataFactory'
-@description('Specifies the resource ID of the default storage account file system for synapse. If you selected dataFactory as processingService, leave this value empty as is.')
+@description('Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
 param synapseDefaultStorageAccountFileSystemId string = ''
-@description('Specifies the resource ID of the central purview instance.')
+@description('Specifies the resource ID of the central Purview instance.')
 param purviewId string = ''
-@description('Specifies the resource ID of the managed storage of the central purview instance.')
+@description('Specifies the resource ID of the managed storage account of the central Purview instance.')
 param purviewManagedStorageId string = ''
-@description('Specifies the resource ID of the managed event hub of the central purview instance.')
+@description('Specifies the resource ID of the managed Event Hub of the central Purview instance.')
 param purviewManagedEventHubId string = ''
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false

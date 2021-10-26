@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1008.15138",
-      "templateHash": "16707337611244079964"
+      "templateHash": "18378748460188709613"
     }
   },
   "parameters": {
@@ -77,28 +77,28 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the default storage account file system for synapse. If you selected dataFactory as processingService, leave this value empty as is."
+        "description": "Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is."
       }
     },
     "purviewId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the central purview instance."
+        "description": "Specifies the resource ID of the central Purview instance."
       }
     },
     "purviewManagedStorageId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the managed storage of the central purview instance."
+        "description": "Specifies the resource ID of the managed storage account of the central Purview instance."
       }
     },
     "purviewManagedEventHubId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Specifies the resource ID of the managed event hub of the central purview instance."
+        "description": "Specifies the resource ID of the managed Event Hub of the central Purview instance."
       }
     },
     "enableRoleAssignments": {
