@@ -41,6 +41,8 @@ param administratorPassword string = ''
 param processingService string = 'dataFactory'
 @description('Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
 param synapseDefaultStorageAccountFileSystemId string = ''
+@description('Specifies whether an Azure SQL Pool should be deployed inside your Synapse workspace as part of the template. If you selected dataFactory as processingService, leave this value as is.')
+param enableSqlPool bool = false
 @description('Specifies whether Azure Cosmos DB should be deployed as part of the template.')
 param enableCosmos bool = false
 @description('Specifies the resource ID of the central Purview instance.')
@@ -128,6 +130,7 @@ module synapse001 'modules/services/synapse.bicep' = if (processingService == 's
     privateDnsZoneIdSynapseDev: privateDnsZoneIdSynapseDev
     privateDnsZoneIdSynapseSql: privateDnsZoneIdSynapseSql
     purviewId: purviewId
+    enableSqlPool: enableSqlPool
     synapseComputeSubnetId: ''
     synapseDefaultStorageAccountFileSystemId: synapseDefaultStorageAccountFileSystemId
   }

@@ -26,6 +26,9 @@
         "synapseDefaultStorageAccountFileSystemId": {
             "value": "/subscriptions/2150d511-458f-43b9-8691-6819ba2e6c7b/resourceGroups/dlz01-tst-storage/providers/Microsoft.Storage/storageAccounts/dlz01devwork/blobServices/default/containers/di001"
         },
+        "enableSqlPool": {
+            "value": true
+        },
         "enableCosmos": {
             "value": true
         },
