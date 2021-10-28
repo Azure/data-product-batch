@@ -232,3 +232,5 @@ module postgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
     privateDnsZoneIdPostgreSql: privateDnsZoneIdPostgreSql
   }
 }
+
+// Outputs
