@@ -41,6 +41,8 @@ param administratorPassword string = ''
 param processingService string = 'dataFactory'
 @description('Specifies the resource ID of the default storage account file system for Synapse. If you selected dataFactory as processingService, leave this value empty as is.')
 param synapseDefaultStorageAccountFileSystemId string = ''
+@description('Specifies whether Azure Cosmos DB should be deployed as part of the template.')
+param enableCosmos bool = false
 @description('Specifies the resource ID of the central Purview instance.')
 param purviewId string = ''
 @description('Specifies the resource ID of the managed storage account of the central Purview instance.')
@@ -157,7 +159,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
   }
 }
 
-module cosmosdb001 'modules/services/cosmosdb.bicep' = {
+module cosmosdb001 'modules/services/cosmosdb.bicep' = if(enableCosmos) {
   name: 'cosmos001'
   scope: resourceGroup()
   params: {
