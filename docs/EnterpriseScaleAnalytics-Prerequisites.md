@@ -18,16 +18,16 @@ By navigating through the deployment steps, you will deploy the folowing setup i
 The deployment and code artifacts include the following services:
 
 - [Key Vault](https://docs.microsoft.com/azure/key-vault/general)
-- [Data Factory](https://docs.microsoft.com/azure/data-factory/)
-- [Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction)
-- [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/)
-- [MySQL Database](https://docs.microsoft.com/azure/mysql/overview)
-- [Azure SQL Database](https://docs.microsoft.com/azure/azure-sql/database/)
-- [PostgreSQL Database](https://docs.microsoft.com/azure/postgresql/)
-- [MariaDB Database](https://docs.microsoft.com/azure/mariadb/)
-- [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is)
-- [SQL Server](https://docs.microsoft.com/sql/sql-server/?view=sql-server-ver15)
-- [SQL Elastic Pool](https://docs.microsoft.com/azure/azure-sql/database/elastic-pool-overview)
+- [Data Factory](https://docs.microsoft.com/azure/data-factory/) (select between Data Factory and Synapse)
+- [Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction) (optional)
+- [Synapse Workspace](https://docs.microsoft.com/azure/synapse-analytics/) (select between Data Factory and Synapse)
+- [MySQL Database](https://docs.microsoft.com/azure/mysql/overview) (optional)
+- [Azure SQL Database](https://docs.microsoft.com/azure/azure-sql/database/) (optional)
+- [PostgreSQL Database](https://docs.microsoft.com/azure/postgresql/) (optional)
+- [MariaDB Database](https://docs.microsoft.com/azure/mariadb/) (optional)
+- [SQL Pool](https://docs.microsoft.com/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is) (optional)
+- [SQL Server](https://docs.microsoft.com/sql/sql-server/?view=sql-server-ver15) (optional)
+- [SQL Elastic Pool](https://docs.microsoft.com/azure/azure-sql/database/elastic-pool-overview) (optional)
 - [BigData Pool](https://docs.microsoft.com/sql/big-data-cluster/concept-data-pool?view=sql-server-ver15)
 
 ## Code Structure
