@@ -429,6 +429,18 @@
                                         "allowedValues": "[map(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemApi.value, (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.id, '\"}')))]",
                                         "required": true
                                     }
+                                },
+                                {
+                                    "name": "enableSqlPool",
+                                    "label": "Enable SQL Pool",
+                                    "type": "Microsoft.Common.CheckBox",
+                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
+                                    "defaultValue": false,
+                                    "toolTip": "Enable the deployment of an Azure SQL Pool (DW100).",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": "Enable the deployment of an Azure SQL Pool (DW100)."
+                                    }
                                 }
                             ]
                         },
@@ -552,6 +564,18 @@
                                         "hideConfirmation": false
                                     },
                                     "osPlatform": "Windows"
+                                },
+                                {
+                                    "name": "enableCosmos",
+                                    "label": "Enable Azure Cosmos DB",
+                                    "type": "Microsoft.Common.CheckBox",
+                                    "visible": true,
+                                    "defaultValue": false,
+                                    "toolTip": "Enable the deployment of Azure Cosmos DB.",
+                                    "constraints": {
+                                        "required": false,
+                                        "validationMessage": "Enable the deployment of Azure Cosmos DB."
+                                    }
                                 },
                                 {
                                     "name": "infoBoxRoleAssignment",
@@ -957,6 +981,8 @@
                 "administratorPassword": "[if(empty(steps('generalSettings').generalSettings.administratorPassword.password), '', steps('generalSettings').generalSettings.administratorPassword.password)]",
                 "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
                 "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
+                "enableSqlPool": "[steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool]",
+                "enableCosmos": "[steps('generalSettings').generalSettings.enableCosmos]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
                 "purviewManagedStorageId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.storageAccount)]",
                 "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",
