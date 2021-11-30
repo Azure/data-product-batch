@@ -1,6 +1,6 @@
 # Data Product Batch - Prerequisites
 
-This template repsitory contains all templates to deploy a Data Product for batch data processing inside a Data Landing Zone of the Enterprise-Scale Analytics architecture. Data Products are another unit of scale inside a Data Landing Zone and provide environments to cross-functional teams to work on individual data use-cases. This template can also be used for data integration into the platform. The fundamental difference would be that these teams are then connecting to data sources outside of the Data Landing Zones, which may requires the use of Self-hosted integration runtimes. Hence, this template qualifis for the following usage:
+This template repository contains all templates to deploy a Data Product for batch data processing inside a Data Landing Zone of the Data Management & Analytics Scenario. Data Products are another unit of scale inside a Data Landing Zone and provide environments to cross-functional teams to work on individual data use-cases. This template can also be used for data integration into the platform. The fundamental difference would be that these teams are then connecting to data sources outside of the Data Landing Zones, which may requires the use of Self-hosted integration runtimes. Hence, this template qualifies for the following usage:
 
 | Scenario         | Applicability      |
 |:-----------------|:-------------------|
@@ -9,7 +9,7 @@ This template repsitory contains all templates to deploy a Data Product for batc
 
 ## What will be deployed?
 
-By navigating through the deployment steps, you will deploy the folowing setup in a subscription:
+By navigating through the deployment steps, you will deploy the following setup in a subscription:
 
 > **Note:** Before deploying the resources, we recommend to check registration status of the required resource providers in your subscription. For more information, see [Resource providers for Azure services](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types).
 
