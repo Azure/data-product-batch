@@ -962,7 +962,7 @@
                             "type": "Microsoft.Common.TagsByResource",
                             "visible": true,
                             "resources": [
-                                "EnterpriseScaleAnalytics"
+                                "DataManagementAnalytics"
                             ]
                         }
                     ]
@@ -998,7 +998,7 @@
                 "privateDnsZoneIdMySqlServer": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMySqlServer), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMySqlServer)]",
                 "privateDnsZoneIdMariaDb": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMariaDb), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdMariaDb)]",
                 "privateDnsZoneIdPostgreSql": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdPostgreSql), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdPostgreSql)]",
-                "tags": "[if(not(contains(steps('tags').tagsByResource, 'EnterpriseScaleAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.EnterpriseScaleAnalytics)))]"
+                "tags": "[if(not(contains(steps('tags').tagsByResource, 'DataManagementAnalytics')), parse('{}'), first(map(parse(concat('[', string(steps('tags').tagsByResource), ']')), (item) => item.DataManagementAnalytics)))]"
             }
         }
     }
