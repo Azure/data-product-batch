@@ -88,7 +88,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | `privateDnsZoneIdMariaDb` | Specifies the Resource ID of the private DNS zone for MariaDB. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com` |
 | `privateDnsZoneIdPostgreSql` | Specifies the Resource ID of the private DNS zone for PostgreSql. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com` |
 
-## Merge these changes back to the `main` branch of your repo
+## Merge these changes back to the `main` branch of your repository
 
 After following the instructions and updating the parameters and variables in your repository in a separate branch and opening the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository. By doing this, you trigger the deployment workflow.
 
