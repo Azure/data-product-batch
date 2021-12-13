@@ -53,7 +53,7 @@ The following table explains each of the parameters:
 | Parameter                     | Description  | Sample value |
 |:------------------------------|:-------------|:-------------|
 | **AZURE_SUBSCRIPTION_ID**     | Specifies the subscription ID of the Data Management Zone where all the resources will be deployed | <div style="width: 36ch">`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`</div> |
-| **AZURE_LOCATION**            | Specifies the region where you want the resources to be deployed. Please check [Supported Regions](/docs/EnterpriseScaleAnalytics-Prerequisites.md#supported-regions) | `northeurope` |
+| **AZURE_LOCATION**            | Specifies the region where you want the resources to be deployed. Please check [Supported Regions](/docs/DataManagementAnalytics-Prerequisites.md#supported-regions) | `northeurope` |
 | **AZURE_RESOURCE_GROUP_NAME** | Specifies the name of an existing resource group in your data landing zone, where the resources will be deployed. | `my-rg-name` |
 
 ### Configure `params.dev.json`
@@ -88,7 +88,7 @@ To begin, please open the [infra/params.dev.json](/infra/params.dev.json). In th
 | `privateDnsZoneIdMariaDb` | Specifies the Resource ID of the private DNS zone for MariaDB. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.mariadb.database.azure.com` |
 | `privateDnsZoneIdPostgreSql` | Specifies the Resource ID of the private DNS zone for PostgreSql. | `/subscriptions/{subscription-id}/resourceGroups/{rg-name}/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com` |
 
-## Merge these changes back to the `main` branch of your repo
+## Merge these changes back to the `main` branch of your repository
 
 After following the instructions and updating the parameters and variables in your repository in a separate branch and opening the pull request, you can merge the pull request back into the `main` branch of your repository by clicking on **Merge pull request**. Finally, you can click on **Delete branch** to clean up your repository. By doing this, you trigger the deployment workflow.
 
@@ -96,7 +96,7 @@ After following the instructions and updating the parameters and variables in yo
 
 **Congratulations!** You have successfully executed all steps to deploy the template into your environment through GitHub Actions.
 
-Now, you can navigate to the **Actions** tab of the main page of the repository, where you will see a workflow with the name `Data Product Deployment` running. Click on it to see how it deploys the environment. If you run into any issues, please check the [Known Issues](/docs/EnterpriseScaleAnalytics-KnownIssues.md) first and open an [issue](https://github.com/Azure/data-product-batch/issues) if you come accross a potential bug in the repository.
+Now, you can navigate to the **Actions** tab of the main page of the repository, where you will see a workflow with the name `Data Product Deployment` running. Click on it to see how it deploys the environment. If you run into any issues, please check the [Known Issues](/docs/DataManagementAnalytics-KnownIssues.md) first and open an [issue](https://github.com/Azure/data-product-batch/issues) if you come accross a potential bug in the repository.
 
->[Previous](/docs/EnterpriseScaleAnalytics-ServicePrincipal.md)
->[Next](/docs/EnterpriseScaleAnalytics-KnownIssues.md)
+>[Previous](/docs/DataManagementAnalytics-ServicePrincipal.md)
+>[Next](/docs/DataManagementAnalytics-KnownIssues.md)
