@@ -33,6 +33,7 @@ resource mariadb 'Microsoft.DBForMariaDB/servers@2018-06-01' = {
     createMode: 'Default'
     administratorLogin: administratorUsername
     administratorLoginPassword: administratorPassword
+    #disable-next-line BCP037
     infrastructureEncryption: 'Disabled'
     minimalTlsVersion: 'TLS1_2'
     publicNetworkAccess: 'Disabled'
