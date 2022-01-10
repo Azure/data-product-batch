@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1008.15138",
-      "templateHash": "563377919106410816"
+      "version": "0.4.1124.51302",
+      "templateHash": "2607815037718360205"
     }
   },
   "parameters": {
@@ -199,7 +199,6 @@
       }
     }
   },
-  "functions": [],
   "variables": {
     "name": "[toLower(format('{0}-{1}', parameters('prefix'), parameters('environment')))]",
     "tagsDefault": {
@@ -225,7 +224,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "keyVault001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -255,8 +254,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "6717429930577625102"
+              "version": "0.4.1124.51302",
+              "templateHash": "12660131753967436973"
             }
           },
           "parameters": {
@@ -277,7 +276,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "keyVaultPrivateEndpointName": "[format('{0}-private-endpoint', parameters('keyvaultName'))]"
           },
@@ -371,7 +369,7 @@
     {
       "condition": "[equals(parameters('processingService'), 'synapse')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "synapse001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -428,8 +426,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "10342313127646962347"
+              "version": "0.4.1124.51302",
+              "templateHash": "9666478398298797468"
             }
           },
           "parameters": {
@@ -484,7 +482,6 @@
               "defaultValue": false
             }
           },
-          "functions": [],
           "variables": {
             "synapseDefaultStorageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), last(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "synapseDefaultStorageAccountName": "[if(greaterOrEquals(length(split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')), 13), split(parameters('synapseDefaultStorageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
@@ -759,7 +756,7 @@
     {
       "condition": "[and(equals(parameters('processingService'), 'synapse'), parameters('enableRoleAssignments'))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "synapse001RoleAssignmentStorage",
       "subscriptionId": "[variables('synapseDefaultStorageAccountSubscriptionId')]",
       "resourceGroup": "[variables('synapseDefaultStorageAccountResourceGroupName')]",
@@ -773,7 +770,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-06-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -782,8 +779,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "7805977499282852672"
+              "version": "0.4.1124.51302",
+              "templateHash": "17584063900477479467"
             }
           },
           "parameters": {
@@ -794,7 +791,6 @@
               "type": "string"
             }
           },
-          "functions": [],
           "variables": {
             "storageAccountFileSystemName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), last(split(parameters('storageAccountFileSystemId'), '/')), 'incorrectSegmentLength')]",
             "storageAccountName": "[if(greaterOrEquals(length(split(parameters('storageAccountFileSystemId'), '/')), 13), split(parameters('storageAccountFileSystemId'), '/')[8], 'incorrectSegmentLength')]",
@@ -823,7 +819,7 @@
     {
       "condition": "[equals(parameters('processingService'), 'dataFactory')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "datafactory001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -844,7 +840,7 @@
             "value": "[parameters('subnetId')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-06-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-10-01').outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -868,8 +864,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "12319901659031497535"
+              "version": "0.4.1124.51302",
+              "templateHash": "8202500910612797173"
             }
           },
           "parameters": {
@@ -909,7 +905,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "keyVault001Name": "[if(greaterOrEquals(length(split(parameters('keyVault001Id'), '/')), 9), last(split(parameters('keyVault001Id'), '/')), 'incorrectSegmentLength')]",
             "datafactoryDefaultManagedVnetIntegrationRuntimeName": "AutoResolveIntegrationRuntime",
@@ -1165,7 +1160,7 @@
     {
       "condition": "[parameters('enableCosmos')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "cosmos001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1195,8 +1190,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "16511519182590012378"
+              "version": "0.4.1124.51302",
+              "templateHash": "16996002725669682873"
             }
           },
           "parameters": {
@@ -1217,7 +1212,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "cosmosdbPrivateEndpointName": "[format('{0}-private-endpoint', parameters('cosmosdbName'))]"
           },
@@ -1319,7 +1313,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'sql')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "sql001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1361,8 +1355,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "1459442054509288273"
+              "version": "0.4.1124.51302",
+              "templateHash": "9530070448322797735"
             }
           },
           "parameters": {
@@ -1398,7 +1392,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "sqlserverPrivateEndpointName": "[format('{0}-private-endpoint', parameters('sqlserverName'))]"
           },
@@ -1518,7 +1511,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'mysql')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "mysql001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1560,8 +1553,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "7609396376604554148"
+              "version": "0.4.1124.51302",
+              "templateHash": "9123330894435819326"
             }
           },
           "parameters": {
@@ -1597,7 +1590,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "mysqlserverPrivateEndpointName": "[format('{0}-private-endpoint', parameters('mysqlserverName'))]"
           },
@@ -1716,7 +1708,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'maria')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "mariadb001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1752,8 +1744,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "13615216311112027655"
+              "version": "0.4.1124.51302",
+              "templateHash": "1906507997485595346"
             }
           },
           "parameters": {
@@ -1781,7 +1773,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "mariadbPrivateEndpointName": "[format('{0}-private-endpoint', parameters('mariadbName'))]"
           },
@@ -1882,7 +1873,7 @@
     {
       "condition": "[equals(parameters('sqlFlavour'), 'postgre')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2020-10-01",
       "name": "postgresql001",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1924,8 +1915,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "4343268124709788636"
+              "version": "0.4.1124.51302",
+              "templateHash": "7501625850752670985"
             }
           },
           "parameters": {
@@ -1961,7 +1952,6 @@
               "defaultValue": ""
             }
           },
-          "functions": [],
           "variables": {
             "postgresqlPrivateEndpointName": "[format('{0}-private-endpoint', parameters('postgresqlName'))]"
           },
