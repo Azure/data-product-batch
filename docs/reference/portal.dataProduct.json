@@ -549,21 +549,17 @@
                                         "password": "Password",
                                         "confirmPassword": "Confirm password"
                                     },
-                                    "type": "Microsoft.Compute.CredentialsCombo",
+                                    "type": "Microsoft.Common.PasswordBox",
                                     "visible": "[not(and(equals(steps('generalSettings').generalSettings.sqlFlavour, 'none'), equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'dataFactory')))]",
-                                    "defaultValue": "",
-                                    "toolTip": {
-                                        "password": "Specify an administrator password for the SQL Server and Synapse workspace, if you have selected Synapse as processing sercice."
-                                    },
+                                    "toolTip": "Specify an administrator password for the SQL Server and Synapse workspace, if you have selected Synapse as processing sercice.",
                                     "constraints": {
                                         "required": true,
-                                        "customPasswordRegex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
-                                        "customValidationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
+                                        "regex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,128}$",
+                                        "validationMessage": "The password must be alphanumeric, contain at least 8 characters, and have at least 1 letter, 1 number and one special character."
                                     },
                                     "options": {
                                         "hideConfirmation": false
-                                    },
-                                    "osPlatform": "Windows"
+                                    }
                                 },
                                 {
                                     "name": "enableCosmos",
@@ -978,7 +974,7 @@
                 "environment": "[if(empty(steps('basics').dataProductName.environment), '', steps('basics').dataProductName.environment)]",
                 "prefix": "[if(empty(steps('basics').dataProductName.dataProductPrefix), '', steps('basics').dataProductName.dataProductPrefix)]",
                 "sqlFlavour": "[if(empty(steps('generalSettings').generalSettings.sqlFlavour), '', steps('generalSettings').generalSettings.sqlFlavour)]",
-                "administratorPassword": "[if(empty(steps('generalSettings').generalSettings.administratorPassword.password), '', steps('generalSettings').generalSettings.administratorPassword.password)]",
+                "administratorPassword": "[if(empty(steps('generalSettings').generalSettings.administratorPassword), '', steps('generalSettings').generalSettings.administratorPassword)]",
                 "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
                 "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
                 "enableSqlPool": "[steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool]",
