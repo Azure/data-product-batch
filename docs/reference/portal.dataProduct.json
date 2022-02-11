@@ -433,13 +433,21 @@
                                 {
                                     "name": "enableSqlPool",
                                     "label": "Enable SQL Pool",
-                                    "type": "Microsoft.Common.CheckBox",
-                                    "visible": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService, 'synapse')]",
-                                    "defaultValue": false,
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
                                     "toolTip": "Enable the deployment of an Azure SQL Pool (DW100).",
+                                    "defaultValue": "No",
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable the deployment of an Azure SQL Pool (DW100)."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
                                     }
                                 }
                             ]
@@ -564,13 +572,21 @@
                                 {
                                     "name": "enableCosmos",
                                     "label": "Enable Azure Cosmos DB",
-                                    "type": "Microsoft.Common.CheckBox",
+                                    "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
-                                    "defaultValue": false,
                                     "toolTip": "Enable the deployment of Azure Cosmos DB.",
+                                    "defaultValue": "Yes",
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable the deployment of Azure Cosmos DB."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
                                     }
                                 },
                                 {
@@ -585,13 +601,61 @@
                                 {
                                     "name": "enableRoleAssignments",
                                     "label": "Enable role assignments",
-                                    "type": "Microsoft.Common.CheckBox",
+                                    "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
-                                    "defaultValue": false,
                                     "toolTip": "Enable role assignments.",
+                                    "defaultValue": "Yes (recommended)",
                                     "constraints": {
-                                        "required": false,
-                                        "validationMessage": "Enable role assignments of the Synapse MSI. Please read infobox above for more details."
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "observabilitySettings",
+                            "label": "Observability Settings",
+                            "type": "Microsoft.Common.Section",
+                            "visible": true,
+                            "elements": [
+                                {
+                                    "name": "observabilitySettingsText",
+                                    "type": "Microsoft.Common.TextBlock",
+                                    "visible": true,
+                                    "options": {
+                                        "text": "Specify observability settings for this deployment.",
+                                        "link": {
+                                            "label": "",
+                                            "uri": ""
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "enableObservability",
+                                    "label": "Deploy Observability Extension",
+                                    "type": "Microsoft.Common.OptionsGroup",
+                                    "visible": true,
+                                    "toolTip": "If 'Yes' is selected, a Log Analytics workspace as well as a set of Azure dashboards will be deployed.",
+                                    "defaultValue": "Yes (recommended)",
+                                    "constraints": {
+                                        "allowedValues": [
+                                            {
+                                                "label": "Yes (recommended)",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "no"
+                                            }
+                                        ]
                                     }
                                 }
                             ]
@@ -977,12 +1041,13 @@
                 "administratorPassword": "[if(empty(steps('generalSettings').generalSettings.administratorPassword), '', steps('generalSettings').generalSettings.administratorPassword)]",
                 "processingService": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.processingService)]",
                 "synapseDefaultStorageAccountFileSystemId": "[if(empty(steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId), '', steps('generalSettings').dataProcessingServiceDeploymentSettings.synapseDefaultStorageAccountFileSystemId)]",
-                "enableSqlPool": "[steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool]",
-                "enableCosmos": "[steps('generalSettings').generalSettings.enableCosmos]",
+                "enableSqlPool": "[equals(steps('generalSettings').dataProcessingServiceDeploymentSettings.enableSqlPool, 'yes')]",
+                "enableCosmos": "[equals(steps('generalSettings').generalSettings.enableCosmos, 'yes')]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
                 "purviewManagedStorageId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.storageAccount)]",
                 "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",
-                "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
+                "enableRoleAssignments": "[equals(steps('generalSettings').generalSettings.enableRoleAssignments, 'yes')]",
+                "enableObservability": "[equals(steps('generalSettings').observabilitySettings.enableObservability, 'yes')]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",
