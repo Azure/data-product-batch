@@ -53,6 +53,8 @@ param purviewManagedStorageId string = ''
 param purviewManagedEventHubId string = ''
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false
+@description('Specifies whether observability capabilities should be enabled.')
+param enableObservability bool = true
 
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
@@ -101,6 +103,7 @@ var sql001Name = '${name}-sqlserver001'
 var mysql001Name = '${name}-mysql001'
 var mariadb001Name = '${name}-mariadb001'
 var potsgresql001Name = '${name}-postgresql001'
+var logAnalytics001Name = '${name}-la001'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
@@ -233,6 +236,16 @@ module postgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
     postgresqlAdminGroupName: ''
     postgresqlAdminGroupObjectID: ''
     privateDnsZoneIdPostgreSql: privateDnsZoneIdPostgreSql
+  }
+}
+
+module logAnalytics001 'modules/services/loganalytics.bicep' = if(enableObservability) {
+  name: 'logAnalytics001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tagsJoined
+    logAnanalyticsName: logAnalytics001Name
   }
 }
 

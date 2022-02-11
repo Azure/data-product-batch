@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1124.51302",
-      "templateHash": "2607815037718360205"
+      "templateHash": "17229161188929746269"
     }
   },
   "parameters": {
@@ -122,6 +122,13 @@
         "description": "Specifies whether role assignments should be enabled."
       }
     },
+    "enableObservability": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether observability capabilities should be enabled."
+      }
+    },
     "subnetId": {
       "type": "string",
       "metadata": {
@@ -219,7 +226,8 @@
     "sql001Name": "[format('{0}-sqlserver001', variables('name'))]",
     "mysql001Name": "[format('{0}-mysql001', variables('name'))]",
     "mariadb001Name": "[format('{0}-mariadb001', variables('name'))]",
-    "potsgresql001Name": "[format('{0}-postgresql001', variables('name'))]"
+    "potsgresql001Name": "[format('{0}-postgresql001', variables('name'))]",
+    "logAnalytics001Name": "[format('{0}-la001', variables('name'))]"
   },
   "resources": [
     {
@@ -2064,6 +2072,117 @@
               ]
             }
           ]
+        }
+      }
+    },
+    {
+      "condition": "[parameters('enableObservability')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "logAnalytics001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "logAnanalyticsName": {
+            "value": "[variables('logAnalytics001Name')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1124.51302",
+              "templateHash": "6316627051499014174"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "logAnanalyticsName": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "dataFactoryAnalyticsName": "[format('{0}-adf-analytics', parameters('logAnanalyticsName'))]",
+            "sqlAnalyticsName": "[format('{0}-sql-analytics', parameters('logAnanalyticsName'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2020-10-01",
+              "name": "[parameters('logAnanalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "features": {},
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled",
+                "retentionInDays": 120,
+                "sku": {
+                  "name": "PerGB2018"
+                }
+              }
+            },
+            {
+              "type": "Microsoft.OperationsManagement/solutions",
+              "apiVersion": "2015-11-01-preview",
+              "name": "[variables('dataFactoryAnalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "plan": {
+                "name": "[format('AzureDataFactoryAnalytics{0}', parameters('logAnanalyticsName'))]",
+                "product": "OMSGallery/AzureDataFactoryAnalytics",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+              },
+              "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.OperationsManagement/solutions",
+              "apiVersion": "2015-11-01-preview",
+              "name": "[variables('sqlAnalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "plan": {
+                "name": "[format('AzureSQLAnalytics{0}', parameters('logAnanalyticsName'))]",
+                "product": "OMSGallery/AzureSQLAnalytics",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+              },
+              "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "logAnalyticsWorkspaceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnanalyticsName'))]"
+            }
+          }
         }
       }
     }
