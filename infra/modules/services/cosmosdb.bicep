@@ -55,7 +55,7 @@ resource cosmosdb 'Microsoft.DocumentDB/databaseAccounts@2021-03-15' = {
       {
         locationName: location
         failoverPriority: 0
-        isZoneRedundant: true
+        isZoneRedundant: false
       }
     ]
   }
@@ -116,3 +116,4 @@ resource cosmosdbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/priv
 }
 
 // Outputs
+output cosmosId string = cosmosdb.id

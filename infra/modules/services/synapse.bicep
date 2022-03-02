@@ -60,7 +60,7 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
   }
 }
 
-resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = if(enableSqlPool) {
+resource synapseSqlPool001 'Microsoft.Synapse/workspaces/sqlPools@2021-03-01' = if (enableSqlPool) {
   parent: synapse
   name: 'sqlPool001'
   location: location
@@ -257,3 +257,8 @@ resource synapsePrivateEndpointDevARecord 'Microsoft.Network/privateEndpoints/pr
 
 // Outputs
 output synapseId string = synapse.id
+output synapseSqlPool001 object = synapseSqlPool001
+output synapseBigDataPool001Id string = synapseBigDataPool001.id
+output synapseBigDataPool001Name string = synapseBigDataPool001.name
+output synapseSqlPool001Name string = synapseSqlPool001.name
+output synapseSqlPool001Id string = synapseSqlPool001.id

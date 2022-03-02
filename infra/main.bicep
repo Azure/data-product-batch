@@ -54,6 +54,12 @@ param purviewManagedEventHubId string = ''
 @description('Specifies whether role assignments should be enabled.')
 param enableRoleAssignments bool = false
 
+// Monitoring parameters
+@description('Specifies whether monitoring capabilities should be enabled.')
+param enableMonitoring bool = true
+@description('Specifies the email ID of the alerts receiver.')
+param dataProductTeamEmail string = ''
+
 // Network parameters
 @description('Specifies the resource ID of the subnet to which all services will connect.')
 param subnetId string
@@ -97,10 +103,17 @@ var keyVault001Name = '${name}-vault001'
 var synapse001Name = '${name}-synapse001'
 var datafactory001Name = '${name}-datafactory001'
 var cosmosdb001Name = '${name}-cosmos001'
+var Database001Name = 'Database001'
 var sql001Name = '${name}-sqlserver001'
 var mysql001Name = '${name}-mysql001'
 var mariadb001Name = '${name}-mariadb001'
 var potsgresql001Name = '${name}-postgresql001'
+var logAnalytics001Name = '${name}-loganalytics'
+var dataFactoryEmailActionGroup = '${datafactory001Name}-${name}-emailactiongroup'
+var adfPipelineFailedAlertName = '${datafactory001Name}-${name}-adffailedalert'
+var synapsePipelineFailedAlertName = '${synapse001Name}-failedalert'
+var cosmosRequestLimitedAlertName = '${cosmosdb001Name}-requestratealert'
+var dashboardName = '${name}-dashboard'
 
 // Resources
 module keyVault001 'modules/services/keyvault.bicep' = {
@@ -162,7 +175,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
   }
 }
 
-module cosmosdb001 'modules/services/cosmosdb.bicep' = if(enableCosmos) {
+module cosmosdb001 'modules/services/cosmosdb.bicep' = if (enableCosmos) {
   name: 'cosmos001'
   scope: resourceGroup()
   params: {
@@ -185,6 +198,7 @@ module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
     administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
+    Database001Name: Database001Name
     sqlserverAdminGroupName: ''
     sqlserverAdminGroupObjectID: ''
   }
@@ -233,6 +247,79 @@ module postgresql001 'modules/services/postgresql.bicep' = if (sqlFlavour == 'po
     postgresqlAdminGroupName: ''
     postgresqlAdminGroupObjectID: ''
     privateDnsZoneIdPostgreSql: privateDnsZoneIdPostgreSql
+  }
+}
+
+module logAnalytics001 'modules/services/loganalytics.bicep' = if (enableMonitoring) {
+  name: 'logAnalytics001'
+  scope: resourceGroup()
+  params: {
+    location: location
+    tags: tagsJoined
+    logAnalytics001Name: logAnalytics001Name
+    processingService: processingService
+    sqlFlavour: sqlFlavour
+  }
+}
+
+module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (enableMonitoring) {
+  name: 'diagnosticSettings'
+  scope: resourceGroup()
+  params: {
+    datafactoryName: datafactory001Name
+    logAnalytics001Name: logAnalytics001Name
+    processingService: processingService
+    cosmosdb001Name: cosmosdb001Name
+    enableCosmos: enableCosmos
+    sqlFlavour: sqlFlavour
+    mysql001Name: mysql001Name
+    sqlServerName: sql001Name
+    mariadb001Name: mariadb001Name
+    synapseName: synapse001Name
+    potsgresql001Name: potsgresql001Name
+    synapseSqlPools: [
+      synapse001.outputs.synapseSqlPool001Name
+    ]
+    synapseSparkPools: [
+      synapse001.outputs.synapseBigDataPool001Name
+    ]
+    sqlServerDatabases: [
+      Database001Name
+    ]
+  }
+}
+
+module alerts './modules/services/alerts.bicep' = if (enableMonitoring) {
+  name: 'alerts'
+  scope: resourceGroup()
+  params: {
+    adfPipelineFailedAlertName: adfPipelineFailedAlertName
+    datafactoryScope: datafactory001.outputs.dataFactoryId
+    dataFactoryEmailActionGroup: dataFactoryEmailActionGroup
+    dataProductTeamEmail: dataProductTeamEmail
+    location: location
+    processingService: processingService
+    synapsePipelineFailedAlertName: synapsePipelineFailedAlertName
+    cosmosRequestLimitedAlertName: cosmosRequestLimitedAlertName
+    synapseScope: synapse001.outputs.synapseId
+    cosmosDBScope: cosmosdb001.outputs.cosmosId
+    enableCosmos: enableCosmos
+    tags: tagsJoined
+  }
+}
+
+module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
+  name: 'dashboard'
+  scope: resourceGroup()
+  params: {
+    dashboardName: dashboardName
+    datafactoryName: datafactory001Name
+    datafactoryScope: datafactory001.outputs.dataFactoryId
+    location: location
+    processingService: processingService
+    synapse001Name: synapse001Name
+    synapseScope: synapse001.outputs.synapseId
+    tags: tagsJoined
   }
 }
 

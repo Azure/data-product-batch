@@ -63,7 +63,7 @@ resource datafactoryManagedIntegrationRuntime001 'Microsoft.DataFactory/factorie
   }
 }
 
-resource datafactoryPurviewManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if(!empty(purviewId)) {
+resource datafactoryPurviewManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if (!empty(purviewId)) {
   parent: datafactoryManagedVirtualNetwork
   name: 'Purview'
   properties: {
@@ -73,7 +73,7 @@ resource datafactoryPurviewManagedPrivateEndpoint 'Microsoft.DataFactory/factori
   }
 }
 
-resource datafactoryPurviewBlobManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if(!empty(purviewManagedStorageId)) {
+resource datafactoryPurviewBlobManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if (!empty(purviewManagedStorageId)) {
   parent: datafactoryManagedVirtualNetwork
   name: 'Purview_blob'
   properties: {
@@ -83,7 +83,7 @@ resource datafactoryPurviewBlobManagedPrivateEndpoint 'Microsoft.DataFactory/fac
   }
 }
 
-resource datafactoryPurviewQueueManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if(!empty(purviewManagedStorageId)) {
+resource datafactoryPurviewQueueManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if (!empty(purviewManagedStorageId)) {
   parent: datafactoryManagedVirtualNetwork
   name: 'Purview_queue'
   properties: {
@@ -93,7 +93,7 @@ resource datafactoryPurviewQueueManagedPrivateEndpoint 'Microsoft.DataFactory/fa
   }
 }
 
-resource datafactoryPurviewNamespaceManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if(!empty(purviewManagedEventHubId)) {
+resource datafactoryPurviewNamespaceManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = if (!empty(purviewManagedEventHubId)) {
   parent: datafactoryManagedVirtualNetwork
   name: 'Purview_namespace'
   properties: {
@@ -211,3 +211,4 @@ resource datafactoryPrivateEndpointPortalARecord 'Microsoft.Network/privateEndpo
 }
 
 // Outputs
+output dataFactoryId string = datafactory.id

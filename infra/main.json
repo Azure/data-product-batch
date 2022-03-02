@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1124.51302",
-      "templateHash": "2607815037718360205"
+      "version": "0.4.1272.37030",
+      "templateHash": "7856445791179152335"
     }
   },
   "parameters": {
@@ -122,6 +122,20 @@
         "description": "Specifies whether role assignments should be enabled."
       }
     },
+    "enableMonitoring": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies whether monitoring capabilities should be enabled."
+      }
+    },
+    "dataProductTeamEmail": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Specifies the email ID of the alerts receiver."
+      }
+    },
     "subnetId": {
       "type": "string",
       "metadata": {
@@ -216,10 +230,17 @@
     "synapse001Name": "[format('{0}-synapse001', variables('name'))]",
     "datafactory001Name": "[format('{0}-datafactory001', variables('name'))]",
     "cosmosdb001Name": "[format('{0}-cosmos001', variables('name'))]",
+    "Database001Name": "Database001",
     "sql001Name": "[format('{0}-sqlserver001', variables('name'))]",
     "mysql001Name": "[format('{0}-mysql001', variables('name'))]",
     "mariadb001Name": "[format('{0}-mariadb001', variables('name'))]",
-    "potsgresql001Name": "[format('{0}-postgresql001', variables('name'))]"
+    "potsgresql001Name": "[format('{0}-postgresql001', variables('name'))]",
+    "logAnalytics001Name": "[format('{0}-loganalytics', variables('name'))]",
+    "dataFactoryEmailActionGroup": "[format('{0}-{1}-emailactiongroup', variables('datafactory001Name'), variables('name'))]",
+    "adfPipelineFailedAlertName": "[format('{0}-{1}-adffailedalert', variables('datafactory001Name'), variables('name'))]",
+    "synapsePipelineFailedAlertName": "[format('{0}-failedalert', variables('synapse001Name'))]",
+    "cosmosRequestLimitedAlertName": "[format('{0}-requestratealert', variables('cosmosdb001Name'))]",
+    "dashboardName": "[format('{0}-dashboard', variables('name'))]"
   },
   "resources": [
     {
@@ -254,8 +275,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "12660131753967436973"
+              "version": "0.4.1272.37030",
+              "templateHash": "9938457463094163649"
             }
           },
           "parameters": {
@@ -426,8 +447,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9666478398298797468"
+              "version": "0.4.1272.37030",
+              "templateHash": "11401646563646112656"
             }
           },
           "parameters": {
@@ -748,6 +769,26 @@
             "synapseId": {
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
+            },
+            "synapseSqlPool001": {
+              "type": "object",
+              "value": "[reference(resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('synapseName'), 'sqlPool001'), '2021-03-01', 'full')]"
+            },
+            "synapseBigDataPool001Id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', parameters('synapseName'), 'bigDataPool001')]"
+            },
+            "synapseBigDataPool001Name": {
+              "type": "string",
+              "value": "bigDataPool001"
+            },
+            "synapseSqlPool001Name": {
+              "type": "string",
+              "value": "sqlPool001"
+            },
+            "synapseSqlPool001Id": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('synapseName'), 'sqlPool001')]"
             }
           }
         }
@@ -770,7 +811,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -779,8 +820,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "17584063900477479467"
+              "version": "0.4.1272.37030",
+              "templateHash": "4535135918647961980"
             }
           },
           "parameters": {
@@ -840,7 +881,7 @@
             "value": "[parameters('subnetId')]"
           },
           "keyVault001Id": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001'), '2020-10-01').outputs.keyvaultId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'keyVault001')).outputs.keyvaultId.value]"
           },
           "privateDnsZoneIdDataFactory": {
             "value": "[parameters('privateDnsZoneIdDataFactory')]"
@@ -864,8 +905,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "8202500910612797173"
+              "version": "0.4.1272.37030",
+              "templateHash": "14076569720839278206"
             }
           },
           "parameters": {
@@ -1150,7 +1191,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('datafactoryPrivateEndpointNamePortal'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "dataFactoryId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]"
+            }
+          }
         }
       },
       "dependsOn": [
@@ -1190,8 +1237,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "16996002725669682873"
+              "version": "0.4.1272.37030",
+              "templateHash": "3368710486250480488"
             }
           },
           "parameters": {
@@ -1254,7 +1301,7 @@
                   {
                     "locationName": "[parameters('location')]",
                     "failoverPriority": 0,
-                    "isZoneRedundant": true
+                    "isZoneRedundant": false
                   }
                 ]
               }
@@ -1306,7 +1353,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('cosmosdbPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "cosmosId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosdbName'))]"
+            }
+          }
         }
       }
     },
@@ -1342,6 +1395,9 @@
           "privateDnsZoneIdSqlServer": {
             "value": "[parameters('privateDnsZoneIdSqlServer')]"
           },
+          "Database001Name": {
+            "value": "[variables('Database001Name')]"
+          },
           "sqlserverAdminGroupName": {
             "value": ""
           },
@@ -1355,8 +1411,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9530070448322797735"
+              "version": "0.4.1272.37030",
+              "templateHash": "13813860010352731768"
             }
           },
           "parameters": {
@@ -1390,6 +1446,9 @@
             "privateDnsZoneIdSqlServer": {
               "type": "string",
               "defaultValue": ""
+            },
+            "Database001Name": {
+              "type": "string"
             }
           },
           "variables": {
@@ -1432,7 +1491,7 @@
             {
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2020-11-01-preview",
-              "name": "[format('{0}/{1}', parameters('sqlserverName'), 'Database001')]",
+              "name": "[format('{0}/{1}', parameters('sqlserverName'), parameters('Database001Name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "sku": {
@@ -1553,8 +1612,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9123330894435819326"
+              "version": "0.4.1272.37030",
+              "templateHash": "1914444117838235756"
             }
           },
           "parameters": {
@@ -1744,8 +1803,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "1906507997485595346"
+              "version": "0.4.1272.37030",
+              "templateHash": "10748115380762693061"
             }
           },
           "parameters": {
@@ -1915,8 +1974,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "7501625850752670985"
+              "version": "0.4.1272.37030",
+              "templateHash": "9480904219558883389"
             }
           },
           "parameters": {
@@ -2066,6 +2125,1165 @@
           ]
         }
       }
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "logAnalytics001",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          },
+          "logAnalytics001Name": {
+            "value": "[variables('logAnalytics001Name')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "sqlFlavour": {
+            "value": "[parameters('sqlFlavour')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "158081697976750518"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "logAnalytics001Name": {
+              "type": "string"
+            },
+            "sqlFlavour": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "dataFactoryAnalyticsName": "[format('AzureDataFactoryAnalytics({0})', parameters('logAnalytics001Name'))]",
+            "sqlAnalyticsName": "[format('AzureSQLAnalytics({0})', parameters('logAnalytics001Name'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2020-10-01",
+              "name": "[parameters('logAnalytics001Name')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "features": {},
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled",
+                "retentionInDays": 120,
+                "sku": {
+                  "name": "PerGB2018"
+                }
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.OperationsManagement/solutions",
+              "apiVersion": "2015-11-01-preview",
+              "name": "[variables('dataFactoryAnalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "plan": {
+                "name": "[variables('dataFactoryAnalyticsName')]",
+                "product": "OMSGallery/AzureDataFactoryAnalytics",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+              },
+              "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+              ]
+            },
+            {
+              "condition": "[equals(parameters('sqlFlavour'), 'sql')]",
+              "type": "Microsoft.OperationsManagement/solutions",
+              "apiVersion": "2015-11-01-preview",
+              "name": "[variables('sqlAnalyticsName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "plan": {
+                "name": "[variables('sqlAnalyticsName')]",
+                "product": "OMSGallery/AzureSQLAnalytics",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+              },
+              "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "logAnalyticsWorkspaceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "diagnosticSettings",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "datafactoryName": {
+            "value": "[variables('datafactory001Name')]"
+          },
+          "logAnalytics001Name": {
+            "value": "[variables('logAnalytics001Name')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "cosmosdb001Name": {
+            "value": "[variables('cosmosdb001Name')]"
+          },
+          "enableCosmos": {
+            "value": "[parameters('enableCosmos')]"
+          },
+          "sqlFlavour": {
+            "value": "[parameters('sqlFlavour')]"
+          },
+          "mysql001Name": {
+            "value": "[variables('mysql001Name')]"
+          },
+          "sqlServerName": {
+            "value": "[variables('sql001Name')]"
+          },
+          "mariadb001Name": {
+            "value": "[variables('mariadb001Name')]"
+          },
+          "synapseName": {
+            "value": "[variables('synapse001Name')]"
+          },
+          "potsgresql001Name": {
+            "value": "[variables('potsgresql001Name')]"
+          },
+          "synapseSqlPools": {
+            "value": [
+              "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value]"
+            ]
+          },
+          "synapseSparkPools": {
+            "value": [
+              "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value]"
+            ]
+          },
+          "sqlServerDatabases": {
+            "value": [
+              "[variables('Database001Name')]"
+            ]
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "1379312550217363166"
+            }
+          },
+          "parameters": {
+            "logAnalytics001Name": {
+              "type": "string"
+            },
+            "datafactoryName": {
+              "type": "string"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "synapseName": {
+              "type": "string"
+            },
+            "synapseSqlPools": {
+              "type": "array"
+            },
+            "synapseSparkPools": {
+              "type": "array"
+            },
+            "sqlServerDatabases": {
+              "type": "array"
+            },
+            "sqlServerName": {
+              "type": "string"
+            },
+            "mysql001Name": {
+              "type": "string"
+            },
+            "mariadb001Name": {
+              "type": "string"
+            },
+            "potsgresql001Name": {
+              "type": "string"
+            },
+            "cosmosdb001Name": {
+              "type": "string"
+            },
+            "sqlFlavour": {
+              "type": "string"
+            },
+            "enableCosmos": {
+              "type": "bool"
+            }
+          },
+          "variables": {
+            "synapseSqlPoolsCount": "[length(parameters('synapseSqlPools'))]",
+            "synapseSparkPoolCount": "[length(parameters('synapseSparkPools'))]",
+            "sqlServerDatabasesCount": "[length(parameters('sqlServerDatabases'))]"
+          },
+          "resources": [
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.DataFactory/factories/{0}', parameters('datafactoryName'))]",
+              "name": "[format('diagnostic-{0}', parameters('datafactoryName'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "PipelineRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "TriggerRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "ActivityRuns",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Synapse/workspaces/{0}', parameters('synapseName'))]",
+              "name": "[format('diagnostic-{0}', parameters('synapseName'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "SynapseRbacOperations",
+                    "enabled": true
+                  },
+                  {
+                    "category": "GatewayApiRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "BuiltinSqlReqsEnded",
+                    "enabled": true
+                  },
+                  {
+                    "category": "IntegrationPipelineRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "IntegrationActivityRuns",
+                    "enabled": true
+                  },
+                  {
+                    "category": "IntegrationTriggerRuns",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "copy": {
+                "name": "diagnosticSetting003",
+                "count": "[length(range(0, variables('synapseSqlPoolsCount')))]"
+              },
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Synapse/workspaces/{0}/sqlPools/{1}', parameters('synapseName'), parameters('synapseSqlPools')[range(0, variables('synapseSqlPoolsCount'))[copyIndex()]])]",
+              "name": "[format('diagnostic-{0}-{1}', parameters('synapseName'), parameters('synapseSqlPools')[range(0, variables('synapseSqlPoolsCount'))[copyIndex()]])]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "SqlRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "RequestSteps",
+                    "enabled": true
+                  },
+                  {
+                    "category": "ExecRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "DmsWorkers",
+                    "enabled": true
+                  },
+                  {
+                    "category": "Waits",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "copy": {
+                "name": "diagnosticSetting004",
+                "count": "[length(range(0, variables('synapseSparkPoolCount')))]"
+              },
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Synapse/workspaces/{0}/bigDataPools/{1}', parameters('synapseName'), parameters('synapseSparkPools')[range(0, variables('synapseSparkPoolCount'))[copyIndex()]])]",
+              "name": "[format('diagnostic-{0}-{1}', parameters('synapseName'), parameters('synapseSparkPools')[range(0, variables('synapseSparkPoolCount'))[copyIndex()]])]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "BigDataPoolAppsEnded",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "copy": {
+                "name": "diagnosticSetting005",
+                "count": "[length(range(0, variables('sqlServerDatabasesCount')))]"
+              },
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Sql/servers/{0}/databases/{1}', parameters('sqlServerName'), parameters('sqlServerDatabases')[range(0, variables('sqlServerDatabasesCount'))[copyIndex()]])]",
+              "name": "[format('diagnostic-{0}', parameters('sqlServerDatabases')[range(0, variables('sqlServerDatabasesCount'))[copyIndex()]])]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "SQLInsights",
+                    "enabled": true
+                  },
+                  {
+                    "category": "Errors",
+                    "enabled": true
+                  },
+                  {
+                    "category": "Timeouts",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "Basic",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('sqlFlavour'), 'mysql')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.DBforMySQL/servers/{0}', parameters('mysql001Name'))]",
+              "name": "[format('diagnostic-{0}', parameters('mysql001Name'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "MySqlSlowLogs",
+                    "enabled": true
+                  },
+                  {
+                    "category": "MySqlAuditLogs",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('sqlFlavour'), 'maria')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.DBforMariaDB/servers/{0}', parameters('mariadb001Name'))]",
+              "name": "[format('diagnostic-{0}', parameters('mariadb001Name'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "MySqlSlowLogs",
+                    "enabled": true
+                  },
+                  {
+                    "category": "MySqlAuditLogs",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[equals(parameters('sqlFlavour'), 'postgre')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.DBforPostgreSQL/servers/{0}', parameters('potsgresql001Name'))]",
+              "name": "[format('diagnostic-{0}', parameters('potsgresql001Name'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "PostgreSQLLogs",
+                    "enabled": true
+                  },
+                  {
+                    "category": "QueryStoreRuntimeStatistics",
+                    "enabled": true
+                  },
+                  {
+                    "category": "QueryStoreWaitStatistics",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[parameters('enableCosmos')]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.DocumentDB/databaseAccounts/{0}', parameters('cosmosdb001Name'))]",
+              "name": "[format('diagnostic-{0}', parameters('cosmosdb001Name'))]",
+              "properties": {
+                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]",
+                "logs": [
+                  {
+                    "category": "DataPlaneRequests",
+                    "enabled": true
+                  },
+                  {
+                    "category": "ControlPlaneRequests",
+                    "enabled": true
+                  }
+                ],
+                "metrics": [
+                  {
+                    "category": "Requests",
+                    "enabled": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "alerts",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "adfPipelineFailedAlertName": {
+            "value": "[variables('adfPipelineFailedAlertName')]"
+          },
+          "datafactoryScope": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.dataFactoryId.value]"
+          },
+          "dataFactoryEmailActionGroup": {
+            "value": "[variables('dataFactoryEmailActionGroup')]"
+          },
+          "dataProductTeamEmail": {
+            "value": "[parameters('dataProductTeamEmail')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "synapsePipelineFailedAlertName": {
+            "value": "[variables('synapsePipelineFailedAlertName')]"
+          },
+          "cosmosRequestLimitedAlertName": {
+            "value": "[variables('cosmosRequestLimitedAlertName')]"
+          },
+          "synapseScope": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value]"
+          },
+          "cosmosDBScope": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'cosmos001')).outputs.cosmosId.value]"
+          },
+          "enableCosmos": {
+            "value": "[parameters('enableCosmos')]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "852566638993527322"
+            }
+          },
+          "parameters": {
+            "adfPipelineFailedAlertName": {
+              "type": "string"
+            },
+            "datafactoryScope": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "synapsePipelineFailedAlertName": {
+              "type": "string"
+            },
+            "synapseScope": {
+              "type": "string"
+            },
+            "dataFactoryEmailActionGroup": {
+              "type": "string"
+            },
+            "dataProductTeamEmail": {
+              "type": "string"
+            },
+            "cosmosRequestLimitedAlertName": {
+              "type": "string"
+            },
+            "cosmosDBScope": {
+              "type": "string"
+            },
+            "enableCosmos": {
+              "type": "bool"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Insights/actionGroups",
+              "apiVersion": "2021-09-01",
+              "name": "[parameters('dataFactoryEmailActionGroup')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "groupShortName": "emailgroup",
+                "emailReceivers": [
+                  {
+                    "emailAddress": "[parameters('dataProductTeamEmail')]",
+                    "name": "emailaction",
+                    "useCommonAlertSchema": true
+                  }
+                ],
+                "enabled": true
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.Insights/metricAlerts",
+              "apiVersion": "2018-03-01",
+              "name": "[parameters('adfPipelineFailedAlertName')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "actions": [
+                  {
+                    "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+                  }
+                ],
+                "autoMitigate": false,
+                "criteria": {
+                  "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                  "allOf": [
+                    {
+                      "threshold": 1,
+                      "name": "Metric1",
+                      "metricNamespace": "Microsoft.DataFactory/factories",
+                      "metricName": "PipelineFailedRuns",
+                      "operator": "GreaterThan",
+                      "timeAggregation": "Total",
+                      "criterionType": "StaticThresholdCriterion"
+                    }
+                  ]
+                },
+                "description": "ADF pipeline failed",
+                "enabled": true,
+                "evaluationFrequency": "PT1M",
+                "scopes": [
+                  "[parameters('datafactoryScope')]"
+                ],
+                "severity": 1,
+                "targetResourceRegion": "[parameters('location')]",
+                "targetResourceType": "Microsoft.DataFactory/factories",
+                "windowSize": "PT5M"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+              ]
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Insights/metricAlerts",
+              "apiVersion": "2018-03-01",
+              "name": "[parameters('synapsePipelineFailedAlertName')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "actions": [
+                  {
+                    "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+                  }
+                ],
+                "autoMitigate": false,
+                "criteria": {
+                  "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+                  "allOf": [
+                    {
+                      "threshold": 1,
+                      "name": "Metric1",
+                      "metricNamespace": "Microsoft.Synapse/workspaces",
+                      "metricName": "IntegrationPipelineRunsEnded",
+                      "operator": "GreaterThan",
+                      "timeAggregation": "Total",
+                      "criterionType": "StaticThresholdCriterion",
+                      "dimensions": [
+                        {
+                          "name": "Result",
+                          "operator": "Include",
+                          "values": [
+                            "Failed"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "description": "Synapse pipeline failed",
+                "enabled": true,
+                "evaluationFrequency": "PT1M",
+                "scopes": [
+                  "[parameters('synapseScope')]"
+                ],
+                "severity": 1,
+                "targetResourceRegion": "[parameters('location')]",
+                "targetResourceType": "Microsoft.Synapse/workspaces",
+                "windowSize": "PT5M"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+              ]
+            },
+            {
+              "condition": "[parameters('enableCosmos')]",
+              "type": "Microsoft.Insights/metricAlerts",
+              "apiVersion": "2018-03-01",
+              "name": "[parameters('cosmosRequestLimitedAlertName')]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "severity": 1,
+                "enabled": true,
+                "scopes": [
+                  "[parameters('cosmosDBScope')]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                  "allOf": [
+                    {
+                      "threshold": 100,
+                      "name": "Metric1",
+                      "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
+                      "metricName": "TotalRequestUnits",
+                      "dimensions": [
+                        {
+                          "name": "StatusCode",
+                          "operator": "Include",
+                          "values": [
+                            "429"
+                          ]
+                        }
+                      ],
+                      "operator": "GreaterThan",
+                      "timeAggregation": "Total",
+                      "criterionType": "StaticThresholdCriterion"
+                    }
+                  ],
+                  "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": false,
+                "targetResourceType": "Microsoft.DocumentDB/databaseAccounts",
+                "actions": [
+                  {
+                    "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/actionGroups', parameters('dataFactoryEmailActionGroup'))]"
+              ]
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'cosmos001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'datafactory001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableMonitoring')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "dashboard",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dashboardName": {
+            "value": "[variables('dashboardName')]"
+          },
+          "datafactoryName": {
+            "value": "[variables('datafactory001Name')]"
+          },
+          "datafactoryScope": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.dataFactoryId.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
+          },
+          "synapse001Name": {
+            "value": "[variables('synapse001Name')]"
+          },
+          "synapseScope": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value]"
+          },
+          "tags": {
+            "value": "[variables('tagsJoined')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1272.37030",
+              "templateHash": "15614871915008595699"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string"
+            },
+            "dashboardName": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "datafactoryScope": {
+              "type": "string"
+            },
+            "datafactoryName": {
+              "type": "string"
+            },
+            "processingService": {
+              "type": "string"
+            },
+            "synapseScope": {
+              "type": "string"
+            },
+            "synapse001Name": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "condition": "[equals(parameters('processingService'), 'dataFactory')]",
+              "type": "Microsoft.Portal/dashboards",
+              "apiVersion": "2020-09-01-preview",
+              "name": "[parameters('dashboardName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "lenses": [
+                  {
+                    "order": 0,
+                    "parts": [
+                      {
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('datafactoryScope')]"
+                                      },
+                                      "name": "PipelineFailedRuns",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.datafactory/factories",
+                                      "metricVisualization": {
+                                        "displayName": "Failed pipeline runs metrics",
+                                        "resourceDisplayName": "[parameters('datafactoryName')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Count Failed activity runs metrics for {0}', parameters('datafactoryName'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "position": {
+                          "x": 6,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('datafactoryScope')]"
+                                      },
+                                      "name": "PipelineSucceededRuns",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.datafactory/factories",
+                                      "metricVisualization": {
+                                        "displayName": "Succeeded pipeline runs metrics",
+                                        "resourceDisplayName": "[parameters('datafactoryName')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Sum Succeeded pipeline runs metrics for {0}', parameters('datafactoryName'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "metadata": {
+                  "model": {}
+                }
+              }
+            },
+            {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
+              "type": "Microsoft.Portal/dashboards",
+              "apiVersion": "2020-09-01-preview",
+              "name": "[format('{0}-synapse', parameters('dashboardName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "lenses": [
+                  {
+                    "order": 0,
+                    "parts": [
+                      {
+                        "position": {
+                          "x": 0,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('synapseScope')]"
+                                      },
+                                      "name": "IntegrationPipelineRunsEnded",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.synapse/workspaces",
+                                      "metricVisualization": {
+                                        "displayName": "Pipeline runs ended",
+                                        "resourceDisplayName": "[parameters('synapse001Name')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Sum Pipeline runs ended for {0}', parameters('synapse001Name'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "position": {
+                          "x": 6,
+                          "y": 0,
+                          "rowSpan": 4,
+                          "colSpan": 6
+                        },
+                        "metadata": {
+                          "inputs": [
+                            {
+                              "name": "options",
+                              "isOptional": true
+                            },
+                            {
+                              "name": "sharedTimeRange",
+                              "isOptional": true
+                            }
+                          ],
+                          "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                          "settings": {
+                            "content": {
+                              "options": {
+                                "chart": {
+                                  "metrics": [
+                                    {
+                                      "resourceMetadata": {
+                                        "id": "[parameters('synapseScope')]"
+                                      },
+                                      "name": "IntegrationActivityRunsEnded",
+                                      "aggregationType": 1,
+                                      "namespace": "microsoft.synapse/workspaces",
+                                      "metricVisualization": {
+                                        "displayName": "Activity runs ended",
+                                        "resourceDisplayName": "[parameters('synapse001Name')]"
+                                      }
+                                    }
+                                  ],
+                                  "title": "[format('Sum Activity runs ended for {0}', parameters('synapse001Name'))]",
+                                  "titleKind": 1,
+                                  "visualization": {
+                                    "chartType": 2,
+                                    "legendVisualization": {
+                                      "isVisible": true,
+                                      "position": 2,
+                                      "hideSubtitle": false
+                                    },
+                                    "axisVisualization": {
+                                      "x": {
+                                        "isVisible": true,
+                                        "axisType": 2
+                                      },
+                                      "y": {
+                                        "isVisible": true,
+                                        "axisType": 1
+                                      }
+                                    },
+                                    "disablePinning": true
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "metadata": {
+                  "model": {}
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'datafactory001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
+      ]
     }
   ]
 }
