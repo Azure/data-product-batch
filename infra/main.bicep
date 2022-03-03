@@ -289,7 +289,7 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
   }
 }
 
-module alerts './modules/services/alerts.bicep' = if (enableMonitoring) {
+module alerts './modules/services/alerts.bicep' = if (!empty(dataProductTeamEmail) && enableMonitoring) {
   name: 'alerts'
   scope: resourceGroup()
   params: {
