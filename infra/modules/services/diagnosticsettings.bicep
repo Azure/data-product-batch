@@ -138,7 +138,7 @@ resource diagnosticSetting002 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 }
 
 // Diagnostic settings for Azure Synapse SQL Pools.
-resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount): {
+resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount):if (processingService == 'synapse') {
   scope: synapsesqlpool[i]
   name: 'diagnostic-${synapseworkspace.name}-${synapsesqlpool[i].name}'
   properties: {
@@ -169,7 +169,7 @@ resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 }]
 
 // Diagnostic settings for Azure Syanpse Apache Spark Pools. 
-resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount): {
+resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount):if (processingService == 'synapse') {
   scope: synapsebigdatapool[i]
   name: 'diagnostic-${synapseworkspace.name}-${synapsebigdatapool[i].name}'
   properties: {
@@ -184,7 +184,7 @@ resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 }]
 
 // Diagnostic settings for Azure SQL Server.
-resource diagnosticSetting005 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, sqlServerDatabasesCount): {
+resource diagnosticSetting005 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, sqlServerDatabasesCount):if (sqlFlavour == 'mysql') {
   scope: sqlDatabases[i]
   name: 'diagnostic-${sqlDatabases[i].name}'
   properties: {

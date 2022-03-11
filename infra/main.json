@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1272.37030",
-      "templateHash": "8619764639342834705"
+      "templateHash": "10008134519768392151"
     }
   },
   "parameters": {
@@ -897,6 +897,9 @@
           },
           "purviewManagedEventHubId": {
             "value": "[parameters('purviewManagedEventHubId')]"
+          },
+          "processingService": {
+            "value": "[parameters('processingService')]"
           }
         },
         "template": {
@@ -906,7 +909,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "14076569720839278206"
+              "templateHash": "6022213689280567323"
             }
           },
           "parameters": {
@@ -944,6 +947,9 @@
             "purviewManagedEventHubId": {
               "type": "string",
               "defaultValue": ""
+            },
+            "processingService": {
+              "type": "string"
             }
           },
           "variables": {
@@ -1195,7 +1201,7 @@
           "outputs": {
             "dataFactoryId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]"
+              "value": "[if(equals(parameters('processingService'), 'dataFactory'), resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName')), '')]"
             }
           }
         }
@@ -2297,12 +2303,12 @@
           },
           "synapseSqlPools": {
             "value": [
-              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value, '')]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value, json('null'))]"
             ]
           },
           "synapseSparkPools": {
             "value": [
-              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value, '')]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value, json('null'))]"
             ]
           },
           "sqlServerDatabases": {
@@ -2318,7 +2324,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "1379312550217363166"
+              "templateHash": "13380635992606504385"
             }
           },
           "parameters": {
@@ -2438,6 +2444,7 @@
               }
             },
             {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
               "copy": {
                 "name": "diagnosticSetting003",
                 "count": "[length(range(0, variables('synapseSqlPoolsCount')))]"
@@ -2473,6 +2480,7 @@
               }
             },
             {
+              "condition": "[equals(parameters('processingService'), 'synapse')]",
               "copy": {
                 "name": "diagnosticSetting004",
                 "count": "[length(range(0, variables('synapseSparkPoolCount')))]"
@@ -2492,6 +2500,7 @@
               }
             },
             {
+              "condition": "[equals(parameters('sqlFlavour'), 'mysql')]",
               "copy": {
                 "name": "diagnosticSetting005",
                 "count": "[length(range(0, variables('sqlServerDatabasesCount')))]"
@@ -2675,7 +2684,7 @@
             "value": "[variables('cosmosRequestLimitedAlertName')]"
           },
           "synapseScope": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value , '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           },
           "cosmosDBScope": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'cosmos001')).outputs.cosmosId.value]"
