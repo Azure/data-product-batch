@@ -2297,12 +2297,12 @@
           },
           "synapseSqlPools": {
             "value": [
-              "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value, '')]"
             ]
           },
           "synapseSparkPools": {
             "value": [
-              "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value, '')]"
             ]
           },
           "sqlServerDatabases": {
@@ -2675,7 +2675,7 @@
             "value": "[variables('cosmosRequestLimitedAlertName')]"
           },
           "synapseScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value , '')]"
           },
           "cosmosDBScope": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'cosmos001')).outputs.cosmosId.value]"
@@ -2938,7 +2938,7 @@
             "value": "[variables('synapse001Name')]"
           },
           "synapseScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
