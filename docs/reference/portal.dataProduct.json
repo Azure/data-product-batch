@@ -620,11 +620,11 @@
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
                                     "toolTip": "Deploy monitoring components like Log Analytics, Azure dashboards, alerts and diagnostic settings.",
-                                    "defaultValue": "No",
+                                    "defaultValue": "yes",
                                     "constraints": {
                                         "allowedValues": [
                                             {
-                                                "label": "Yes",
+                                                "label": "Yes (recommended)",
                                                 "value": "yes"
                                             },
                                             {
@@ -640,7 +640,12 @@
                                     "type": "Microsoft.Common.TextBox",
                                     "visible": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
                                     "defaultValue": "",
-                                    "toolTip": "Specify Email ID to receive monitoring alerts."
+                                    "toolTip": "Specify Email ID to receive monitoring alerts.",
+                                    "constraints": {
+                                        "required": true,
+                                        "regex": "^[\\S+@\\S+.\\S+]{7,100}$",
+                                        "validationMessage": "Please enter a valid email address."
+                                    }
                                 }
                             ]
                         }
@@ -1031,8 +1036,8 @@
                 "purviewManagedStorageId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.storageAccount)]",
                 "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",
                 "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
-                "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring,'yes')]",
-                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail),'',steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
+                "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
+                "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail), '',steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
                 "privateDnsZoneIdKeyVault": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdKeyVault)]",
                 "privateDnsZoneIdSynapseDev": "[if(empty(steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev), '', steps('connectivitySettings').privateDnsZones.privateDnsZoneIdSynapseDev)]",

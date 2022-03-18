@@ -103,7 +103,7 @@ var keyVault001Name = '${name}-vault001'
 var synapse001Name = '${name}-synapse001'
 var datafactory001Name = '${name}-datafactory001'
 var cosmosdb001Name = '${name}-cosmos001'
-var Database001Name = 'Database001'
+var database001Name = 'Database001'
 var sql001Name = '${name}-sqlserver001'
 var mysql001Name = '${name}-mysql001'
 var mariadb001Name = '${name}-mariadb001'
@@ -171,7 +171,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
     purviewManagedStorageId: purviewManagedStorageId
-    purviewManagedEventHubId: purviewManagedEventHubId
+    purviewManagedEventHubId: purviewManagedEventHubId    
   }
 }
 
@@ -198,7 +198,7 @@ module sql001 'modules/services/sql.bicep' = if (sqlFlavour == 'sql') {
     administratorUsername: administratorUsername
     administratorPassword: administratorPassword
     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
-    Database001Name: Database001Name
+    database001Name: database001Name
     sqlserverAdminGroupName: ''
     sqlserverAdminGroupObjectID: ''
   }
@@ -284,7 +284,7 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
       synapse001.outputs.synapseBigDataPool001Name
     ]
     sqlServerDatabases: [
-      Database001Name
+      database001Name
     ]
   }
 }
@@ -308,7 +308,7 @@ module alerts './modules/services/alerts.bicep' = if (!empty(dataProductTeamEmai
   }
 }
 
-module dashboard './modules/services/dashboard.bicep' = if (enableMonitoring) {
+module dashboards './modules/services/dashboard.bicep' = if (enableMonitoring) {
   name: 'dashboard'
   scope: resourceGroup()
   params: {

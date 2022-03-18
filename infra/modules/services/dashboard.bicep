@@ -17,8 +17,8 @@ param synapse001Name string
 // Variables
 
 // Resources
-resource dashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = if (processingService == 'dataFactory') {
-  name: dashboardName
+resource dashboardDataFactory 'Microsoft.Portal/dashboards@2020-09-01-preview' = if (processingService == 'dataFactory') {
+  name: '${dashboardName}-dataFactory'
   location: location
   tags: tags
   properties: {

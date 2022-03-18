@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1272.37030",
-      "templateHash": "10008134519768392151"
+      "templateHash": "15938063844186030841"
     }
   },
   "parameters": {
@@ -230,7 +230,7 @@
     "synapse001Name": "[format('{0}-synapse001', variables('name'))]",
     "datafactory001Name": "[format('{0}-datafactory001', variables('name'))]",
     "cosmosdb001Name": "[format('{0}-cosmos001', variables('name'))]",
-    "Database001Name": "Database001",
+    "database001Name": "Database001",
     "sql001Name": "[format('{0}-sqlserver001', variables('name'))]",
     "mysql001Name": "[format('{0}-mysql001', variables('name'))]",
     "mariadb001Name": "[format('{0}-mariadb001', variables('name'))]",
@@ -897,9 +897,6 @@
           },
           "purviewManagedEventHubId": {
             "value": "[parameters('purviewManagedEventHubId')]"
-          },
-          "processingService": {
-            "value": "[parameters('processingService')]"
           }
         },
         "template": {
@@ -909,7 +906,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "6022213689280567323"
+              "templateHash": "14076569720839278206"
             }
           },
           "parameters": {
@@ -947,9 +944,6 @@
             "purviewManagedEventHubId": {
               "type": "string",
               "defaultValue": ""
-            },
-            "processingService": {
-              "type": "string"
             }
           },
           "variables": {
@@ -1201,7 +1195,7 @@
           "outputs": {
             "dataFactoryId": {
               "type": "string",
-              "value": "[if(equals(parameters('processingService'), 'dataFactory'), resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName')), '')]"
+              "value": "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]"
             }
           }
         }
@@ -1244,7 +1238,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "3368710486250480488"
+              "templateHash": "16960345830621535781"
             }
           },
           "parameters": {
@@ -1307,7 +1301,7 @@
                   {
                     "locationName": "[parameters('location')]",
                     "failoverPriority": 0,
-                    "isZoneRedundant": false
+                    "isZoneRedundant": true
                   }
                 ]
               }
@@ -1401,8 +1395,8 @@
           "privateDnsZoneIdSqlServer": {
             "value": "[parameters('privateDnsZoneIdSqlServer')]"
           },
-          "Database001Name": {
-            "value": "[variables('Database001Name')]"
+          "database001Name": {
+            "value": "[variables('database001Name')]"
           },
           "sqlserverAdminGroupName": {
             "value": ""
@@ -1453,7 +1447,7 @@
               "type": "string",
               "defaultValue": ""
             },
-            "Database001Name": {
+            "database001Name": {
               "type": "string"
             }
           },
@@ -1497,7 +1491,7 @@
             {
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2020-11-01-preview",
-              "name": "[format('{0}/{1}', parameters('sqlserverName'), parameters('Database001Name'))]",
+              "name": "[format('{0}/{1}', parameters('sqlserverName'), parameters('database001Name'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "sku": {
@@ -2313,7 +2307,7 @@
           },
           "sqlServerDatabases": {
             "value": [
-              "[variables('Database001Name')]"
+              "[variables('database001Name')]"
             ]
           }
         },
@@ -2960,7 +2954,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.4.1272.37030",
-              "templateHash": "15614871915008595699"
+              "templateHash": "9501397294172110948"
             }
           },
           "parameters": {
@@ -2994,7 +2988,7 @@
               "condition": "[equals(parameters('processingService'), 'dataFactory')]",
               "type": "Microsoft.Portal/dashboards",
               "apiVersion": "2020-09-01-preview",
-              "name": "[parameters('dashboardName')]",
+              "name": "[format('{0}-dataFactory', parameters('dashboardName'))]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "properties": {
