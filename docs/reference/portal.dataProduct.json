@@ -620,7 +620,7 @@
                                     "type": "Microsoft.Common.OptionsGroup",
                                     "visible": true,
                                     "toolTip": "Deploy monitoring components like Log Analytics, Azure dashboards, alerts and diagnostic settings.",
-                                    "defaultValue": "yes",
+                                    "defaultValue": "Yes (recommended)",
                                     "constraints": {
                                         "allowedValues": [
                                             {
@@ -1034,8 +1034,8 @@
                 "enableCosmos": "[steps('generalSettings').generalSettings.enableCosmos]",
                 "purviewId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewId.id)]",
                 "purviewManagedStorageId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.storageAccount)]",
-                "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",
-                "enableRoleAssignments": "[steps('generalSettings').generalSettings.enableRoleAssignments]",
+                "purviewManagedEventHubId": "[if(empty(steps('generalSettings').dataGovernanceSettings.purviewId.id), '', steps('generalSettings').dataGovernanceSettings.purviewApi.properties.managedResources.eventHubNamespace)]",                
+                "enableRoleAssignments": "[equals(steps('generalSettings').generalSettings.enableRoleAssignments, 'yes')]",
                 "enableMonitoring": "[equals(steps('generalSettings').monitoringSettings.enableMonitoring, 'yes')]",
                 "dataProductTeamEmail": "[if(empty(steps('generalSettings').monitoringSettings.dataProductTeamEmail), '',steps('generalSettings').monitoringSettings.dataProductTeamEmail)]",
                 "subnetId": "[if(empty(steps('connectivitySettings').virtualNetwork.subnetId), '', steps('connectivitySettings').virtualNetwork.subnetId)]",
