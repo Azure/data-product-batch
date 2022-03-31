@@ -212,3 +212,4 @@ resource datafactoryPrivateEndpointPortalARecord 'Microsoft.Network/privateEndpo
 
 // Outputs
 output dataFactoryId string = datafactory.id
+output dataFactoryName string = datafactory.name
