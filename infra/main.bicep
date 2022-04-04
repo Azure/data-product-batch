@@ -171,7 +171,7 @@ module datafactory001 'modules/services/datafactory.bicep' = if (processingServi
     privateDnsZoneIdDataFactoryPortal: privateDnsZoneIdDataFactoryPortal
     purviewId: purviewId
     purviewManagedStorageId: purviewManagedStorageId
-    purviewManagedEventHubId: purviewManagedEventHubId    
+    purviewManagedEventHubId: purviewManagedEventHubId
   }
 }
 
