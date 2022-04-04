@@ -15,7 +15,7 @@ param privateDnsZoneIdKeyVault string = ''
 var keyVaultPrivateEndpointName = '${keyVault.name}-private-endpoint'
 
 // Resources
-resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   name: keyvaultName
   location: location
   tags: tags

@@ -15,6 +15,7 @@ param administratorPassword string
 param sqlserverAdminGroupName string = ''
 param sqlserverAdminGroupObjectID string = ''
 param privateDnsZoneIdSqlServer string = ''
+param database001Name string
 
 // Variables
 var sqlserverPrivateEndpointName = '${sqlserver.name}-private-endpoint'
@@ -71,7 +72,7 @@ resource sqlserverAdministrators 'Microsoft.Sql/servers/administrators@2020-11-0
 
 resource sqlserverDatabase001 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
   parent: sqlserver
-  name: 'Database001'
+  name: database001Name
   location: location
   tags: tags
   sku: {
