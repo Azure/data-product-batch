@@ -12,8 +12,8 @@ param logAnalyticsName string
 param sqlFlavour string
 
 // Variables
-var dataFactoryAnalyticsName = 'AzureDataFactoryAnalytics(${logAnalytics001Name})'
-var sqlAnalyticsName = 'AzureSQLAnalytics(${logAnalytics001Name})'
+var dataFactoryAnalyticsName = 'AzureDataFactoryAnalytics(${logAnalyticsName})'
+var sqlAnalyticsName = 'AzureSQLAnalytics(${logAnalyticsName})'
 
 // Resources
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
