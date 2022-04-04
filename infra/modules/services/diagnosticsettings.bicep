@@ -315,4 +315,5 @@ resource diagnosticSetting009 'Microsoft.Insights/diagnosticSettings@2021-05-01-
     ]
   }
 }
+
 //Outputs
