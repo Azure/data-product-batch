@@ -256,7 +256,7 @@ module logAnalytics001 'modules/services/loganalytics.bicep' = if (enableMonitor
   params: {
     location: location
     tags: tagsJoined
-    logAnalytics001Name: logAnalytics001Name
+    logAnalyticsName: logAnalytics001Name
     processingService: processingService
     sqlFlavour: sqlFlavour
   }
