@@ -8,7 +8,7 @@ targetScope = 'resourceGroup'
 param location string
 param tags object
 param processingService string
-param logAnalytics001Name string
+param logAnalyticsName string
 param sqlFlavour string
 
 // Variables
