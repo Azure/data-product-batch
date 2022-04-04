@@ -138,7 +138,7 @@ resource diagnosticSetting002 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 }
 
 // Diagnostic settings for Azure Synapse SQL Pools.
-resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount):if (processingService == 'synapse') {
+resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSqlPoolsCount): if (processingService == 'synapse') {
   scope: synapsesqlpool[i]
   name: 'diagnostic-${synapseworkspace.name}-${synapsesqlpool[i].name}'
   properties: {
