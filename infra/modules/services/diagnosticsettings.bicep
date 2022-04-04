@@ -184,7 +184,7 @@ resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 }]
 
 // Diagnostic settings for Azure SQL Server.
-resource diagnosticSetting005 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, sqlServerDatabasesCount):if (sqlFlavour == 'mysql') {
+resource diagnosticSetting005 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, sqlServerDatabasesCount): if (sqlFlavour == 'mysql') {
   scope: sqlDatabases[i]
   name: 'diagnostic-${sqlDatabases[i].name}'
   properties: {
