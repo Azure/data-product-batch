@@ -17,7 +17,7 @@ var sqlAnalyticsName = 'AzureSQLAnalytics(${logAnalytics001Name})'
 
 // Resources
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
-  name: logAnalytics001Name
+  name: logAnalyticsName
   location: location
   tags: tags
   properties: {
