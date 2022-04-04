@@ -770,10 +770,6 @@
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
             },
-            "synapseSqlPool001": {
-              "type": "object",
-              "value": "[reference(resourceId('Microsoft.Synapse/workspaces/sqlPools', parameters('synapseName'), 'sqlPool001'), '2021-03-01', 'full')]"
-            },
             "synapseBigDataPool001Id": {
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', parameters('synapseName'), 'bigDataPool001')]"
