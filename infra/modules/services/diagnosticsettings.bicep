@@ -169,7 +169,7 @@ resource diagnosticSetting003 'Microsoft.Insights/diagnosticSettings@2021-05-01-
 }]
 
 // Diagnostic settings for Azure Syanpse Apache Spark Pools. 
-resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount):if (processingService == 'synapse') {
+resource diagnosticSetting004 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = [for i in range(0, synapseSparkPoolCount): if (processingService == 'synapse') {
   scope: synapsebigdatapool[i]
   name: 'diagnostic-${synapseworkspace.name}-${synapsebigdatapool[i].name}'
   properties: {
