@@ -2780,7 +2780,7 @@
                       "name": "Metric1",
                       "metricNamespace": "Microsoft.DataFactory/factories",
                       "metricName": "PipelineFailedRuns",
-                      "operator": "GreaterThan",
+                      "operator": "GreaterThanOrEqual",
                       "timeAggregation": "Total",
                       "criterionType": "StaticThresholdCriterion"
                     }
@@ -2823,7 +2823,7 @@
                       "name": "Metric1",
                       "metricNamespace": "Microsoft.Synapse/workspaces",
                       "metricName": "IntegrationPipelineRunsEnded",
-                      "operator": "GreaterThan",
+                      "operator": "GreaterThanOrEqual",
                       "timeAggregation": "Total",
                       "criterionType": "StaticThresholdCriterion",
                       "dimensions": [
