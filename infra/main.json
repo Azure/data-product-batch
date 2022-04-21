@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1272.37030",
-      "templateHash": "15938063844186030841"
+      "version": "0.5.6.12127",
+      "templateHash": "8127639514887243763"
     }
   },
   "parameters": {
@@ -235,9 +235,9 @@
     "mysql001Name": "[format('{0}-mysql001', variables('name'))]",
     "mariadb001Name": "[format('{0}-mariadb001', variables('name'))]",
     "potsgresql001Name": "[format('{0}-postgresql001', variables('name'))]",
-    "logAnalytics001Name": "[format('{0}-loganalytics', variables('name'))]",
-    "dataFactoryEmailActionGroup": "[format('{0}-{1}-emailactiongroup', variables('datafactory001Name'), variables('name'))]",
-    "adfPipelineFailedAlertName": "[format('{0}-{1}-failedalert', variables('datafactory001Name'), variables('name'))]",
+    "logAnalytics001Name": "[format('{0}-loganalytics001', variables('name'))]",
+    "dataFactoryEmailActionGroup": "[format('{0}-emailactiongroup', variables('datafactory001Name'))]",
+    "adfPipelineFailedAlertName": "[format('{0}-failedalert', variables('datafactory001Name'))]",
     "synapsePipelineFailedAlertName": "[format('{0}-failedalert', variables('synapse001Name'))]",
     "cosmosRequestLimitedAlertName": "[format('{0}-requestratealert', variables('cosmosdb001Name'))]",
     "dashboardName": "[format('{0}-dashboard', variables('name'))]"
@@ -275,8 +275,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "4814230897795979241"
+              "version": "0.5.6.12127",
+              "templateHash": "10481042174545864292"
             }
           },
           "parameters": {
@@ -447,8 +447,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "11401646563646112656"
+              "version": "0.5.6.12127",
+              "templateHash": "11669417181826602990"
             }
           },
           "parameters": {
@@ -770,6 +770,10 @@
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces', parameters('synapseName'))]"
             },
+            "synapseName": {
+              "type": "string",
+              "value": "[parameters('synapseName')]"
+            },
             "synapseBigDataPool001Id": {
               "type": "string",
               "value": "[resourceId('Microsoft.Synapse/workspaces/bigDataPools', parameters('synapseName'), 'bigDataPool001')]"
@@ -807,7 +811,7 @@
             "value": "[parameters('synapseDefaultStorageAccountFileSystemId')]"
           },
           "synapseId": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           }
         },
         "template": {
@@ -816,8 +820,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "4535135918647961980"
+              "version": "0.5.6.12127",
+              "templateHash": "10481417171219687804"
             }
           },
           "parameters": {
@@ -901,8 +905,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "14076569720839278206"
+              "version": "0.5.6.12127",
+              "templateHash": "1792165604666069858"
             }
           },
           "parameters": {
@@ -1007,7 +1011,6 @@
                 "privateLinkResourceId": "[parameters('purviewId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1022,7 +1025,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1037,7 +1039,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1052,7 +1053,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedEventHubId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1066,7 +1066,6 @@
                 "privateLinkResourceId": "[parameters('keyVault001Id')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1237,8 +1236,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "16960345830621535781"
+              "version": "0.5.6.12127",
+              "templateHash": "14831264449214122851"
             }
           },
           "parameters": {
@@ -1358,6 +1357,10 @@
             "cosmosId": {
               "type": "string",
               "value": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosdbName'))]"
+            },
+            "cosmosName": {
+              "type": "string",
+              "value": "[parameters('cosmosdbName')]"
             }
           }
         }
@@ -1411,8 +1414,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "13813860010352731768"
+              "version": "0.5.6.12127",
+              "templateHash": "12271990852463133658"
             }
           },
           "parameters": {
@@ -1563,7 +1566,17 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('sqlserverPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "sqlserverName": {
+              "type": "string",
+              "value": "[parameters('sqlserverName')]"
+            },
+            "sqlserverDatabase001Name": {
+              "type": "string",
+              "value": "[parameters('database001Name')]"
+            }
+          }
         }
       }
     },
@@ -1612,8 +1625,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "1914444117838235756"
+              "version": "0.5.6.12127",
+              "templateHash": "5265715090830928459"
             }
           },
           "parameters": {
@@ -1760,7 +1773,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('mysqlserverPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "mysqlName": {
+              "type": "string",
+              "value": "[parameters('mysqlserverName')]"
+            }
+          }
         }
       }
     },
@@ -1803,8 +1822,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "10748115380762693061"
+              "version": "0.5.6.12127",
+              "templateHash": "8277887320269602060"
             }
           },
           "parameters": {
@@ -1925,7 +1944,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('mariadbPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "mariadbName": {
+              "type": "string",
+              "value": "[parameters('mariadbName')]"
+            }
+          }
         }
       }
     },
@@ -1974,8 +1999,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "9480904219558883389"
+              "version": "0.5.6.12127",
+              "templateHash": "5988095410269889096"
             }
           },
           "parameters": {
@@ -2122,7 +2147,13 @@
                 "[resourceId('Microsoft.Network/privateEndpoints', variables('postgresqlPrivateEndpointName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "postgresqlName": {
+              "type": "string",
+              "value": "[parameters('postgresqlName')]"
+            }
+          }
         }
       }
     },
@@ -2143,7 +2174,7 @@
           "tags": {
             "value": "[variables('tagsJoined')]"
           },
-          "logAnalytics001Name": {
+          "logAnalyticsName": {
             "value": "[variables('logAnalytics001Name')]"
           },
           "processingService": {
@@ -2159,8 +2190,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "158081697976750518"
+              "version": "0.5.6.12127",
+              "templateHash": "11124062553816241397"
             }
           },
           "parameters": {
@@ -2173,7 +2204,7 @@
             "processingService": {
               "type": "string"
             },
-            "logAnalytics001Name": {
+            "logAnalyticsName": {
               "type": "string"
             },
             "sqlFlavour": {
@@ -2181,14 +2212,14 @@
             }
           },
           "variables": {
-            "dataFactoryAnalyticsName": "[format('AzureDataFactoryAnalytics({0})', parameters('logAnalytics001Name'))]",
-            "sqlAnalyticsName": "[format('AzureSQLAnalytics({0})', parameters('logAnalytics001Name'))]"
+            "dataFactoryAnalyticsName": "[format('AzureDataFactoryAnalytics({0})', parameters('logAnalyticsName'))]",
+            "sqlAnalyticsName": "[format('AzureSQLAnalytics({0})', parameters('logAnalyticsName'))]"
           },
           "resources": [
             {
               "type": "Microsoft.OperationalInsights/workspaces",
               "apiVersion": "2020-10-01",
-              "name": "[parameters('logAnalytics001Name')]",
+              "name": "[parameters('logAnalyticsName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "properties": {
@@ -2215,10 +2246,10 @@
                 "publisher": "Microsoft"
               },
               "properties": {
-                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
               ]
             },
             {
@@ -2235,17 +2266,21 @@
                 "publisher": "Microsoft"
               },
               "properties": {
-                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+                "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
               ]
             }
           ],
           "outputs": {
             "logAnalyticsWorkspaceId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalytics001Name'))]"
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
+            },
+            "logAnalyticsWorkspaceName": {
+              "type": "string",
+              "value": "[parameters('logAnalyticsName')]"
             }
           }
         }
@@ -2263,51 +2298,51 @@
         "mode": "Incremental",
         "parameters": {
           "datafactoryName": {
-            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.dataFactoryName.value, json('null'))]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.dataFactoryName.value, '')]"
           },
           "logAnalytics001Name": {
-            "value": "[variables('logAnalytics001Name')]"
+            "value": "[if(parameters('enableMonitoring'), reference(resourceId('Microsoft.Resources/deployments', 'logAnalytics001'), '2020-10-01').outputs.logAnalyticsWorkspaceName.value, '')]"
           },
           "processingService": {
             "value": "[parameters('processingService')]"
-          },
-          "cosmosdb001Name": {
-            "value": "[variables('cosmosdb001Name')]"
-          },
-          "enableCosmos": {
-            "value": "[parameters('enableCosmos')]"
           },
           "sqlFlavour": {
             "value": "[parameters('sqlFlavour')]"
           },
           "mysql001Name": {
-            "value": "[variables('mysql001Name')]"
+            "value": "[if(equals(parameters('sqlFlavour'), 'mysql'), reference(resourceId('Microsoft.Resources/deployments', 'mysql001'), '2020-10-01').outputs.mysqlName.value, '')]"
           },
           "sqlServerName": {
-            "value": "[variables('sql001Name')]"
+            "value": "[if(equals(parameters('sqlFlavour'), 'sql'), reference(resourceId('Microsoft.Resources/deployments', 'sql001'), '2020-10-01').outputs.sqlserverName.value, '')]"
           },
           "mariadb001Name": {
-            "value": "[variables('mariadb001Name')]"
-          },
-          "synapseName": {
-            "value": "[variables('synapse001Name')]"
+            "value": "[if(equals(parameters('sqlFlavour'), 'maria'), reference(resourceId('Microsoft.Resources/deployments', 'mariadb001'), '2020-10-01').outputs.mariadbName.value, '')]"
           },
           "potsgresql001Name": {
-            "value": "[variables('potsgresql001Name')]"
+            "value": "[if(equals(parameters('sqlFlavour'), 'postgre'), reference(resourceId('Microsoft.Resources/deployments', 'postgresql001'), '2020-10-01').outputs.postgresqlName.value, '')]"
+          },
+          "enableCosmos": {
+            "value": "[parameters('enableCosmos')]"
+          },
+          "cosmosdb001Name": {
+            "value": "[if(parameters('enableCosmos'), reference(resourceId('Microsoft.Resources/deployments', 'cosmos001'), '2020-10-01').outputs.cosmosName.value, '')]"
+          },
+          "synapseName": {
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseName.value, '')]"
           },
           "synapseSqlPools": {
             "value": [
-              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseSqlPool001Name.value, json('null'))]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseSqlPool001Name.value, null())]"
             ]
           },
           "synapseSparkPools": {
             "value": [
-              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseBigDataPool001Name.value, json('null'))]"
+              "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseBigDataPool001Name.value, null())]"
             ]
           },
           "sqlServerDatabases": {
             "value": [
-              "[variables('database001Name')]"
+              "[if(equals(parameters('sqlFlavour'), 'sql'), reference(resourceId('Microsoft.Resources/deployments', 'sql001'), '2020-10-01').outputs.sqlserverDatabase001Name.value, null())]"
             ]
           }
         },
@@ -2317,8 +2352,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "13380635992606504385"
+              "version": "0.5.6.12127",
+              "templateHash": "17672663804510882985"
             }
           },
           "parameters": {
@@ -2639,7 +2674,13 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'cosmos001')]",
         "[resourceId('Microsoft.Resources/deployments', 'datafactory001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'logAnalytics001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'mariadb001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'mysql001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'postgresql001')]",
+        "[resourceId('Microsoft.Resources/deployments', 'sql001')]",
         "[resourceId('Microsoft.Resources/deployments', 'synapse001')]"
       ]
     },
@@ -2658,7 +2699,7 @@
             "value": "[variables('adfPipelineFailedAlertName')]"
           },
           "datafactoryScope": {
-            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.dataFactoryId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.dataFactoryId.value, '')]"
           },
           "dataFactoryEmailActionGroup": {
             "value": "[variables('dataFactoryEmailActionGroup')]"
@@ -2679,13 +2720,13 @@
             "value": "[variables('cosmosRequestLimitedAlertName')]"
           },
           "synapseScope": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
-          },
-          "cosmosDBScope": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'cosmos001')).outputs.cosmosId.value]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           },
           "enableCosmos": {
             "value": "[parameters('enableCosmos')]"
+          },
+          "cosmosDBScope": {
+            "value": "[if(parameters('enableCosmos'), reference(resourceId('Microsoft.Resources/deployments', 'cosmos001'), '2020-10-01').outputs.cosmosId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -2697,8 +2738,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "852566638993527322"
+              "version": "0.5.6.12127",
+              "templateHash": "8256106526304999248"
             }
           },
           "parameters": {
@@ -2927,10 +2968,10 @@
             "value": "[variables('dashboardName')]"
           },
           "datafactoryName": {
-            "value": "[variables('datafactory001Name')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.dataFactoryName.value, '')]"
           },
           "datafactoryScope": {
-            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001')).outputs.dataFactoryId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'dataFactory'), reference(resourceId('Microsoft.Resources/deployments', 'datafactory001'), '2020-10-01').outputs.dataFactoryId.value, '')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -2939,10 +2980,10 @@
             "value": "[parameters('processingService')]"
           },
           "synapse001Name": {
-            "value": "[variables('synapse001Name')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseName.value, '')]"
           },
           "synapseScope": {
-            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001')).outputs.synapseId.value, '')]"
+            "value": "[if(equals(parameters('processingService'), 'synapse'), reference(resourceId('Microsoft.Resources/deployments', 'synapse001'), '2020-10-01').outputs.synapseId.value, '')]"
           },
           "tags": {
             "value": "[variables('tagsJoined')]"
@@ -2954,8 +2995,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1272.37030",
-              "templateHash": "9501397294172110948"
+              "version": "0.5.6.12127",
+              "templateHash": "7422181253017355270"
             }
           },
           "parameters": {

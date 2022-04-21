@@ -112,3 +112,4 @@ resource postgresqlPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/pr
 }
 
 // Outputs
+output postgresqlName string = postgresql.name

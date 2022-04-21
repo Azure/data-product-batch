@@ -266,25 +266,25 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
   name: 'diagnosticSettings'
   scope: resourceGroup()
   params: {
-    datafactoryName: datafactory001.outputs.dataFactoryName
-    logAnalytics001Name: logAnalytics001Name
-    processingService: processingService
-    cosmosdb001Name: cosmosdb001Name
-    enableCosmos: enableCosmos
+    datafactoryName: processingService == 'dataFactory' ? datafactory001.outputs.dataFactoryName : ''
+    logAnalytics001Name: enableMonitoring ? logAnalytics001.outputs.logAnalyticsWorkspaceName: ''
+    processingService: processingService    
     sqlFlavour: sqlFlavour
-    mysql001Name: mysql001Name
-    sqlServerName: sql001Name
-    mariadb001Name: mariadb001Name
-    synapseName: synapse001Name
-    potsgresql001Name: potsgresql001Name
+    mysql001Name: sqlFlavour == 'mysql' ? mysql001.outputs.mysqlName : ''
+    sqlServerName: sqlFlavour == 'sql' ? sql001.outputs.sqlserverName : ''
+    mariadb001Name: sqlFlavour == 'maria' ? mariadb001.outputs.mariadbName : ''    
+    potsgresql001Name: sqlFlavour == 'postgre' ? postgresql001.outputs.postgresqlName : ''
+    enableCosmos: enableCosmos
+    cosmosdb001Name: enableCosmos ? cosmosdb001.outputs.cosmosName : ''
+    synapseName: processingService == 'synapse' ? synapse001.outputs.synapseName : ''
     synapseSqlPools: [
-      synapse001.outputs.synapseSqlPool001Name
+      processingService == 'synapse' ? synapse001.outputs.synapseSqlPool001Name : null
     ]
     synapseSparkPools: [
-      synapse001.outputs.synapseBigDataPool001Name
+      processingService == 'synapse' ? synapse001.outputs.synapseBigDataPool001Name : null
     ]
     sqlServerDatabases: [
-      database001Name
+      sqlFlavour == 'sql' ? sql001.outputs.sqlserverDatabase001Name : null
     ]
   }
 }
@@ -294,16 +294,16 @@ module alerts './modules/services/alerts.bicep' = if (!empty(dataProductTeamEmai
   scope: resourceGroup()
   params: {
     adfPipelineFailedAlertName: adfPipelineFailedAlertName
-    datafactoryScope: datafactory001.outputs.dataFactoryId
+    datafactoryScope: processingService == 'dataFactory' ? datafactory001.outputs.dataFactoryId : ''
     dataFactoryEmailActionGroup: dataFactoryEmailActionGroup
     dataProductTeamEmail: dataProductTeamEmail
     location: location
     processingService: processingService
     synapsePipelineFailedAlertName: synapsePipelineFailedAlertName
     cosmosRequestLimitedAlertName: cosmosRequestLimitedAlertName
-    synapseScope: synapse001.outputs.synapseId
-    cosmosDBScope: cosmosdb001.outputs.cosmosId
+    synapseScope: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
     enableCosmos: enableCosmos
+    cosmosDBScope: enableCosmos ? cosmosdb001.outputs.cosmosId :''    
     tags: tagsJoined
   }
 }
@@ -313,12 +313,12 @@ module dashboards './modules/services/dashboard.bicep' = if (enableMonitoring) {
   scope: resourceGroup()
   params: {
     dashboardName: dashboardName
-    datafactoryName: datafactory001Name
-    datafactoryScope: datafactory001.outputs.dataFactoryId
+    datafactoryName: processingService == 'dataFactory' ? datafactory001.outputs.dataFactoryName : ''
+    datafactoryScope: processingService == 'dataFactory' ? datafactory001.outputs.dataFactoryId : ''
     location: location
     processingService: processingService
-    synapse001Name: synapse001Name
-    synapseScope: synapse001.outputs.synapseId
+    synapse001Name: processingService == 'synapse' ? synapse001.outputs.synapseName : ''
+    synapseScope: processingService == 'synapse' ? synapse001.outputs.synapseId : ''
     tags: tagsJoined
   }
 }

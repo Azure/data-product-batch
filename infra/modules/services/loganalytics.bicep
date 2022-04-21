@@ -64,3 +64,4 @@ resource sqlAnalytics 'Microsoft.OperationsManagement/solutions@2015-11-01-previ
 
 // Outputs
 output logAnalyticsWorkspaceId string = logAnalytics.id
+output logAnalyticsWorkspaceName string = logAnalytics.name
