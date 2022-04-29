@@ -97,3 +97,4 @@ resource mariadbPrivateEndpointARecord 'Microsoft.Network/privateEndpoints/priva
 }
 
 // Outputs
+output mariadbName string = mariadb.name
