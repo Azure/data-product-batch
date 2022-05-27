@@ -277,15 +277,15 @@ module diagnosticSettings './modules/services/diagnosticsettings.bicep' = if (en
     mariadb001Name: mariadb001Name
     synapseName: synapse001Name
     potsgresql001Name: potsgresql001Name
-    synapseSqlPools: [
+    synapseSqlPools: enableSqlPool ? [
       synapse001.outputs.synapseSqlPool001Name
-    ]
+    ] :[]
     synapseSparkPools: [
       synapse001.outputs.synapseBigDataPool001Name
     ]
-    sqlServerDatabases: [
+    sqlServerDatabases:(sqlFlavour == 'sql') ? [
       database001Name
-    ]
+    ] :[]
   }
 }
 
