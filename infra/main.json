@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1124.51302",
-      "templateHash": "2607815037718360205"
+      "version": "0.12.40.16777",
+      "templateHash": "2337579721668008228"
     }
   },
   "parameters": {
@@ -254,8 +254,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "12660131753967436973"
+              "version": "0.12.40.16777",
+              "templateHash": "15797637048712885311"
             }
           },
           "parameters": {
@@ -426,8 +426,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9666478398298797468"
+              "version": "0.12.40.16777",
+              "templateHash": "2635305685305977981"
             }
           },
           "parameters": {
@@ -512,9 +512,7 @@
                   "preventDataExfiltration": true
                 },
                 "publicNetworkAccess": "Disabled",
-                "purviewConfiguration": {
-                  "purviewResourceId": "[parameters('purviewId')]"
-                },
+                "purviewConfiguration": "[if(empty(parameters('purviewId')), createObject(), createObject('purviewResourceId', parameters('purviewId')))]",
                 "sqlAdministratorLogin": "[parameters('administratorUsername')]",
                 "sqlAdministratorLoginPassword": "[parameters('administratorPassword')]",
                 "virtualNetworkProfile": {
@@ -779,8 +777,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "17584063900477479467"
+              "version": "0.12.40.16777",
+              "templateHash": "13602656477775353919"
             }
           },
           "parameters": {
@@ -864,8 +862,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "8202500910612797173"
+              "version": "0.12.40.16777",
+              "templateHash": "6143892752690818122"
             }
           },
           "parameters": {
@@ -924,9 +922,7 @@
               "properties": {
                 "globalParameters": {},
                 "publicNetworkAccess": "Disabled",
-                "purviewConfiguration": {
-                  "purviewResourceId": "[parameters('purviewId')]"
-                }
+                "purviewConfiguration": "[if(empty(parameters('purviewId')), createObject(), createObject('purviewResourceId', parameters('purviewId')))]"
               }
             },
             {
@@ -970,7 +966,6 @@
                 "privateLinkResourceId": "[parameters('purviewId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -985,7 +980,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1000,7 +994,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedStorageId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1015,7 +1008,6 @@
                 "privateLinkResourceId": "[parameters('purviewManagedEventHubId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1029,7 +1021,6 @@
                 "privateLinkResourceId": "[parameters('keyVault001Id')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.DataFactory/factories', parameters('datafactoryName'))]",
                 "[resourceId('Microsoft.DataFactory/factories/managedVirtualNetworks', parameters('datafactoryName'), 'default')]"
               ]
             },
@@ -1190,8 +1181,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "16996002725669682873"
+              "version": "0.12.40.16777",
+              "templateHash": "16982808425365790551"
             }
           },
           "parameters": {
@@ -1355,8 +1346,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9530070448322797735"
+              "version": "0.12.40.16777",
+              "templateHash": "5228262430280200207"
             }
           },
           "parameters": {
@@ -1553,8 +1544,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "9123330894435819326"
+              "version": "0.12.40.16777",
+              "templateHash": "16466814040562020652"
             }
           },
           "parameters": {
@@ -1744,8 +1735,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "1906507997485595346"
+              "version": "0.12.40.16777",
+              "templateHash": "4216746886872374681"
             }
           },
           "parameters": {
@@ -1915,8 +1906,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1124.51302",
-              "templateHash": "7501625850752670985"
+              "version": "0.12.40.16777",
+              "templateHash": "13322940596881663113"
             }
           },
           "parameters": {
