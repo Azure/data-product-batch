@@ -14,5 +14,6 @@
         'apiVersions Should Be Recent In Reference Functions'
         'URIs Should Be Properly Constructed'
         'apiVersions Should Be Recent'
+        'Parameter Types Should Be Consistent'
     )
 }
